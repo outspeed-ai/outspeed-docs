@@ -5,6 +5,7 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
+  "openapi": "/api-reference/openapi.json",
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#0D9373",
@@ -50,36 +51,9 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Twin API",
       "pages": [
-        "introduction",
-        "quickstart",
-        "development"
-      ]
-    },
-    {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
-      ]
-    },
-    {
-      "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
-    },
-    {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "send-call"
       ]
     }
   ],

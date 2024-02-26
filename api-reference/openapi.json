@@ -1,127 +1,59 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
+    "title": "FastAPI",
+    "version": "0.1.0"
   },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
+    "/v1/calls": {
+      "post": {
+        "summary": "Send Call",
+        "operationId": "send_call_v1_calls_post",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
+            "name": "authorization",
+            "in": "header",
+            "required": false,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
         "requestBody": {
-          "description": "Plant to add to the store",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/CallRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "plant response",
+            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
+                  "$ref": "#/components/schemas/CallResponse"
                 }
               }
             }
           },
-          "400": {
-            "description": "unexpected error",
+          "422": {
+            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -132,63 +64,279 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
+      "CallRequest": {
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
+          "phone_number": {
+            "type": "string",
+            "title": "Phone Number",
+            "description": "The phone number to call.\n                              Country code defaults to `+1` (US) if not specified.  \n                              Formatting is flexible, however for the most predictable results\n                              use the [E.164](https://www.twilio.com/docs/glossary/what-e164#examples-of-e164-numbers) format."
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+          "task": {
+            "type": "string",
+            "title": "Task",
+            "description": "Provide instructions, relevant information, and examples of the ideal conversation flow."
           },
-          {
-            "required": [
-              "id"
-            ],
+          "transfer_list": {
             "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
+            "title": "Transfer List",
+            "description": "Transfer list settings.",
+            "default": {}
           },
-          "message": {
-            "type": "string"
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "description": "Model selection for the call."
+          },
+          "pronunciation_guide": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Pronunciation Guide",
+            "description": "Pronunciation guide settings.",
+            "default": []
+          },
+          "temperature": {
+            "type": "integer",
+            "title": "Temperature",
+            "description": "Temperature setting for randomness in responses."
+          },
+          "tools": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Tools",
+            "description": "Tools settings.",
+            "default": []
+          },
+          "transfer_phone_number": {
+            "type": "string",
+            "title": "Transfer Phone Number",
+            "description": "Phone number for transfer."
+          },
+          "answered_by_enabled": {
+            "type": "boolean",
+            "title": "Answered By Enabled",
+            "description": "Enable/disable answered by feature."
+          },
+          "from": {
+            "type": "string",
+            "title": "From",
+            "description": "The originating phone number."
+          },
+          "reduce_latency": {
+            "type": "boolean",
+            "title": "Reduce Latency",
+            "description": "Reduce latency setting."
+          },
+          "voice_id": {
+            "type": "integer",
+            "title": "Voice Id",
+            "description": "Voice ID setting."
+          },
+          "voice_preset_id": {
+            "type": "string",
+            "title": "Voice Preset Id",
+            "description": "Voice preset ID."
+          },
+          "start_time": {
+            "type": "string",
+            "title": "Start Time",
+            "description": "Start time for the call."
+          },
+          "webhook": {
+            "type": "string",
+            "title": "Webhook",
+            "description": "Webhook URL."
+          },
+          "wait_for_greeting": {
+            "type": "boolean",
+            "title": "Wait For Greeting",
+            "description": "Wait for greeting setting."
+          },
+          "first_sentence": {
+            "type": "string",
+            "title": "First Sentence",
+            "description": "First sentence of the call."
+          },
+          "record": {
+            "type": "boolean",
+            "title": "Record",
+            "description": "Enable/disable call recording."
+          },
+          "voice_settings": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VoiceSettings"
+              }
+            ],
+            "description": "Voice settings."
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "description": "Language setting."
+          },
+          "max_duration": {
+            "type": "integer",
+            "title": "Max Duration",
+            "description": "Maximum duration of the call."
+          },
+          "voicemail_action": {
+            "type": "object",
+            "title": "Voicemail Action",
+            "description": "Voicemail action settings.",
+            "default": {}
+          },
+          "amd": {
+            "type": "boolean",
+            "title": "Amd",
+            "description": "Answering machine detection setting."
+          },
+          "request_data": {
+            "type": "object",
+            "title": "Request Data",
+            "description": "Request data settings.",
+            "default": {}
+          },
+          "dynamic_data": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Dynamic Data",
+            "description": "Dynamic data settings.",
+            "default": []
+          },
+          "interruption_threshold": {
+            "type": "integer",
+            "title": "Interruption Threshold",
+            "description": "Interruption threshold setting."
           }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+        },
+        "type": "object",
+        "required": [
+          "phone_number",
+          "task",
+          "model",
+          "temperature",
+          "transfer_phone_number",
+          "answered_by_enabled",
+          "from",
+          "reduce_latency",
+          "voice_id",
+          "voice_preset_id",
+          "start_time",
+          "webhook",
+          "wait_for_greeting",
+          "first_sentence",
+          "record",
+          "voice_settings",
+          "language",
+          "max_duration",
+          "amd",
+          "interruption_threshold"
+        ],
+        "title": "CallRequest"
+      },
+      "CallResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Can be `success` or `error`."
+          },
+          "call_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Call Id",
+            "description": "A unique identifier for the call (present only if status is `success`)."
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "CallResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VoiceSettings": {
+        "properties": {
+          "stability": {
+            "type": "integer",
+            "title": "Stability",
+            "description": "Voice stability setting."
+          },
+          "similarity": {
+            "type": "integer",
+            "title": "Similarity",
+            "description": "Voice similarity setting."
+          },
+          "speed": {
+            "type": "integer",
+            "title": "Speed",
+            "description": "Voice speed setting."
+          }
+        },
+        "type": "object",
+        "required": [
+          "stability",
+          "similarity",
+          "speed"
+        ],
+        "title": "VoiceSettings"
       }
     }
   }
