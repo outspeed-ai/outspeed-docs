@@ -1,12 +1,12 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Adapt AI Docs",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/3.svg",
+    "light": "/logo/2.svg"
   },
-  "openapi": "/api-reference/openapi.json",
-  "favicon": "/favicon.svg",
+  "openapi": "https://api.getadapt.ai/openapi.json",
+  "favicon": "/logo/1.svg",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -19,47 +19,48 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "contact@getadapt.ai"
     }
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "url": "https://talk.getadapt.ai"
   },
   "tabs": [
     {
-      "name": "API Reference",
+      "name": "V1 API Reference",
       "url": "api-reference"
     }
   ],
   "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
-    }
   ],
   "navigation": [
     {
-      "group": "Twin API",
+      "group": "Adapt API",
       "pages": [
-        "send-call"
+        "quickstart",
+        "api-reference/get-all-agents",
+        "api-reference/register-agent",
+        "api-reference/delete-agent",
+        "api-reference/patch-agent",
+        "api-reference/get-all-voices",
+        "api-reference/get-all-models",
+        "api-reference/get-all-languages",
+        "api-reference/get-all-filler-audios",
+        "api-reference/get-analytics",
+        "api-reference/get-all-api-keys",
+        "api-reference/generate-api-key",
+        "api-reference/delete-api-key",
+        "api-reference/partial",
+        "api-reference/get-all-phones",
+        "api-reference/start-inbound-call",
+        "api-reference/purchase-phone",
+        "api-reference/update-phone",
+        "api-reference/start-outbound-call",
+        "api-reference/register-call",
+        "api-reference/get-calls",
+        "api-reference/get-calls-1"
       ]
     }
-  ],
-  "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
-  }
+  ]
 }
