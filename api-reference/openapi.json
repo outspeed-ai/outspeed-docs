@@ -5,25 +5,100 @@
     "version": "0.1.0"
   },
   "paths": {
-    "/v1/calls": {
+    "/v1/agents/": {
+      "get": {
+        "summary": "Get All Agents",
+        "operationId": "get_all_agents_v1_agents__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AgentRequest"
+                  },
+                  "type": "array",
+                  "title": "Response Get All Agents V1 Agents  Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
       "post": {
-        "summary": "Send Call",
-        "operationId": "send_call_v1_calls_post",
+        "summary": "Register Agent",
+        "operationId": "register_agent_v1_agents__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentPostResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/agents/{agent_id}": {
+      "patch": {
+        "summary": "Patch Agent",
+        "operationId": "patch_agent_v1_agents__agent_id__patch",
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
+            "name": "agent_id",
+            "in": "path",
+            "required": true,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
+              "type": "string",
+              "title": "Agent Id"
             }
           }
         ],
@@ -32,7 +107,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CallRequest"
+                "$ref": "#/components/schemas/AgentRequest"
               }
             }
           }
@@ -42,8 +117,398 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CallResponse"
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Agent",
+        "operationId": "delete_agent_v1_agents__agent_id__delete",
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Agent Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/agents/voices": {
+      "get": {
+        "summary": "Get All Voices",
+        "operationId": "get_all_voices_v1_agents_voices_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Response Get All Voices V1 Agents Voices Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/agents/models": {
+      "get": {
+        "summary": "Get All Models",
+        "operationId": "get_all_models_v1_agents_models_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Response Get All Models V1 Agents Models Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/agents/languages": {
+      "get": {
+        "summary": "Get All Languages",
+        "operationId": "get_all_languages_v1_agents_languages_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Response Get All Languages V1 Agents Languages Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/agents/filler_audios": {
+      "get": {
+        "summary": "Get All Filler Audios",
+        "operationId": "get_all_filler_audios_v1_agents_filler_audios_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Response Get All Filler Audios V1 Agents Filler Audios Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/inbound/": {
+      "get": {
+        "summary": "Get All Phones",
+        "operationId": "get_all_phones_v1_inbound__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PhoneData"
+                  },
+                  "type": "array",
+                  "title": "Response Get All Phones V1 Inbound  Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update Inbound Config",
+        "operationId": "update_inbound_config_v1_inbound__patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PhoneData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/inbound/purchase": {
+      "post": {
+        "summary": "Purchase Phone",
+        "operationId": "purchase_phone_v1_inbound_purchase_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "title": "Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "title": "Response Purchase Phone V1 Inbound Purchase Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/calls/": {
+      "get": {
+        "summary": "Get Calls",
+        "operationId": "get_calls_v1_calls__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CallRecord"
+                  },
+                  "type": "array",
+                  "title": "Response Get Calls V1 Calls  Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/calls/transfer_types": {
+      "get": {
+        "summary": "Get Transfer Types",
+        "operationId": "get_transfer_types_v1_calls_transfer_types_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Response Get Transfer Types V1 Calls Transfer Types Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/calls/{call_id}": {
+      "get": {
+        "summary": "Get Calls",
+        "operationId": "get_calls_v1_calls__call_id__get",
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "call_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "id of the call. received at call registration",
+              "title": "Call Id"
+            },
+            "description": "id of the call. received at call registration"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CallRecord"
                 }
               }
             }
@@ -60,110 +525,277 @@
           }
         }
       }
+    },
+    "/v1/calls/recording/{call_id}": {
+      "get": {
+        "summary": "Get Recording",
+        "operationId": "get_recording_v1_calls_recording__call_id__get",
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "call_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ID of the call. Received at call Registration",
+              "title": "Call Id"
+            },
+            "description": "ID of the call. Received at call Registration"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/chats/register": {
+      "post": {
+        "summary": "Register Chat",
+        "operationId": "register_chat_v1_chats_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatRegisterResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/chats/{conversation_id}": {
+      "post": {
+        "summary": "Post Chat",
+        "operationId": "post_chat_v1_chats__conversation_id__post",
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "id of the chat. received at chat registration",
+              "title": "Conversation Id"
+            },
+            "description": "id of the chat. received at chat registration"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatPostRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatMessage"
+                  },
+                  "title": "Response Post Chat V1 Chats  Conversation Id  Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Chat",
+        "operationId": "get_chat_v1_chats__conversation_id__get",
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "id of the chat. received at chat registration",
+              "title": "Conversation Id"
+            },
+            "description": "id of the chat. received at chat registration"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatRecord"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/chats/": {
+      "get": {
+        "summary": "Get All Chats",
+        "operationId": "get_all_chats_v1_chats__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ChatRecord"
+                  },
+                  "type": "array",
+                  "title": "Response Get All Chats V1 Chats  Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
-      "CallRequest": {
+      "AgentModels": {
+        "type": "string",
+        "enum": [
+          "Adapt X1(fast)",
+          "Adapt X2(slow, more accurate)"
+        ],
+        "title": "AgentModels"
+      },
+      "AgentPostResponse": {
         "properties": {
-          "phone_number": {
+          "agent_id": {
             "type": "string",
-            "title": "Phone Number",
-            "description": "The phone number to call.\n                              Country code defaults to `+1` (US) if not specified.  \n                              Formatting is flexible, however for the most predictable results\n                              use the [E.164](https://www.twilio.com/docs/glossary/what-e164#examples-of-e164-numbers) format."
-          },
-          "task": {
+            "title": "Agent Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "agent_id"
+        ],
+        "title": "AgentPostResponse"
+      },
+      "AgentRequest": {
+        "properties": {
+          "name": {
             "type": "string",
-            "title": "Task",
-            "description": "Provide instructions, relevant information, and examples of the ideal conversation flow."
+            "title": "Name",
+            "default": "New Agent"
           },
-          "transfer_list": {
-            "type": "object",
-            "title": "Transfer List",
-            "description": "Transfer list settings.",
-            "default": {}
-          },
-          "model": {
-            "type": "string",
-            "title": "Model",
-            "description": "Model selection for the call."
-          },
-          "pronunciation_guide": {
-            "items": {
-              "type": "object"
-            },
-            "type": "array",
-            "title": "Pronunciation Guide",
-            "description": "Pronunciation guide settings.",
-            "default": []
-          },
-          "temperature": {
-            "type": "integer",
-            "title": "Temperature",
-            "description": "Temperature setting for randomness in responses."
-          },
-          "tools": {
-            "items": {
-              "type": "object"
-            },
-            "type": "array",
-            "title": "Tools",
-            "description": "Tools settings.",
-            "default": []
-          },
-          "transfer_phone_number": {
-            "type": "string",
-            "title": "Transfer Phone Number",
-            "description": "Phone number for transfer."
-          },
-          "answered_by_enabled": {
-            "type": "boolean",
-            "title": "Answered By Enabled",
-            "description": "Enable/disable answered by feature."
-          },
-          "from": {
-            "type": "string",
-            "title": "From",
-            "description": "The originating phone number."
-          },
-          "reduce_latency": {
-            "type": "boolean",
-            "title": "Reduce Latency",
-            "description": "Reduce latency setting."
-          },
-          "voice_id": {
-            "type": "integer",
-            "title": "Voice Id",
-            "description": "Voice ID setting."
-          },
-          "voice_preset_id": {
-            "type": "string",
-            "title": "Voice Preset Id",
-            "description": "Voice preset ID."
-          },
-          "start_time": {
-            "type": "string",
-            "title": "Start Time",
-            "description": "Start time for the call."
-          },
-          "webhook": {
-            "type": "string",
-            "title": "Webhook",
-            "description": "Webhook URL."
-          },
-          "wait_for_greeting": {
-            "type": "boolean",
-            "title": "Wait For Greeting",
-            "description": "Wait for greeting setting."
-          },
-          "first_sentence": {
-            "type": "string",
-            "title": "First Sentence",
-            "description": "First sentence of the call."
-          },
-          "record": {
-            "type": "boolean",
-            "title": "Record",
-            "description": "Enable/disable call recording."
+          "agent_settings": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentSettings"
+              }
+            ],
+            "default": {
+              "model_id": "Adapt X1(fast)",
+              "greeting": "How can I assist you today?",
+              "filler_audio": "No Filler Noise"
+            }
           },
           "voice_settings": {
             "allOf": [
@@ -171,83 +803,53 @@
                 "$ref": "#/components/schemas/VoiceSettings"
               }
             ],
-            "description": "Voice settings."
+            "default": {
+              "stability": 0.5,
+              "similarity": 0.8,
+              "speed": 1.0,
+              "voice_id": "Natasha (female)",
+              "audio_encoding": "linear16",
+              "sampling_rate": 48000,
+              "should_encode_as_wav": true
+            }
           },
           "language": {
-            "type": "string",
-            "title": "Language",
-            "description": "Language setting."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              }
+            ],
+            "default": "English"
           },
-          "max_duration": {
-            "type": "integer",
-            "title": "Max Duration",
-            "description": "Maximum duration of the call."
-          },
-          "voicemail_action": {
-            "type": "object",
-            "title": "Voicemail Action",
-            "description": "Voicemail action settings.",
-            "default": {}
-          },
-          "amd": {
-            "type": "boolean",
-            "title": "Amd",
-            "description": "Answering machine detection setting."
-          },
-          "request_data": {
-            "type": "object",
-            "title": "Request Data",
-            "description": "Request data settings.",
-            "default": {}
-          },
-          "dynamic_data": {
-            "items": {
-              "type": "object"
-            },
-            "type": "array",
-            "title": "Dynamic Data",
-            "description": "Dynamic data settings.",
-            "default": []
-          },
-          "interruption_threshold": {
-            "type": "integer",
-            "title": "Interruption Threshold",
-            "description": "Interruption threshold setting."
+          "enable_action": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enable Action",
+            "description": "Enable the action",
+            "default": false
           }
         },
         "type": "object",
-        "required": [
-          "phone_number",
-          "task",
-          "model",
-          "temperature",
-          "transfer_phone_number",
-          "answered_by_enabled",
-          "from",
-          "reduce_latency",
-          "voice_id",
-          "voice_preset_id",
-          "start_time",
-          "webhook",
-          "wait_for_greeting",
-          "first_sentence",
-          "record",
-          "voice_settings",
-          "language",
-          "max_duration",
-          "amd",
-          "interruption_threshold"
-        ],
-        "title": "CallRequest"
+        "title": "AgentRequest"
       },
-      "CallResponse": {
+      "AgentSettings": {
         "properties": {
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Can be `success` or `error`."
+          "model_id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentModels"
+              }
+            ],
+            "description": "LLM Model",
+            "default": "Adapt X1(fast)"
           },
-          "call_id": {
+          "system_prompt": {
             "anyOf": [
               {
                 "type": "string"
@@ -256,15 +858,322 @@
                 "type": "null"
               }
             ],
+            "title": "System Prompt",
+            "description": "System prompt"
+          },
+          "greeting": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Greeting",
+            "description": "Opening message or greeting.",
+            "default": "How can I assist you today?"
+          },
+          "filler_audio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FillerAudios"
+              }
+            ],
+            "description": "Filler Audio type",
+            "default": "No Filler Noise"
+          }
+        },
+        "type": "object",
+        "title": "AgentSettings"
+      },
+      "AudioEncoding": {
+        "type": "string",
+        "enum": [
+          "linear16",
+          "mulaw"
+        ],
+        "title": "AudioEncoding"
+      },
+      "CallRecord": {
+        "properties": {
+          "call_id": {
+            "type": "string",
             "title": "Call Id",
-            "description": "A unique identifier for the call (present only if status is `success`)."
+            "description": "The unique identifier for the call."
+          },
+          "transcript": {
+            "items": {
+              "$ref": "#/components/schemas/TranscriptEntry"
+            },
+            "type": "array",
+            "title": "Transcript",
+            "description": "The transcript of the call as an array of transcript entries."
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Id",
+            "description": "The user ID associated with the call."
+          },
+          "agent_config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AgentRequest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "from_phone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "From Phone"
+          },
+          "to_phone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "To Phone"
+          },
+          "twilio_sid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Twilio Sid"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Type"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "recording_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recording Id"
+          },
+          "duration": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration"
           }
         },
         "type": "object",
         "required": [
-          "status"
+          "call_id",
+          "transcript",
+          "user_id"
         ],
-        "title": "CallResponse"
+        "title": "CallRecord"
+      },
+      "ChatMessage": {
+        "properties": {
+          "sender": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Sender"
+              }
+            ],
+            "description": "The sender of the message, either 'bot' or 'human'."
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "The text of the message."
+          },
+          "timestamp": {
+            "type": "number",
+            "title": "Timestamp",
+            "description": "The timestamp when the message was sent."
+          }
+        },
+        "type": "object",
+        "required": [
+          "sender",
+          "text",
+          "timestamp"
+        ],
+        "title": "ChatMessage"
+      },
+      "ChatPostRequest": {
+        "properties": {
+          "transcript": {
+            "items": {
+              "$ref": "#/components/schemas/ChatMessage"
+            },
+            "type": "array",
+            "title": "Transcript",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "ChatPostRequest"
+      },
+      "ChatRecord": {
+        "properties": {
+          "conversation_id": {
+            "type": "string",
+            "title": "Conversation Id",
+            "description": "The unique identifier for the chat."
+          },
+          "transcript": {
+            "items": {
+              "$ref": "#/components/schemas/ChatMessage"
+            },
+            "type": "array",
+            "title": "Transcript",
+            "description": "The transcript of the chat as an array of transcript entries.",
+            "default": []
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Id",
+            "description": "The user ID associated with the chat."
+          },
+          "agent_config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AgentRequest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "number",
+            "title": "Created At"
+          },
+          "duration": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration"
+          },
+          "customer_id": {
+            "type": "string",
+            "title": "Customer Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "conversation_id",
+          "user_id",
+          "created_at",
+          "customer_id"
+        ],
+        "title": "ChatRecord"
+      },
+      "ChatRegisterRequest": {
+        "properties": {
+          "agent_id": {
+            "type": "string",
+            "title": "Agent Id"
+          },
+          "customer_id": {
+            "type": "string",
+            "title": "Customer Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "agent_id",
+          "customer_id"
+        ],
+        "title": "ChatRegisterRequest"
+      },
+      "ChatRegisterResponse": {
+        "properties": {
+          "conversation_id": {
+            "type": "string",
+            "title": "Conversation Id"
+          },
+          "greeting": {
+            "items": {
+              "$ref": "#/components/schemas/ChatMessage"
+            },
+            "type": "array",
+            "title": "Greeting"
+          }
+        },
+        "type": "object",
+        "required": [
+          "conversation_id",
+          "greeting"
+        ],
+        "title": "ChatRegisterResponse"
+      },
+      "FillerAudios": {
+        "type": "string",
+        "enum": [
+          "Typing Noise",
+          "No Filler Noise"
+        ],
+        "title": "FillerAudios"
       },
       "HTTPValidationError": {
         "properties": {
@@ -278,6 +1187,113 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "Language": {
+        "type": "string",
+        "enum": [
+          "Auto-detect",
+          "English",
+          "Hindi",
+          "Spanish",
+          "Portuguese"
+        ],
+        "title": "Language"
+      },
+      "PhoneData": {
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "title": "Phone Number"
+          },
+          "agent_id": {
+            "type": "string",
+            "title": "Agent Id"
+          },
+          "transfer_list": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Transfer List",
+            "default": {
+              "default": "",
+              "sales": "",
+              "marketing": "",
+              "support": "",
+              "billing": ""
+            }
+          },
+          "sid": {
+            "type": "string",
+            "title": "Sid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "phone_number",
+          "agent_id",
+          "sid"
+        ],
+        "title": "PhoneData"
+      },
+      "Sender": {
+        "type": "string",
+        "enum": [
+          "human",
+          "bot",
+          "action_worker",
+          "vector_db"
+        ],
+        "title": "Sender"
+      },
+      "TranscriptEntry": {
+        "properties": {
+          "conversation_id": {
+            "type": "string",
+            "title": "Conversation Id",
+            "description": "The ID of the conversation."
+          },
+          "sender": {
+            "type": "string",
+            "title": "Sender",
+            "description": "The sender of the message, either 'bot' or 'human'."
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "The text of the message."
+          },
+          "timestamp": {
+            "type": "number",
+            "title": "Timestamp",
+            "description": "The timestamp when the message was sent."
+          },
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "The type of the event, typically 'event_transcript'."
+          }
+        },
+        "type": "object",
+        "required": [
+          "conversation_id",
+          "sender",
+          "text",
+          "timestamp",
+          "type"
+        ],
+        "title": "TranscriptEntry"
+      },
+      "TransferTypes": {
+        "type": "string",
+        "enum": [
+          "default",
+          "sales",
+          "marketing",
+          "support",
+          "billing"
+        ],
+        "title": "TransferTypes"
       },
       "ValidationError": {
         "properties": {
@@ -315,28 +1331,82 @@
       "VoiceSettings": {
         "properties": {
           "stability": {
-            "type": "integer",
+            "type": "number",
             "title": "Stability",
-            "description": "Voice stability setting."
+            "description": "Voice stability setting.",
+            "default": 0.5
           },
           "similarity": {
-            "type": "integer",
+            "type": "number",
             "title": "Similarity",
-            "description": "Voice similarity setting."
+            "description": "Voice similarity setting.",
+            "default": 0.8
           },
           "speed": {
-            "type": "integer",
+            "type": "number",
             "title": "Speed",
-            "description": "Voice speed setting."
+            "description": "Voice speed setting.",
+            "default": 1.0
+          },
+          "voice_id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Voices"
+              }
+            ],
+            "description": "Voice ID setting.",
+            "default": "Natasha (female)"
+          },
+          "audio_encoding": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AudioEncoding"
+              }
+            ],
+            "default": "linear16"
+          },
+          "sampling_rate": {
+            "type": "integer",
+            "title": "Sampling Rate",
+            "default": 48000
+          },
+          "should_encode_as_wav": {
+            "type": "boolean",
+            "title": "Should Encode As Wav",
+            "default": true
           }
         },
         "type": "object",
-        "required": [
-          "stability",
-          "similarity",
-          "speed"
-        ],
         "title": "VoiceSettings"
+      },
+      "Voices": {
+        "type": "string",
+        "enum": [
+          "Ava (female)",
+          "Nova (female)",
+          "Joanne (female)",
+          "Andrew (male)",
+          "Brian (male)",
+          "Ryan (male)",
+          "Echo (male)",
+          "Onyx (male)",
+          "Shimmer (female)",
+          "Natasha (female)",
+          "Neal (male)",
+          "Jack (male)"
+        ],
+        "title": "Voices"
+      }
+    },
+    "securitySchemes": {
+      "APIKeyHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-KEY"
+      },
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }
