@@ -1,12 +1,12 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Adapt AI Docs",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/3.svg",
+    "light": "/logo/2.svg"
   },
   "openapi": "/api-reference/openapi.json",
-  "favicon": "/favicon.svg",
+  "favicon": "/logo/1.svg",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -19,47 +19,66 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "mailto:contact@getadapt.ai"
     }
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "url": "https://talk.getadapt.ai"
   },
   "tabs": [
     {
-      "name": "API Reference",
+      "name": "V1 API Reference",
       "url": "api-reference"
     }
   ],
   "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
-    }
   ],
   "navigation": [
     {
-      "group": "Twin API",
+      "group": "General",
       "pages": [
-        "send-call"
+        "quickstart"
+      ]
+    },
+    {
+      "group": "Agent",
+      "pages": [
+        "api-reference/get-all-agents",
+        "api-reference/register-agent",
+        "api-reference/delete-agent",
+        "api-reference/patch-agent",
+        "api-reference/get-all-voices",
+        "api-reference/get-all-models",
+        "api-reference/get-all-languages",
+        "api-reference/get-all-filler-audios"
+      ]
+    },
+    {
+      "group": "Inbound Phones",
+      "pages": [
+        "api-reference/get-all-phones",
+        "api-reference/update-inbound-config",
+        "api-reference/purchase-phone"
+      ]
+    },
+    {
+      "group": "Calls",
+      "pages": [
+        "api-reference/get-calls",
+        "api-reference/get-transfer-types",
+        "api-reference/get-calls-1",
+        "api-reference/get-recording"
+      ]
+    },
+    {
+      "group": "Chats",
+      "pages": [
+        "api-reference/register-chat",
+        "api-reference/get-chat",
+        "api-reference/post-chat",
+        "api-reference/get-all-chats"
       ]
     }
-  ],
-  "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
-  }
+  ]
 }
