@@ -5,7 +5,7 @@
     "dark": "/logo/3.svg",
     "light": "/logo/2.svg"
   },
-  "openapi": "/api-reference/openapi.json",
+  "openapi": "/python_client/openapi.json",
   "favicon": "/logo/1.svg",
   "colors": {
     "primary": "#0D9373",
@@ -19,66 +19,72 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:contact@getadapt.ai"
+      "url": "https://discord.gg/cmfFw6SYvp"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://talk.getadapt.ai"
+    "name": "Raise an issue",
+    "url": "https://github.com/xAlpha8/realtime-docs"
+  },
+  "primaryTab": {
+    "name": "Examples"
   },
   "tabs": [
     {
-      "name": "V1 API Reference",
-      "url": "api-reference"
+      "name": "Python Client SDK",
+      "url": "python_client"
+    },
+    {
+      "name": "React/JS SDK",
+      "url": "javascript"
     }
   ],
   "anchors": [
+    {
+      "name": "Join Discord Community",
+      "icon": "discord",
+      "url": "https://discord.gg/cmfFw6SYvp"
+  },
+  {
+      "name": "Book a Demo",
+      "icon": "phone",
+      "url": "https://cal.com/adaptsdk/30min"
+  }
   ],
   "navigation": [
     {
       "group": "General",
       "pages": [
-        "quickstart"
+        "examples/quickstart"
       ]
     },
     {
-      "group": "Agent",
+      "group": "Python API",
       "pages": [
-        "api-reference/get-all-agents",
-        "api-reference/register-agent",
-        "api-reference/delete-agent",
-        "api-reference/patch-agent",
-        "api-reference/get-all-voices",
-        "api-reference/get-all-models",
-        "api-reference/get-all-languages",
-        "api-reference/get-all-filler-audios"
+        "python_client/sdk/webrtc"
       ]
     },
     {
-      "group": "Inbound Phones",
+      "group": "CLI",
       "pages": [
-        "api-reference/get-all-phones",
-        "api-reference/update-inbound-config",
-        "api-reference/purchase-phone"
+        "python_client/cli/deploy"
       ]
     },
     {
-      "group": "Calls",
+      "group": "General",
       "pages": [
-        "api-reference/get-calls",
-        "api-reference/get-transfer-types",
-        "api-reference/get-calls-1",
-        "api-reference/get-recording"
-      ]
-    },
-    {
-      "group": "Chats",
-      "pages": [
-        "api-reference/register-chat",
-        "api-reference/get-chat",
-        "api-reference/post-chat",
-        "api-reference/get-all-chats"
+        "javascript/introduction",
+        "javascript/development"
       ]
     }
-  ]
+  ],
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": true,
+    "raiseIssue": true
+  },    
+  "footerSocials": {
+    "discord": "https://discord.gg/cmfFw6SYvp",
+    "github": "https://github.com/xAlpha8/realtime-docs"
+  }
 }
