@@ -1,0 +1,149 @@
+---
+title: "Gym/Fitness Trainer"
+description: "The fastest way to integrate realtime AI into your projects."
+---
+
+## What is Realtime?
+
+Realtime is a cutting-edge platform designed to facilitate the discovery, design, and implementation of AI features at scale. As the focus of AI development shifts from primarily training and fine-tuning to the integration of models for specific applications, Realtime provides an optimal development environment to support this trend.
+
+Features include:
+
+- Ability to create complex applications using multiple models with minimal coding
+- Scalable, reliable infrastructure that adjusts based on traffic
+- Advanced distributed mechanisms such as queues and asynchronous jobs for efficient data handling
+
+## **Getting Started**
+
+- [Sign up](https://www.getadapt.ai/dashboard) and obtain your [API key](https://www.getadapt.ai/dashboard/settings)
+- Install the Realtime Python client
+```bash
+pip install realtime-client
+```
+{
+  /*
+  - Authenticate with your API key
+  ```bash
+  realtime login
+  ```
+  */
+}
+
+### **Creating a basic Voice Chatbot app**
+
+Here's how to develop a straightforward Voice Chatbot application on Realtime. 
+This app will process input from your microphone, send it to an LLM and convert that text to voice.
+
+- The full github repository is available [here.](https://github.com/xAlpha8/realtime-client)
+
+<Info>This application will initially support only English as the source language.</Info>
+
+<Steps>
+  <Step title="Start by creating a new directory and file">
+    ```bash
+    git clone https://github.com/xAlpha8/realtime-client && cd realtime-client/examples/voice_bot/
+    ```
+
+    Review the following code in `main.py`:
+    ```python
+    import realtime
+
+    @realtime.webrtc()
+    def simple_translation(file: realtime.File, target_language: str = "spa") -> str:
+        """
+        :param file: File to translate
+        :param target_language: Language code to translate to. Defaults to "spa" for Spanish.
+        """
+
+        transcribe = realtime.function.get("realtime/speech_transcriber")
+        translate = realtime.function.get("realtime/seamless_text2text")
+
+        transcript = transcribe.run(file)
+        translated_segments = []
+        for segment in transcript:
+            translate_job = translate.push(
+                segment["text"],
+                source_language="eng",
+                target_language=target_language
+            )
+            translated_segments.append(translate_job)
+
+        translated_transcript = ""
+        for translated_seg in translated_segments:
+            translated_transcript += translated_seg.result()
+
+        return translated_transcript
+    ```
+  </Step>
+  <Step title="Deploy to Realtime">
+    <Warning>Ensure you're in the same directory as main.py!</Warning>
+    ```bash
+    realtime deploy
+    ```
+
+    Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime dashboard.
+    You can also go to your app on the [Realtime dashboard](https://www.getadapt.ai/dashboard) and get the link.
+  </Step>
+  <Step title="Launch the frontend">
+
+    There is a server.py file in the same directory as main.py that will launch a basic HTML and Javascript frontend that will connect 
+    to the serverless instance you deployed via WebRTC.
+
+    <Info>Replace ```{insert_link}``` with the link received after realtime deploy.</Info>
+    In another terminal, run:
+    ```bash
+    python server.py --backend {insert_link}
+    ```
+    You can then browse to the following page with your browser:
+
+    http://127.0.0.1:8080
+
+    Once you click `Start` the browser will send the audio and video from its
+    webcam to the server.
+
+  </Step>
+</Steps>
+
+### **Understanding the Process**
+
+Creating this simple AI translation app was straightforward! The core of our application relied on two Realtime functions:
+- [realtime/speech_transcriber](https://realtimeai.com/functions/realtime/speech_transcriber): A transcription model powered by OpenAI's Whisper.
+- [realtime/seamless_text2text](https://realtimeai.com/functions/realtime/seamless_text2text): A translation model developed by Meta.
+
+We encapsulated all translation logic in a single function and defined it as a [custom Realtime function](/guide/custom-apps/deploying-functions) using the `@realtime.function` decorator.
+
+Deploying with `realtime deploy` allows API accessibility and visual tracking of inputs and outputs via the Realtime dashboard!
+
+## **Next Steps**
+
+To start using Realtime, create an [account](https://www.getadapt.ai/dashboard). You can then explore further applications and capabilities.
+
+<CardGroup cols={3}>
+  <Card 
+  title="Run AI apps via API"
+  href="https://www.getadapt.ai/explore"
+  icon="image"
+  color="#ea5a0c"
+  >
+    Operate a production-ready app on Realtime
+  </Card>
+  <Card 
+  title="Complex Applications" 
+  href="/guide/examples/video-dubbing"
+  icon="square-terminal"
+  color="#16a34a"
+  >
+    Develop complex applications such as video dubbing
+  </Card>
+  <Card 
+  title="Custom Functions" 
+  icon="database"
+  href="/guide/custom-apps/deploying-functions"
+  >
+    Deploy your custom functions
+  </Card>
+</CardGroup>
+
+## Support
+
+For any assistance or questions, feel free to join our [Discord community](https://discord.gg/cmfFw6SYvp). We're excited to see what you build!

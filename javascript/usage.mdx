@@ -1,0 +1,159 @@
+---
+title: "React/JS SDK"
+sidebarTitle: "Usage"
+description: "Easily integrate realtime's functionality into your web applications."
+---
+
+realtime's Web SDK offers a straightforward API that enables web developers to utilize realtime audio/video capabilities efficiently.
+
+### Installation
+
+To install the package, use:
+
+```bash
+npm install realtime-client
+```
+
+### Importing
+
+To import the package:
+
+```javascript
+import realtime from "realtime-client";
+```
+
+Next, initialize the realtime class by passing your **Public Key** to the constructor:
+
+```javascript
+const realtime = new realtime("your-public-key");
+```
+
+Your public key is available in the [Adapt Dashboard](https://getadapt.ai/account).
+
+---
+
+## Usage
+
+### `.start()`
+
+Initiate a web call using the `.start()` function, which accepts:
+
+1. **a string**, specifically an ID
+2. **an object**, detailing configurations
+
+
+### `.send()`
+
+Send messages during the call:
+
+```javascript
+realtime.send({
+  type: "add-message",
+  message: {
+    role: "system",
+    content: "The user has pressed the button, say peanuts",
+  },
+});
+```
+
+### `.stop()`
+
+End the call session:
+
+```javascript
+realtime.stop();
+```
+
+
+## Events
+
+Listen for various events on the `realtime` instance to respond to call dynamics and user interactions.
+
+#### `speech-start`, `speech-end`
+
+Track when the assistant begins or ends speaking.
+
+```javascript
+realtime.on("speech-start", () => {
+  console.log("Assistant speech has started.");
+});
+realtime.on("speech-end", () => {
+  console.log("Assistant speech has ended.");
+});
+```
+
+#### `call-start`, `call-end`
+
+Monitor the beginning and end of calls.
+
+```javascript
+realtime.on("call-start", () => {
+  console.log("Call has started.");
+});
+realtime.on("call-end", () => {
+  console.log("Call has ended.");
+});
+```
+
+#### `volume-level`
+
+Receive updates on the assistant's volume level.
+
+```javascript
+realtime.on("volume-level", (volume) => {
+  console.log(`Assistant volume level: ${volume}`);
+});
+```
+
+#### `message`
+
+Handle messages sent during the call.
+
+```javascript
+realtime.on("message", (message) => {
+  console.log(message);
+});
+```
+
+#### `error`
+
+Manage errors during the call.
+
+```javascript
+realtime.on("error", (e) => {
+  console.error(e);
+});
+```
+
+---
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card
+    title="NPM"
+    icon="npm"
+    iconType="solid"
+    href="https://www.npmjs.com/package/realtime-client"
+  >
+    Explore the package on NPM.
+  </Card>
+  <Card
+    title="GitHub"
+    icon="github"
+    iconType="solid"
+    href="https://github.com/xAlpha8/realtime-js"
+  >
+    Check out the GitHub repository.
+  </Card>
+</CardGroup>
+<CardGroup cols={1}>
+  <Card
+    title="Quickstart Guide"
+    icon="bolt"
+    iconType="solid"
+    href="/quickstart"
+  >
+    Jumpstart your implementation with the Web SDK.
+  </Card>
+</CardGroup>

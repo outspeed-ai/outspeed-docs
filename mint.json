@@ -55,13 +55,22 @@
     {
       "group": "General",
       "pages": [
-        "examples/quickstart"
+        "examples/quickstart",
+        "examples/gym",
+        "examples/cooking",
+        "examples/commentary",
+        "examples/esports",
+        "examples/dating"
       ]
     },
     {
       "group": "Python API",
       "pages": [
-        "python_client/sdk/webrtc"
+        "python_client/sdk/streaming_endpoint",
+        "python_client/sdk/web_endpoint",
+        "python_client/sdk/websocket",
+        "python_client/sdk/audio_frame",
+        "python_client/sdk/image_frame"
       ]
     },
     {
@@ -71,10 +80,19 @@
       ]
     },
     {
+      "group": "Plugins",
+      "pages": [
+        "python_client/plugins/openai",
+        "python_client/plugins/elevenlabs",
+        "python_client/plugins/fireworksai",
+        "python_client/plugins/deepgram"
+      ]
+    },
+    {
       "group": "General",
       "pages": [
-        "javascript/introduction",
-        "javascript/development"
+        "javascript/usage",
+        "javascript/example"
       ]
     }
   ],
