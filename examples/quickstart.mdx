@@ -5,7 +5,7 @@ description: "The fastest way to integrate realtime AI into your projects."
 
 ## What is Realtime?
 
-Realtime is a cutting-edge platform designed to facilitate the discovery, design, and implementation of AI features at scale. As the focus of AI development shifts from primarily training and fine-tuning to the integration of models for specific applications, Realtime provides an optimal development environment to support this trend.
+Realtime is a cutting-edge platform designed to facilitate the discovery, design, and implementation of AI features at scale. 
 
 Features include:
 
@@ -14,7 +14,7 @@ Features include:
 - Advanced distributed mechanisms such as queues and asynchronous jobs for efficient data handling
 
 ## **Getting Started**
-
+ 
 - [Sign up](https://www.getadapt.ai/dashboard) and obtain your [API key](https://www.getadapt.ai/dashboard/settings)
 - Install the Realtime Python client
 ```bash
@@ -44,41 +44,36 @@ This app will process input from your microphone, send it to an LLM and convert 
     git clone https://github.com/xAlpha8/realtime-client && cd realtime-client/examples/voice_bot/
     ```
 
-    Review the following code in `main.py`:
+    Review the following code in `voice_bot.py`:
     ```python
-    import realtime
+      import asyncio
+      import os
 
-    @realtime.webrtc()
-    def simple_translation(file: realtime.File, target_language: str = "spa") -> str:
-        """
-        :param file: File to translate
-        :param target_language: Language code to translate to. Defaults to "spa" for Spanish.
-        """
+      import realtime
+      from realtime.plugins import DeepgramSTTService, ElevenLabsTTSService, OpenAILLMService
 
-        transcribe = realtime.function.get("realtime/speech_transcriber")
-        translate = realtime.function.get("realtime/seamless_text2text")
 
-        transcript = transcribe.run(file)
-        translated_segments = []
-        for segment in transcript:
-            translate_job = translate.push(
-                segment["text"],
-                source_language="eng",
-                target_language=target_language
-            )
-            translated_segments.append(translate_job)
+      @realtime.streaming_endpoint()
+      async def voice_bot(audio_input_queue, video_input_queue):
+          stt = DeepgramSTTService(api_key=os.environ.get("DEEPGRAM_API_KEY"), sample_rate=8000)
+          llm = OpenAILLMService(
+              api_key=os.environ.get("OPENAI_API_KEY"),
+          )
+          tts = ElevenLabsTTSService(api_key=os.environ.get("ELEVEN_LABS_API_KEY"))
+          dq = await stt.arun(audio_input_queue)
+          lq = await llm.arun(dq)
+          eq = await tts.arun(lq)
+          return eq, None
 
-        translated_transcript = ""
-        for translated_seg in translated_segments:
-            translated_transcript += translated_seg.result()
 
-        return translated_transcript
-    ```
+      if __name__ == "__main__":
+          asyncio.run(voice_bot())
+  ```
   </Step>
   <Step title="Deploy to Realtime">
-    <Warning>Ensure you're in the same directory as main.py!</Warning>
+    <Warning>Ensure you're in the same directory as voice_bot.py!</Warning>
     ```bash
-    realtime deploy
+    realtime deploy voice_bot.py
     ```
 
     Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime dashboard.
@@ -106,13 +101,14 @@ This app will process input from your microphone, send it to an LLM and convert 
 
 ### **Understanding the Process**
 
-Creating this simple AI translation app was straightforward! The core of our application relied on two Realtime functions:
-- [realtime/speech_transcriber](https://realtimeai.com/functions/realtime/speech_transcriber): A transcription model powered by OpenAI's Whisper.
-- [realtime/seamless_text2text](https://realtimeai.com/functions/realtime/seamless_text2text): A translation model developed by Meta.
+Creating this simple voice AI app was straightforward! The core of our application relied on three Realtime plugins:
+- [realtime.plugins.DeepgramSTTService](): A transcription model powered by Deepgram.
+- [realtime.plugins.OpenAILLMService](): A LLM model developed by OpenAI.
+- [realtime.plugins.ElevenLabsTTSService](): A text-to-speech model developed by Eleven Labs.
 
-We encapsulated all translation logic in a single function and defined it as a [custom Realtime function](/guide/custom-apps/deploying-functions) using the `@realtime.function` decorator.
+We encapsulated all translation logic in a single function and defined it as a realtime function using the [`@realtime.streaming_endpoint`](/python_client/sdk/streaming_endpoint) decorator.
 
-Deploying with `realtime deploy` allows API accessibility and visual tracking of inputs and outputs via the Realtime dashboard!
+Deploying with `realtime deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Realtime dashboard!
 
 ## **Next Steps**
 
@@ -120,27 +116,28 @@ To start using Realtime, create an [account](https://www.getadapt.ai/dashboard).
 
 <CardGroup cols={3}>
   <Card 
-  title="Run AI apps via API"
-  href="https://www.getadapt.ai/explore"
+  title="Gym/Fitness Trainer"
+  href="gym"
   icon="image"
   color="#ea5a0c"
   >
-    Operate a production-ready app on Realtime
+    A live fitness coach with video understanding
   </Card>
   <Card 
-  title="Complex Applications" 
-  href="/guide/examples/video-dubbing"
-  icon="square-terminal"
-  color="#16a34a"
+  title="Cooking Assistant" 
+  href="cooking"
+  icon="image"
+  color="#ea5a0c"
   >
-    Develop complex applications such as video dubbing
+    Cooking assistant that guides you through the process of preparing a meal
   </Card>
   <Card 
-  title="Custom Functions" 
-  icon="database"
-  href="/guide/custom-apps/deploying-functions"
+  title="Sports Commentary" 
+  icon="image"
+  color="#ea5a0c"
+  href="commentary"
   >
-    Deploy your custom functions
+    Live Sports Commentary
   </Card>
 </CardGroup>
 
