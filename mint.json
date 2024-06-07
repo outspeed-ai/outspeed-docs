@@ -63,6 +63,12 @@
       ]
     },
     {
+      "group": "General",
+      "pages": [
+        "python_client/installation"
+      ]
+    },
+    {
       "group": "Python API",
       "pages": [
         "python_client/sdk/app",
@@ -87,7 +93,12 @@
     {
       "group": "General",
       "pages": [
-        "javascript/usage",
+        "javascript/usage"
+      ]
+    },
+    {
+      "group": "Components",
+      "pages": [
         "javascript/example"
       ]
     }
