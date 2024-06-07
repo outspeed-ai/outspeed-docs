@@ -56,11 +56,10 @@
       "group": "General",
       "pages": [
         "examples/quickstart",
-        "examples/gym",
+        "examples/commentator",
         "examples/cooking",
-        "examples/commentary",
-        "examples/esports",
-        "examples/dating"
+        "examples/3d_chatbot",
+        "examples/golf"
       ]
     },
     {
@@ -70,7 +69,7 @@
         "python_client/sdk/web_endpoint",
         "python_client/sdk/websocket",
         "python_client/sdk/audio_frame",
-        "python_client/sdk/image_frame"
+        "python_client/sdk/image_frame"        
       ]
     },
     {
@@ -85,7 +84,8 @@
         "python_client/plugins/openai",
         "python_client/plugins/elevenlabs",
         "python_client/plugins/fireworksai",
-        "python_client/plugins/deepgram"
+        "python_client/plugins/deepgram",
+        "python_client/plugins/falai"
       ]
     },
     {
