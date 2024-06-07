@@ -1,0 +1,22 @@
+---
+title: 'RealtimeComponent'
+description: 'A component for managing real-time audio, video, and chat functionalities'
+---
+
+<RequestExample>
+  ```jsx RealtimeComponent Example
+  <RealtimeComponent config={yourConfig}>
+    {/* Components for video, audio, and chat will be managed here */}
+  </RealtimeComponent>
+  ```
+</RequestExample>
+
+## Props
+
+<ResponseField name="config" type="object" required>
+  Configuration object for setting up the real-time connections. This includes URLs, data parameters, and media options.
+</ResponseField>
+
+<ResponseField name="children" type="node">
+  Children components that can be passed into the RealtimeComponent. Typically, these would be custom UI components or additional logic wrappers.
+</ResponseField>

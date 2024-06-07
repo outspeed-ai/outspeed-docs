@@ -1,0 +1,55 @@
+---
+title: 'RtAudio'
+description: 'A component for managing real-time audio functionalities in web applications'
+---
+
+<RequestExample>
+```jsx
+import { useRef, useEffect } from 'react';
+import { RtAudio, WebRTCConnectionManager } from '@adaptai/realtime-react';
+
+function RealtimeAudioComponent({ config }) {
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    WebRTCConnectionManager.setConfig(config);
+    const conn = WebRTCConnectionManager.get();
+    conn.on('track', (track) => {
+      if (track.kind === 'audio') {
+        audioRef.current.srcObject = new MediaStream([track]);
+      }
+    });
+
+    return () => {
+      conn.off('track');
+    };
+  }, [config]);
+
+  return <RtAudio ref={audioRef} />;
+}
+
+export default RealtimeAudioComponent;
+```
+</RequestExample>
+
+## Overview
+
+`RtAudio` is a React component designed to integrate audio functionalities into web applications. It is part of a suite of components that handle real-time media streams. `RtAudio` specifically manages audio streams, providing a simple interface to play audio directly in the browser with real-time capabilities.
+
+
+## Props
+
+<ResponseField name="ref" type="React.RefObject<HTMLAudioElement>">
+  A ref object that can be used to access the underlying HTML audio element for direct manipulation or access.
+</ResponseField>
+
+<ResponseField name="autoPlay" type="boolean" default="true">
+  If set to `true`, the audio will start playing as soon as it is loaded.
+</ResponseField>
+
+## Styling
+
+The component is styled with a default set of CSS classes to maintain a consistent look and feel. You can override these styles by targeting the specific CSS classes used within the component:
+
+- `.media-container-label`: Styles the label of the audio container.
+- `.audio-container`: Styles the main container of the audio component.

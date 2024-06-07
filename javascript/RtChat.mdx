@@ -1,0 +1,55 @@
+---
+title: 'RtChat'
+description: 'A component for managing real-time chat functionalities in web applications'
+---
+
+<RequestExample>
+```jsx
+import { useRef, useEffect } from 'react';
+import { RtChat, WebRTCConnectionManager } from '@adaptai/realtime-react';
+
+function RealtimeChatComponent({ config }) {
+  const chatRef = useRef(null);
+
+  useEffect(() => {
+    WebRTCConnectionManager.setConfig(config);
+    const conn = WebRTCConnectionManager.get();
+    conn.on('track', (track) => {
+      if (track.kind === 'chat') {
+        chatRef.current.srcObject = new MediaStream([track]);
+      }
+    });
+
+    return () => {
+      conn.off('track');
+    };
+  }, [config]);
+
+  return <RtChat ref={chatRef} />;
+}
+
+export default RealtimeChatComponent;
+```
+</RequestExample>
+
+## Overview
+
+`RtChat` is a React component designed to integrate chat functionalities into web applications. It is part of a suite of components that handle real-time media streams. `RtChat` specifically manages chat streams, providing a simple interface to play chat directly in the browser with real-time capabilities.
+
+
+## Props
+
+<ResponseField name="ref" type="React.RefObject<HTMLChatElement>">
+  A ref object that can be used to access the underlying HTML chat element for direct manipulation or access.
+</ResponseField>
+
+<ResponseField name="autoPlay" type="boolean" default="true">
+  If set to `true`, the chat will start playing as soon as it is loaded.
+</ResponseField>
+
+## Styling
+
+The component is styled with a default set of CSS classes to maintain a consistent look and feel. You can override these styles by targeting the specific CSS classes used within the component:
+
+- `.media-container-label`: Styles the label of the chat container.
+- `.chat-container`: Styles the main container of the chat component.
