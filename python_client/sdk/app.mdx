@@ -1,0 +1,64 @@
+---
+title: realtime.App
+---
+
+## Overview
+
+The `@realtime.App` decorator is used to define a class as a Realtime application. 
+This decorator enhances the class, enabling it to interact seamlessly with various Realtime services.
+
+## Creating an App
+
+To create an app, you simply define a class and decorate it with `@realtime.App`. Here is a minimal example:
+
+```python
+import realtime
+
+@realtime.App()
+class MyApplication:
+
+    async def setup(self):
+        # Initialization code here
+        print("App is setting up!")
+
+    async def run(self):
+        # Main logic here
+        print("App is running!")
+
+    async def teardown(self):
+        # Cleanup code here
+        print("App is tearing down!")
+```
+
+<Info>A realtime App must have a `run` method.</Info>
+
+The `run` method is called when the app is running, and it is responsible for handling the main logic of the app. 
+The `setup` method is called when the app starts, and the `teardown` method is called when the app is about to shut down, allowing for proper resource management.
+
+## Calling Methods within the App
+
+Methods within the app can be called directly if you are running the app locally, or they can be triggered by external events when deployed on the Realtime platform.
+
+## Specifying Additional Data for Apps
+
+You can specify additional metadata and configuration for your app using parameters in the `@realtime.App` decorator:
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| name | str | Defines the name of the app | Default is determined by the system |
+| metadata | realtime.Metadata | Extra information about the app to be shown on the dashboard | None |
+| cpu | int | The number of CPUs to allocate to the app | 1 |
+| memory | int | The amount of memory to allocate to the app | 100mb |
+| gpu | int | The number of GPUs to allocate to the app | 0 |
+| gpu_type | str | The type of GPU to allocate to the app | None |
+
+Here is an example of specifying additional data:
+
+
+## Best Practices
+
+- Ensure that all external resources are properly initialized and closed in the `setup` and `teardown` methods.
+- Use type hints for all method parameters and return types to enhance clarity and usability in the Realtime dashboard.
+- Test your app thoroughly locally before deploying to ensure that all components interact correctly.
+
+By following these guidelines, you can create powerful and efficient applications using the Realtime platform.
