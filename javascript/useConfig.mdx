@@ -1,0 +1,113 @@
+---
+title: "useConfig"
+description: "React hook to setup connection configuration."
+---
+
+<RequestExample>
+```jsx
+import { useConfig, RealtimeComponent } from '@adaptai/realtime-react';
+
+function App() {
+  const [config, setConfig] = useState(null);
+  const configDefault = {
+  appId: "",
+  isDataEnabled: true,
+  dataParameters: { ordered: true },
+  isVideoEnabled: true,
+  videoInput: "",
+  videoCodec: "default",
+  videoResolution: "256x256",
+  isScreenShareEnabled: false,
+  isAudioEnabled: true,
+  audioInput: "",
+  audioCodec: "PCMU/8000",
+  useStun: false,
+  };
+
+  const { options, setters, values, dump } = useConfig(configDefault);
+
+  const { audioOptions, videoOptions } = options;
+  const { setAudioInput, setVideoInput, setOfferUrl } = setters;
+  const { audioInput, videoInput, offerUrl } = values;
+
+  return (<div>
+  {config && <RealtimeComponent config={config}/>}
+  </div>)
+}
+```
+</RequestExample>
+
+## Overview
+
+`useConfig` allows you to setup the connection with react backend. Depending on the application needs and the realtime app code deployed on the backend, you can set the default options in the config.
+Additionally, `useConfig` returns setters, state variables, and option arrays to assist in creating UIs that allows your users to customize connection settings.
+
+## Props
+
+<ResponseField name="appId" type="string" required>
+  ID for the realtime application backend. You get this from Adapt's dashboard.
+</ResponseField>
+
+<ResponseField name="isVideoEnabled" type="boolean">
+  Flag to enable or disable video during the connection.
+</ResponseField>
+
+<ResponseField
+  name="videoCodec"
+  type="enum"
+  options={["default", "VP8/90000", "H264/90000"]}
+>
+  The codec used for video compression.
+</ResponseField>
+
+<ResponseField name="videoResolution" type="string">
+  The resolution of the video.
+</ResponseField>
+
+<ResponseField name="videoInput" type="string">
+  The input source for the video.
+</ResponseField>
+
+<ResponseField name="isAudioEnabled" type="boolean">
+  Flag to enable or disable audio during the connection.
+</ResponseField>
+
+<ResponseField
+  name="audioCodec"
+  type="enum"
+  options={["default", "opus/48000/2", "PCMU/8000", "PCMA/8000"]}
+>
+  The codec used for audio compression.
+</ResponseField>
+
+<ResponseField name="audioInput" type="string">
+  The input source for the audio.
+</ResponseField>
+
+<ResponseField name="isScreenShareEnabled" type="boolean">
+  Flag to enable or disable screen sharing during the connection.
+</ResponseField>
+
+<ResponseField name="isDataEnabled" type="boolean">
+  Flag to enable or disable data channel during the connection.
+</ResponseField>
+
+<ResponseField name="dataParameters" type="record">
+  The parameters for data transmission, such as ordering and reliability.
+</ResponseField>
+
+<ResponseField name="useStun" type="boolean">
+  Flag to determine whether to use STUN (Session Traversal Utilities for NAT)
+  for the connection.
+</ResponseField>
+
+<ResponseField name="autoPlay" type="boolean" default="true">
+  If set to `true`, the audio will start playing as soon as it is loaded.
+</ResponseField>
+
+## Styling
+
+The component is styled with a default set of CSS classes to maintain a consistent look and feel. You can override these styles by targeting the specific CSS classes used within the component:
+
+- `.media-container-label`: Styles the label of the audio container.
+- `.audio-container`: Styles the main container of the audio component.
