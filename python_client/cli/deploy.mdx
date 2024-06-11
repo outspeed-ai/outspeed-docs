@@ -6,12 +6,13 @@ Deploy functions and models to Realtime serverless.
 
 ## Usage
 ```bash
-export ADAPT_API_KEY=<your-api-key>
 realtime deploy [OPTIONS] PATH
 ```
 
 ## Options
-- `--help` Show this message and exit.
+<Info>To obtain an API key, [Contact us](mailto:contact@getadapt.ai)</Info>
+- `--api-key` (Required) Your API key.
+- `--help` Show help message
 
 ## Arguments
 - `PATH` Path to files containing functions and models to deploy.
@@ -19,5 +20,5 @@ realtime deploy [OPTIONS] PATH
 ## Example
 Deploy a function defined in `test.py`:
 ```bash
-realtime deploy test.py
+realtime deploy --api-key=<your-api-key> test.py
 ```
