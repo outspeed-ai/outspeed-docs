@@ -70,11 +70,6 @@ This app will process input from your microphone, send it to an LLM and convert 
     cd ../frontend/
     ```
 
-    Change the url in .env file to the link of your deployed function.
-    ```bash
-    VITE_BACKEND_URL=<your_deployed_function_url>
-    ```
-
     Install the dependencies and run the frontend.
     ```bash
     npm install
@@ -88,7 +83,11 @@ This app will process input from your microphone, send it to an LLM and convert 
 
     http://127.0.0.1:5173
 
-    Once you select the appropriate option to send audio and/or video, click `Start`.
+    Click the `Settings` Icon and in the function URL field, paste the link you got after `realtime deploy`.
+
+    Select audio and camera device. Click `Close`.
+
+    Click `Start` to begin.
 
   </Step>
 </Steps>
