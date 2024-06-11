@@ -58,8 +58,7 @@
         "examples/quickstart",
         "examples/commentator",
         "examples/cooking",
-        "examples/3d_chatbot",
-        "examples/golf"
+        "examples/3d_chatbot"
       ]
     },
     {
