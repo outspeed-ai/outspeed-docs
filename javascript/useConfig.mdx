@@ -10,7 +10,7 @@ import { useConfig, RealtimeComponent } from '@adaptai/realtime-react';
 function App() {
   const [config, setConfig] = useState(null);
   const configDefault = {
-  appId: "",
+  functionURL: "http://infra.getadapt.ai/run/f5a918c87dx5ca0xc4811fccef0d4d08",
   isDataEnabled: true,
   dataParameters: { ordered: true },
   isVideoEnabled: true,
@@ -39,13 +39,15 @@ function App() {
 
 ## Overview
 
-`useConfig` allows you to setup the connection with react backend. Depending on the application needs and the realtime app code deployed on the backend, you can set the default options in the config.
-Additionally, `useConfig` returns setters, state variables, and option arrays to assist in creating UIs that allows your users to customize connection settings.
+In case you need to customize the connection settings when interacting with Realtime backend, you can use the `useConfig` hook. It provides you `values`, `setters`, and `options` variables for
+different values in the `Config` object that is required to setup the connection.
+
+You can either set the values in your code, or expose them to your users via a form depending on your application.
 
 ## Props
 
-<ResponseField name="appId" type="string" required>
-  ID for the realtime application backend. You get this from Adapt's dashboard.
+<ResponseField name="functionURL" type="string" required>
+  Function URL for the application backend. Obtained after deploying the function using `realtime deploy`.
 </ResponseField>
 
 <ResponseField name="isVideoEnabled" type="boolean">
@@ -54,10 +56,12 @@ Additionally, `useConfig` returns setters, state variables, and option arrays to
 
 <ResponseField
   name="videoCodec"
-  type="enum"
+  type="enum<string>"
   options={["default", "VP8/90000", "H264/90000"]}
 >
   The codec used for video compression.
+
+  Available options: `default`, `VP8/90000`, `H264/90000`
 </ResponseField>
 
 <ResponseField name="videoResolution" type="string">
@@ -74,10 +78,12 @@ Additionally, `useConfig` returns setters, state variables, and option arrays to
 
 <ResponseField
   name="audioCodec"
-  type="enum"
+  type="enum<string>"
   options={["default", "opus/48000/2", "PCMU/8000", "PCMA/8000"]}
 >
   The codec used for audio compression.
+
+  Available options: `default`, `opus/48000/2`, `PCMU/8000`, `PCMA/8000`
 </ResponseField>
 
 <ResponseField name="audioInput" type="string">
@@ -90,6 +96,7 @@ Additionally, `useConfig` returns setters, state variables, and option arrays to
 
 <ResponseField name="isDataEnabled" type="boolean">
   Flag to enable or disable data channel during the connection.
+  The data channel can be used to transfer text messages (and other metadata).
 </ResponseField>
 
 <ResponseField name="dataParameters" type="record">
@@ -104,10 +111,3 @@ Additionally, `useConfig` returns setters, state variables, and option arrays to
 <ResponseField name="autoPlay" type="boolean" default="true">
   If set to `true`, the audio will start playing as soon as it is loaded.
 </ResponseField>
-
-## Styling
-
-The component is styled with a default set of CSS classes to maintain a consistent look and feel. You can override these styles by targeting the specific CSS classes used within the component:
-
-- `.media-container-label`: Styles the label of the audio container.
-- `.audio-container`: Styles the main container of the audio component.

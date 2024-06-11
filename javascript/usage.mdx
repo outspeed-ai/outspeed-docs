@@ -4,7 +4,7 @@ sidebarTitle: "Usage"
 description: "Easily integrate realtime's functionality into your web applications."
 ---
 
-realtime's Web SDK offers a straightforward API that enables web developers to utilize realtime audio/video capabilities efficiently.
+Realtime's Web SDK offers a straightforward API that enables web developers to utilize realtime audio/video capabilities efficiently.
 
 ### Installation
 
@@ -22,16 +22,17 @@ You can find the source code on [GitHub](https://github.com/xAlpha8/realtime-js)
 To import the package:
 
 ```javascript
-import { RealtimeComponent, WebRTCConnectionManager } from "@adaptai/realtime-react";
+import { useRealtime } from "@adaptai/realtime-react";
 ```
 
-Next, initialize the realtime class by passing your **App ID** to the constructor:
+Next, initialize the realtime class by passing your **Function URL** to the constructor:
 
 ```javascript
-const realtime = new RealtimeComponent({ appId: "your-app-id" });
+const realtime = useRealtime({ functionURL: "your-function-url" });
 ```
 
-To deploy your realtime app on Adapt, [Contact us](mailto:contact@getadapt.ai)
+Function URL is returned after deploying your realtime function using the python CLI `realtime deploy`.
+You'll need an API key to deploy the realtime function. [Contact us](mailto:contact@getadapt.ai) to get the API key.
 
 ---
 

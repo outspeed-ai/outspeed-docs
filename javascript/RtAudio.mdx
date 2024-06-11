@@ -5,30 +5,18 @@ description: 'A component for managing real-time audio functionalities in web ap
 
 <RequestExample>
 ```jsx
-import { useRef, useEffect } from 'react';
-import { RtAudio, WebRTCConnectionManager } from '@adaptai/realtime-react';
+import { useRealtime, RtAudio } from "@adaptai/realtime-react";
+import {useEffect } from "react";
 
-function RealtimeAudioComponent({ config }) {
-  const audioRef = useRef(null);
+function AppContainer({ config }) {
+  const { connection } = useRealtime(config);
 
-  useEffect(() => {
-    WebRTCConnectionManager.setConfig(config);
-    const conn = WebRTCConnectionManager.get();
-    conn.on('track', (track) => {
-      if (track.kind === 'audio') {
-        audioRef.current.srcObject = new MediaStream([track]);
-      }
-    });
-
-    return () => {
-      conn.off('track');
-    };
-  }, [config]);
-
-  return <RtAudio ref={audioRef} />;
+  return (
+    <div>
+      <RtAudio rtConnection={connection} />
+    </div>
+  );
 }
-
-export default RealtimeAudioComponent;
 ```
 </RequestExample>
 
@@ -39,17 +27,13 @@ export default RealtimeAudioComponent;
 
 ## Props
 
-<ResponseField name="ref" type="React.RefObject<HTMLAudioElement>">
-  A ref object that can be used to access the underlying HTML audio element for direct manipulation or access.
-</ResponseField>
-
-<ResponseField name="autoPlay" type="boolean" default="true">
-  If set to `true`, the audio will start playing as soon as it is loaded.
+<ResponseField name="rtConnection" type="object">
+  A connection object returned from `useRealtime` hook that can be used to access the underlying HTML audio element for direct manipulation or access.
 </ResponseField>
 
 ## Styling
 
 The component is styled with a default set of CSS classes to maintain a consistent look and feel. You can override these styles by targeting the specific CSS classes used within the component:
 
-- `.audio-container-label`: Styles the label of the audio container.
-- `.audio-container`: Styles the main container of the audio component.
+- `.audio-container-header`: Styles the header of the audio container.
+- `#audio-container`: Styles the main container of the audio component.

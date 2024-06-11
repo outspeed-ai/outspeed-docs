@@ -1,0 +1,116 @@
+---
+title: 'useRealtime'
+description: 'A hook for managing real-time audio, video, and chat functionalities'
+---
+
+<RequestExample>
+  ```jsx useRealtime Example
+  const {isConnected, connection} = useRealtime(config)
+  ```
+</RequestExample>
+
+## Props
+
+<ResponseField name="config" type="object" required>
+  Configuration object for setting up the real-time connections. This includes URLs, data parameters, and media options.
+  Create config using the `useConfig` hook. If you want to go with defaults, you can pass in `{functionURL: "function-url-here" }`
+  to get started.
+</ResponseField>
+
+## Returns
+
+<ResponseField name="isConnected" type="boolean">
+Boolean variable that can be used to condition renders or manage other page properties. It is also used to condition
+setup of event handlers.
+</ResponseField>
+
+<ResponseField name="connection" type="object">
+The connection object is the primary object for managing your connection, setting up event handlers, stopping the connection, etc.
+The examples below will illustrate the different use-cases that it enables.
+</ResponseField>
+
+
+```jsx BasicSetup.jsx
+import { useRealtime, RtVideo, RtAudio, RtChat } from "@adaptai/realtime-react";
+import {useEffect } from "react";
+
+function AppContainer({ config }) {
+  const { connection, isConnected } = useRealtime(config);
+
+  useEffect(() => {
+    connection.connect();
+  }, []);
+
+  return (
+    <div>
+      {isConnected ? (
+        <>
+          <RtVideo rtConnection={connection} />
+          <RtAudio rtConnection={connection} />
+          <RtChat rtConnection={connection} />
+        </>
+      ) : (
+        <>Connecting!</>
+      )}
+    </div>
+  );
+}
+```
+
+```jsx ChatEventListener.jsx
+import { useRealtime } from "@adaptai/realtime-react";
+import {useEffect } from "react";
+
+function RealtimeComponent({ config }) {
+  const { isConnected, connection } = useRealtime(config);
+  const [ messages, setMessages ] = useState([]); // setup your own array to store messages
+
+  useEffect(() => {
+    connection.connect();
+    return () => {
+      connection.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const onMessage = (evt) => {
+      const message = JSON.parse(evt.data);
+      setMessages((prevMessages) => [...prevMessages, message]);
+    };
+
+    if (isConnected) {
+      connection.on("message", onMessage);
+    }
+  }, [isConnected]);
+```
+
+```jsx AudioVisualizer.jsx
+import { useRealtime, RtAudioVisualizer, RtAudio } from "@adaptai/realtime-react";
+import {useEffect } from "react";
+
+function AppContainer({ config }) {
+  const { connection, isConnected } = useRealtime(config);
+
+  useEffect(() => {
+    connection.connect();
+  }, []);
+
+  return (
+    <div>
+      {isConnected ? (
+        <>
+          <RtAudio rtConnection={connection} />
+          <RtAudioVisualizer
+            rtConnection={connection}
+            height={100}
+            width={100}
+          />
+        </>
+      ) : (
+        <>Connecting!</>
+      )}
+    </div>
+  );
+}
+```
+

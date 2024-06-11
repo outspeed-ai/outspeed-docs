@@ -99,12 +99,12 @@
     {
       "group": "Components",
       "pages": [
-        "javascript/RealtimeComponent",
+        "javascript/useRealtime",
         "javascript/useConfig",
-        "javascript/WebRTCConnectionManager",
         "javascript/RtAudio",
         "javascript/RtVideo",
-        "javascript/RtChat"
+        "javascript/RtChat",
+        "javascript/RtAudioVisualizer"
       ]
     }
   ],
