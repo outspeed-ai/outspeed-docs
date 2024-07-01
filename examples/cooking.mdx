@@ -3,13 +3,25 @@ title: "Cooking Assistant"
 description: "An AI assistant that uses video and audio to help you prepare meals."
 ---
 
-<Info>Make sure you have gone over [QuickStart](/examples/quickstart) before trying this example.</Info>
+<Info>
+  Make sure you have gone over [QuickStart](/examples/quickstart) before trying
+  this example.
+</Info>
 
-In this example, we will build a realtime cooking assistant that uses audio from microphone and video from camera to provide help while cooking. 
+In this example, we will build a realtime cooking assistant that uses audio from microphone and video from camera to provide help while cooking.
 
 ## Demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/p9hwllyGhrw?si=SMHsPpFGU3c99X38" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/p9hwllyGhrw?si=SMHsPpFGU3c99X38"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
 
 ## **Creating a Cooking Assistant in 3 steps**
 
@@ -17,7 +29,9 @@ This app will process input from your microphone, video from camera, send it to 
 
 - The full github repository is available [here.](https://github.com/xAlpha8/realtime-examples)
 
-<Info>This application will initially support only English as the source language.</Info>
+<Info>
+  This application will initially support only English as the source language.
+</Info>
 
 <Steps>
   <Step title="Start by cloning the repository">
@@ -47,8 +61,9 @@ This app will process input from your microphone, video from camera, send it to 
     ```
 
     Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime server. Copy the link.
-    
+
     (Coming soon) You can also go to your app on the [Realtime dashboard](https://www.getadapt.ai/dashboard) and get the link.
+
   </Step>
   <Step title="Launch the frontend">
     We have already created a simple frontend using our [React SDK](/javascript).
@@ -77,7 +92,8 @@ This app will process input from your microphone, video from camera, send it to 
 
     http://127.0.0.1:5173
 
-    Once you select the appropriate option to send audio and/or video, click `Start`.
+    Click on the settings icon and select the appropriate audio and video device.
+    Close the settings menu and click `Start`.
 
   </Step>
 </Steps>
@@ -102,14 +118,17 @@ The `CookingAssistant` class initializes with the `setup` method, which is autom
 This method handles the real-time processing of audio and video streams:
 
 1. **Audio Stream Handling**:
+
    - Receives and clones the audio input stream for parallel processing.
    - Processes the original audio stream through `DeepgramSTT` to convert speech to text.
    - Processes the cloned audio stream through `SileroVAD` for voice activity detection.
 
 2. **Video Stream Handling**:
+
    - The text output from `DeepgramSTT` and the video input stream are processed by `OpenAIVision` to generate cooking instructions.
 
 3. **Text and Audio Processing**:
+
    - The text from `OpenAIVision` is aggregated by `TokenAggregator`.
    - `ElevenLabsTTS` converts the aggregated text into spoken audio.
    - `AudioConverter` transforms this audio back into a stream format suitable for output.

@@ -3,14 +3,26 @@ title: "Live Sports Commentator"
 description: "A realtime commentator that provides live commentary on sports events."
 ---
 
-<Info>Make sure you have gone over [QuickStart](/examples/quickstart) before trying this example.</Info>
+<Info>
+  Make sure you have gone over [QuickStart](/examples/quickstart) before trying
+  this example.
+</Info>
 
-In this example, we will build a realtime commentator that provides commentary on a live poker tournament. 
+In this example, we will build a realtime commentator that provides commentary on a live poker tournament.
 We accomplish by using screenshare to capture the live game on Youtube and microphone audio to interact with the commentator.
 
 ## Demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/WJaYLcX1o7E?si=hNvJwHWbNAXQCsck" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/WJaYLcX1o7E?si=hNvJwHWbNAXQCsck"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
 
 ## **Creating a Poker Commentator in 3 steps**
 
@@ -18,7 +30,9 @@ This app will process input from your microphone, video from screenshare, send i
 
 - The full github repository is available [here.](https://github.com/xAlpha8/realtime-examples)
 
-<Info>This application will initially support only English as the source language.</Info>
+<Info>
+  This application will initially support only English as the source language.
+</Info>
 
 <Steps>
   <Step title="Start by cloning the repository">
@@ -48,8 +62,9 @@ This app will process input from your microphone, video from screenshare, send i
     ```
 
     Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime server. Copy the link.
-    
+
     (Coming soon) You can also go to your app on the [Realtime dashboard](https://www.getadapt.ai/dashboard) and get the link.
+
   </Step>
   <Step title="Launch the frontend">
     We have already created a simple frontend using our [React SDK](/javascript).
@@ -78,7 +93,10 @@ This app will process input from your microphone, video from screenshare, send i
 
     http://127.0.0.1:5173
 
-    Once you select the appropriate option to send audio and/or video, click `Start`.
+    Click on the settings icon and select the appropriate audio and video device.
+    Click and enable the `Enable Screen Share` checkbox to share your screen.
+    Close the settings menu and click `Start`.
+    Select the appropriate browser tab to share your screen.
 
   </Step>
 </Steps>
