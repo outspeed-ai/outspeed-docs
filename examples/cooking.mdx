@@ -1,0 +1,143 @@
+---
+title: "Cooking Assistant"
+description: "An AI assistant that uses video and audio to help you prepare meals."
+---
+
+<Info>
+  Make sure you have gone over [QuickStart](/examples/quickstart) before trying
+  this example.
+</Info>
+
+In this example, we will build a realtime cooking assistant that uses audio from microphone and video from camera to provide help while cooking.
+
+## Demo
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/p9hwllyGhrw?si=SMHsPpFGU3c99X38"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
+
+## **Creating a Cooking Assistant in 3 steps**
+
+This app will process input from your microphone, video from camera, send it to an LLM and convert the reponse back to voice.
+
+- The full github repository is available [here.](https://github.com/xAlpha8/realtime-examples)
+
+<Info>
+  This application will initially support only English as the source language.
+</Info>
+
+<Steps>
+  <Step title="Start by cloning the repository">
+    ```bash
+    git clone https://github.com/xAlpha8/realtime-examples.git
+    ```
+    ```bash
+    cd realtime-examples/
+    ```
+    ```bash
+    poetry install
+    ```
+
+  </Step>
+  <Step title="Deploy to Realtime">
+    <Warning>Ensure you're in the same directory as voice_bot.py!</Warning>
+    We will use our realtime [Python SDK](/python_client) to deploy our application.
+
+    ```bash
+    cd ./multimodal_ai_demos/backend/
+    ```
+    ```bash
+    poetry shell #Activate the python environment
+    ```
+    ```bash
+    realtime deploy --api-key=<your-api-key> cooking_assistant.py
+    ```
+
+    Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime server. Copy the link.
+
+    (Coming soon) You can also go to your app on the [Realtime dashboard](https://www.getadapt.ai/dashboard) and get the link.
+
+  </Step>
+  <Step title="Launch the frontend">
+    We have already created a simple frontend using our [React SDK](/javascript).
+
+    Change directory to the frontend directory.
+
+    ```bash
+    cd ../frontend/
+    ```
+
+    Install the dependencies and run the frontend.
+    ```bash
+    npm install
+    ```
+    ```bash
+    npm run dev
+    ```
+
+    This will launch a simple frontend to interact with the backend.
+    You can then browse to the following page with your browser:
+
+    http://127.0.0.1:5173
+
+    Click on the settings icon and select the appropriate audio and video device.
+    In the functionURL field, enter the link of your deployed function.
+    Close the settings menu and click `Start`.
+
+  </Step>
+</Steps>
+
+## **Understanding the Process**
+
+Review the code in `cooking_assistant.py`.
+
+#### **Setup**
+
+The `CookingAssistant` class initializes with the `setup` method, which is automatically called when the application starts. This method is responsible for setting up the necessary services and loading models. Here's a breakdown of the services initialized:
+
+- **DeepgramSTT**: Converts spoken audio to text using Deepgram's speech-to-text API, configured with a sample rate of 8000 Hz.
+- **OpenAIVision**: Analyzes video inputs and generates cooking instructions, guided by a detailed system prompt. It operates with an auto-response setting and waits for the user's first response to initiate interaction.
+- **TokenAggregator**: Aggregates tokens from OpenAIVision to ensure smooth and coherent data flow.
+- **ElevenLabsTTS**: Converts text instructions back into spoken audio using Eleven Labs' text-to-speech API.
+- **SileroVAD**: Detects voice activity to manage interruptions effectively during the audio stream processing.
+- **AudioConverter**: Converts audio formats to ensure compatibility across different services.
+
+#### **Streaming Endpoint (`run` method)**
+
+This method handles the real-time processing of audio and video streams:
+
+1. **Audio Stream Handling**:
+
+   - Receives and clones the audio input stream for parallel processing.
+   - Processes the original audio stream through `DeepgramSTT` to convert speech to text.
+   - Processes the cloned audio stream through `SileroVAD` for voice activity detection.
+
+2. **Video Stream Handling**:
+
+   - The text output from `DeepgramSTT` and the video input stream are processed by `OpenAIVision` to generate cooking instructions.
+
+3. **Text and Audio Processing**:
+
+   - The text from `OpenAIVision` is aggregated by `TokenAggregator`.
+   - `ElevenLabsTTS` converts the aggregated text into spoken audio.
+   - `AudioConverter` transforms this audio back into a stream format suitable for output.
+
+4. **Interruption Management**:
+   - Sets up interruptions in the audio output based on voice activity detected by `SileroVAD` to manage the flow of responses.
+
+#### **Teardown**
+
+This method ensures that all services are properly closed and resources are freed up when the application is shutting down. Each component is closed sequentially to ensure no dependencies are left hanging.
+
+Deploying with `realtime deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Realtime dashboard!
+
+## Support
+
+For any assistance or questions, feel free to join our [Discord community](https://discord.gg/cmfFw6SYvp). We're excited to see what you build!

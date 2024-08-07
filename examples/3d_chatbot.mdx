@@ -1,0 +1,115 @@
+---
+title: "3D Avatar Voice Bot"
+description: "A voice bot with a 3D avatar with realtime lip sync and animation."
+---
+
+<Info>Make sure you have gone over [QuickStart](/examples/quickstart) before trying this example.</Info>
+
+In this example, we will build a realtime 3D chatbot. 
+
+## Demo
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ehFB2RMf8tc?si=zS68dk8Yten7H0lr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+## **Creating a 3D Chatbot in 3 steps**
+
+This app will process input from your microphone, send it to an LLM and convert the reponse back to voice. It will also generate the necessary lip sync and animation to make the avatar move.
+
+- The full github repository is available [here.](https://github.com/xAlpha8/realtime-examples)
+
+<Info>This application will initially support only English as the source language.</Info>
+
+<Steps>
+  <Step title="Start by cloning the repository">
+    ```bash
+    git clone https://github.com/xAlpha8/realtime-examples.git
+    ```
+    ```bash
+    cd realtime-examples/
+    ```
+    ```bash
+    poetry install
+    ```
+
+  </Step>
+  <Step title="Deploy to Realtime">
+    <Warning>Ensure you're in the same directory as poker_commentator.py!</Warning>
+    We will use our realtime [Python SDK](/python_client) to deploy our application.
+
+    ```bash
+    cd ./3d_avatar_chatbot/backend/
+    ```
+    ```bash
+    poetry shell #Activate the python environment
+    ```
+    ```bash
+    realtime deploy --api-key=<your-api-key> chatbot.py
+    ```
+
+    Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime server. Copy the link.
+    
+    (Coming soon) You can also go to your app on the [Realtime dashboard](https://www.getadapt.ai/dashboard) and get the link.
+  </Step>
+  <Step title="Launch the frontend">
+    We have already created a simple frontend using our [React SDK](/javascript).
+
+    Change directory to the frontend directory.
+
+    ```bash
+    cd ../frontend/
+    ```
+
+    Install the dependencies and run the frontend.
+    ```bash
+    npm install
+    ```
+    ```bash
+    npm dev
+    ```
+
+    This will launch a simple frontend to interact with the backend.
+    You can then browse to the following page with your browser:
+
+    http://127.0.0.1:5173
+
+    In the function URL field, paste the link you got after `realtime deploy`.
+
+    Click `Run`.
+
+  </Step>
+</Steps>
+
+## **Understanding the Process**
+
+Review the code in `chatbot.py`.
+
+#### **Setup**
+
+The `setup` method initializes the necessary services and configurations required for the chatbot to function:
+
+- **DeepgramSTT**: This service converts spoken audio into text using Deepgram's speech-to-text API. It is configured with a sample rate of 8000 Hz to match the expected audio input quality.
+- **FireworksLLM**: Utilizes a large language model from Fireworks to generate responses based on the audio input converted to text. The model is set with a specific system prompt that defines the behavior and output format (JSON) of the chatbot, including facial expressions and animations.
+- **LipSync**: This service synchronizes the generated audio with appropriate mouth movements on the 3D avatar using the Rhubarb Lip Sync tool.
+- **ElevenLabsTTS**: Converts the generated text responses into spoken audio using Eleven Labs' text-to-speech API. This service is optimized for streaming latency and uses a specific voice model.
+- **AudioConverter**: Ensures that the audio output is in the correct format for playback, converting the audio stream as necessary.
+
+#### **Streaming Endpoint**
+
+The `run` method acts as the streaming endpoint for audio input:
+
+1. **Audio to Text**: The audio input stream is first converted to text using the `DeepgramSTT` service.
+2. **Text to Response**: The text is then processed by the `FireworksLLM` to generate a JSON-formatted response containing the text, facial expressions, and animations.
+3. **Processing JSON**: The JSON response is unpacked, and the text component is extracted and sent to the `ElevenLabsTTS` service to be converted into audio.
+4. **Generating Lip Sync Data**: Simultaneously, the text-to-speech audio is used to generate lip-sync data to match the avatar's mouth movements to the spoken audio.
+5. **Combining Outputs**: The audio stream and JSON data (now including lip-sync information) are combined and synchronized.
+6. **Audio Conversion**: Finally, the audio stream is converted to the appropriate format for output through the `AudioConverter`.
+
+#### **Teardown**
+
+The `teardown` method is responsible for gracefully shutting down and releasing resources associated with each service when the application is closing.
+
+Deploying with `realtime deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Realtime dashboard!
+
+## Support
+
+For any assistance or questions, feel free to join our [Discord community](https://discord.gg/cmfFw6SYvp). We're excited to see what you build!

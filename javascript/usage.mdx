@@ -1,0 +1,68 @@
+---
+title: "Usage"
+sidebarTitle: "Usage"
+description: "Easily integrate realtime's functionality into your web applications."
+---
+
+Realtime's Web SDK offers a straightforward API that enables web developers to utilize realtime audio/video capabilities efficiently.
+
+### Installation
+
+To install the package, use:
+
+```bash
+npm install @adaptai/realtime-react
+```
+
+You can find the source code on [GitHub](https://github.com/xAlpha8/realtime-js)
+
+
+### Importing
+
+To import the package:
+
+```javascript
+import { useRealtime } from "@adaptai/realtime-react";
+```
+
+Next, initialize the realtime class by passing your **Function URL** to the constructor:
+
+```javascript
+const realtime = useRealtime({ functionURL: "your-function-url" });
+```
+
+Function URL is returned after deploying your realtime function using the python CLI `realtime deploy`.
+You'll need an API key to deploy the realtime function. [Contact us](mailto:contact@getadapt.ai) to get the API key.
+
+---
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card
+    title="NPM"
+    icon="npm"
+    iconType="solid"
+    href="https://www.npmjs.com/package/@adaptai/realtime-react"
+  >
+    Explore the package on NPM.
+  </Card>
+  <Card
+    title="GitHub"
+    icon="github"
+    iconType="solid"
+    href="https://github.com/xAlpha8/realtime-js"
+  >
+    Check out the GitHub repository.
+  </Card>
+</CardGroup>
+<CardGroup cols={1}>
+  <Card
+    title="Quickstart Guide"
+    icon="bolt"
+    iconType="solid"
+    href="/quickstart"
+  >
+    Jumpstart your implementation with the Web SDK.
+  </Card>
+</CardGroup>

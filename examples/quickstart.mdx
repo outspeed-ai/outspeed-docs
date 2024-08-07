@@ -1,0 +1,189 @@
+---
+title: "Quickstart (Voice Bot)"
+description: "The fastest way to integrate realtime AI into your projects."
+---
+
+## What is Realtime?
+
+Realtime is a cutting-edge platform designed to facilitate the design and implementation of multi-modal AI features at scale.
+
+Features include:
+
+- Ability to create complex applications using multiple AI models with minimal coding
+- Scalable, reliable serverless infrastructure that adjusts based on traffic
+
+## Demo
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/32HnQDZ3Jfk?si=E24k_zNrufSQ9RPk"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
+
+## **Getting Started**
+
+<Info>
+  Make sure you have obtained an Adapt API key before running this example. To
+  obtain an API key, [Contact us](mailto:contact@getadapt.ai)
+</Info>
+
+{
+/\*
+
+- Authenticate with your API key
+
+```bash
+realtime login
+```
+
+\*/
+}
+
+### **Creating a Voice Bot in 3 steps**
+
+This app will process input from your microphone, send it to an LLM and convert the reponse back to voice.
+
+- The full github repository is available [here.](https://github.com/xAlpha8/realtime-examples)
+
+<Info>
+  This application will initially support only English as the source language.
+</Info>
+
+<Steps>
+  <Step title="Start by cloning the repository">
+    ```bash
+    git clone https://github.com/xAlpha8/realtime-examples.git
+    cd realtime-examples/
+    ```
+    
+    -Using Poetry:
+    <Info>You can find instructions to install Poetry [here](https://python-poetry.org/docs/#installing-with-pipx).</Info>
+
+    ```bash
+    poetry install
+    poetry shell #Activate the python environment
+    ```
+
+    -Using Pip:
+
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install realtime-client
+    ```
+
+  </Step>
+  <Step title="Deploy to Realtime">
+    <Warning>Ensure you're in the same directory as voice_bot.py!</Warning>
+    We will use our realtime [Python SDK](/python_client) to deploy our application.
+
+    ```bash
+    cd ./multimodal_ai_demos/backend/
+    realtime deploy --api-key=<your-api-key> poker_commentator.py
+    ```
+
+    Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime server. Copy the link.
+
+    (Coming soon) You can also go to your app on the [Realtime dashboard](https://www.getadapt.ai/dashboard) and get the link.
+
+  </Step>
+  <Step title="Launch the frontend">
+    We have already created a simple frontend using our [React SDK](/javascript).
+
+    Change directory to the frontend directory.
+
+    ```bash
+    cd ../frontend/
+    ```
+
+    Install the dependencies and run the frontend.
+    ```bash
+    npm install
+    ```
+    ```bash
+    npm run dev
+    ```
+
+    This will launch a simple frontend to interact with the backend.
+    You can then browse to the following page with your browser:
+
+    http://127.0.0.1:5173
+
+    Click the `Settings` Icon and in the function URL field, paste the link you got after `realtime deploy`.
+
+    Select audio device. Click `Close`.
+
+    Click `Start` to begin.
+
+  </Step>
+</Steps>
+
+### **Understanding the Process**
+
+Review the code in `voice_bot.py`.
+
+#### **Setup**
+
+The `VoiceBot` class initializes with the `setup` method, which is automatically called when the application starts. This method is responsible for setting up the necessary services and loading models. Here's a breakdown of the services initialized:
+
+- **DeepgramSTT**: Converts spoken audio to text using Deepgram's speech-to-text API.
+- **FireworksLLM**: Processes text inputs to generate responses, simulating a conversational agent.
+- **TokenAggregator**: Aggregates tokens from the language model to form coherent responses.
+- **ElevenLabsTTS**: Converts text responses back into spoken audio using Eleven Labs' text-to-speech API.
+- **AudioConverter**: Converts audio formats to ensure compatibility across different services.
+- **SileroVAD**: Detects voice activity to handle interruptions effectively.
+
+#### **Streaming Endpoint**
+
+The `run` method is decorated with `@realtime.streaming_endpoint()`, indicating it handles real-time streaming data. This method is triggered whenever a new connection request is received. It processes incoming audio streams and coordinates the flow of data through various services:
+
+1. **Audio Cloning**: Clones the incoming audio stream to allow simultaneous processing by different services.
+2. **Speech Recognition**: Converts the cloned audio stream to text using DeepgramSTT.
+3. **Voice Activity Detection**: Monitors the audio stream for voice activity using SileroVAD.
+4. **Language Processing**: Processes the recognized text to generate tokens and manage conversation history using FireworksLLM.
+5. **Token Aggregation**: Aggregates tokens to form complete responses.
+6. **Text-to-Speech**: Converts the aggregated text back into audio using ElevenLabsTTS.
+7. **Audio Conversion**: Ensures the audio format is suitable for output.
+
+Additionally, the method sets up interrupts based on voice activity to manage when the bot should stop speaking due to user interruption.
+
+#### **Teardown**
+
+The `teardown` method is called when the application is stopped or shutdown unexpectedly. It ensures that all services are properly closed and resources are cleaned up, preventing resource leaks and ensuring the application can restart cleanly if necessary.
+
+Deploying with `realtime deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Realtime dashboard!
+
+## **Next Steps**
+
+You can explore further applications and capabilities here:
+
+<CardGroup cols={3}>
+  <Card
+    title="Live Sports Commentator"
+    href="commentator"
+    icon="image"
+    color="#ea5a0c"
+  >
+    Live Sports Commentary
+  </Card>
+  <Card title="Cooking Assistant" href="cooking" icon="image" color="#ea5a0c">
+    Cooking assistant that guides you through the process of preparing a meal
+  </Card>
+  <Card
+    title="3D Avatar Chatbot"
+    icon="image"
+    color="#ea5a0c"
+    href="3d_chatbot"
+  >
+    3D Avatar Chatbot
+  </Card>
+</CardGroup>
+
+## Support
+
+For any assistance or questions, feel free to join our [Discord community](https://discord.gg/cmfFw6SYvp). We're excited to see what you build!

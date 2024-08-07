@@ -1,0 +1,40 @@
+---
+title: 'RtVideo'
+description: 'A component for managing real-time video functionalities in web applications'
+---
+
+<RequestExample>
+```jsx
+import { useRealtime, RtVideo } from "@adaptai/realtime-react";
+import {useEffect } from "react";
+
+function AppContainer({ config }) {
+  const { connection } = useRealtime(config);
+
+  return (
+    <div>
+      <RtVideo rtConnection={connection} />
+    </div>
+  );
+}
+```
+</RequestExample>
+
+## Overview
+
+`RtVideo` is a React component designed to integrate video functionalities into web applications. It is part of a suite of components that handle real-time media streams.
+`RtVideo` specifically manages video streams, providing a simple interface to play video directly in the browser with real-time capabilities.
+
+
+## Props
+
+<ResponseField name="rtConnection" type="object">
+  A connection object returned from the `useRealtime` hook.
+</ResponseField>
+
+## Styling
+
+The component is styled with a default set of CSS classes to maintain a consistent look and feel. You can override these styles by targeting the specific CSS classes used within the component:
+
+- `.video-container-header`: Styles the header of the video container.
+- `#video-container`: Styles the main container of the video component.
