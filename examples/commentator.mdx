@@ -36,30 +36,48 @@ This app will process input from your microphone, video from screenshare, send i
 
 <Steps>
   <Step title="Start by cloning the repository">
-    ```bash
+    <CodeGroup>
+    ```bash MacOS/Linux
     git clone https://github.com/xAlpha8/realtime-examples.git
-    ```
-    ```bash
     cd realtime-examples/
     ```
-    ```bash
-    poetry install
+
+    ```bash Windows
+    git clone https://github.com/xAlpha8/realtime-examples.git
+    cd realtime-examples/
     ```
+    </CodeGroup>
+
+    <CodeGroup>
+    ```bash MacOS/Linux
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install realtime-client
+    ```
+
+    ```bash Windows
+    python -m venv .venv
+    .venv\Scripts\activate
+    pip install realtime-client
+    ```
+    </CodeGroup>
 
   </Step>
   <Step title="Deploy to Realtime">
     <Warning>Ensure you're in the same directory as poker_commentator.py!</Warning>
     We will use our realtime [Python SDK](/python_client) to deploy our application.
 
-    ```bash
+    <CodeGroup>
+    ```bash MacOS/Linux
     cd ./multimodal_ai_demos/backend/
-    ```
-    ```bash
-    poetry shell #Activate the python environment
-    ```
-    ```bash
     realtime deploy --api-key=<your-api-key> poker_commentator.py
     ```
+
+    ```bash Windows
+    cd .\multimodal_ai_demos\backend\
+    realtime deploy --api-key=<your-api-key> poker_commentator.py
+    ```
+    </CodeGroup>
 
     Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime server. Copy the link.
 
@@ -71,17 +89,28 @@ This app will process input from your microphone, video from screenshare, send i
 
     Change directory to the frontend directory.
 
-    ```bash
+    <CodeGroup>
+    ```bash MacOS/Linux
     cd ../frontend/
     ```
 
-    Install the dependencies and run the frontend.
-    ```bash
-    npm install
+    ```bash Windows
+    cd ..\frontend\
     ```
-    ```bash
+    </CodeGroup>
+
+    Install the dependencies and run the frontend.
+    <CodeGroup>
+    ```bash MacOS/Linux
+    npm install
     npm run dev
     ```
+
+    ```bash Windows
+    npm install
+    npm run dev
+    ```
+    </CodeGroup>
 
     This will launch a simple frontend to interact with the backend.
     You can then browse to the following page with your browser:
