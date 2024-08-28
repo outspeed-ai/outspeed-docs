@@ -44,12 +44,12 @@
       "name": "Join Discord Community",
       "icon": "discord",
       "url": "https://discord.gg/cmfFw6SYvp"
-  },
-  {
+    },
+    {
       "name": "Book a Demo",
       "icon": "phone",
       "url": "https://cal.com/adaptsdk/30min"
-  }
+    }
   ],
   "navigation": [
     {
@@ -63,37 +63,26 @@
     },
     {
       "group": "General",
-      "pages": [
-        "realtime_sdk/installation"
-      ]
+      "pages": ["realtime_sdk/installation"]
+    },
+    {
+      "group": "CLI",
+      "pages": ["realtime_sdk/cli/deploy"]
     },
     {
       "group": "Python API",
       "pages": [
         "realtime_sdk/sdk/app",
+        "realtime_sdk/sdk/openai",
+        "realtime_sdk/sdk/elevenlabs",
+        "realtime_sdk/sdk/fireworksai",
+        "realtime_sdk/sdk/deepgram",
         "realtime_sdk/sdk/streaming_endpoint"
       ]
     },
     {
-      "group": "CLI",
-      "pages": [
-        "realtime_sdk/cli/deploy"
-      ]
-    },
-    {
-      "group": "Plugins",
-      "pages": [
-        "realtime_sdk/plugins/openai",
-        "realtime_sdk/plugins/elevenlabs",
-        "realtime_sdk/plugins/fireworksai",
-        "realtime_sdk/plugins/deepgram"
-      ]
-    },
-    {
       "group": "General",
-      "pages": [
-        "javascript/usage"
-      ]
+      "pages": ["javascript/usage"]
     },
     {
       "group": "Components",
@@ -111,7 +100,7 @@
     "thumbsRating": true,
     "suggestEdit": true,
     "raiseIssue": true
-  },    
+  },
   "footerSocials": {
     "discord": "https://discord.gg/cmfFw6SYvp",
     "github": "https://github.com/xAlpha8/realtime-docs"
