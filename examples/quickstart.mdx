@@ -32,21 +32,9 @@ Features include:
   obtain an API key, [Contact us](mailto:contact@getadapt.ai)
 </Info>
 
-{
-/\*
-
-- Authenticate with your API key
-
-```bash
-realtime login
-```
-
-\*/
-}
-
 ### **Creating a Voice Bot in 3 steps**
 
-This app will process input from your microphone, send it to an LLM and convert the reponse back to voice.
+This app will process input from your microphone, send it to an LLM and convert the response back to voice.
 
 - The full github repository is available [here.](https://github.com/xAlpha8/realtime-examples)
 
@@ -56,36 +44,49 @@ This app will process input from your microphone, send it to an LLM and convert 
 
 <Steps>
   <Step title="Start by cloning the repository">
-    ```bash
+  
+    <CodeGroup>
+    ```bash MacOS/Linux
     git clone https://github.com/xAlpha8/realtime-examples.git
     cd realtime-examples/
     ```
-    
-    -Using Poetry:
-    <Info>You can find instructions to install Poetry [here](https://python-poetry.org/docs/#installing-with-pipx).</Info>
 
-    ```bash
-    poetry install
-    poetry shell #Activate the python environment
+    ```bash Windows
+    git clone https://github.com/xAlpha8/realtime-examples.git
+    cd realtime-examples/
     ```
+    </CodeGroup>
 
-    -Using Pip:
-
-    ```bash
+    <CodeGroup>
+    ```bash MacOS/Linux
     python3 -m venv .venv
     source .venv/bin/activate
     pip install realtime-client
     ```
+
+    ```bash Windows
+    python -m venv .venv
+    .venv\Scripts\activate
+    pip install realtime-client
+    ```
+    </CodeGroup>
 
   </Step>
   <Step title="Deploy to Realtime">
     <Warning>Ensure you're in the same directory as voice_bot.py!</Warning>
     We will use our realtime [Python SDK](/python_client) to deploy our application.
 
-    ```bash
+    <CodeGroup>
+    ```bash MacOS/Linux
     cd ./multimodal_ai_demos/backend/
     realtime deploy --api-key=<your-api-key> poker_commentator.py
     ```
+
+    ```bash Windows
+    cd ./multimodal_ai_demos/backend/
+    realtime deploy --api-key=<your-api-key> poker_commentator.py
+    ``` 
+    </CodeGroup>
 
     Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime server. Copy the link.
 
@@ -95,19 +96,35 @@ This app will process input from your microphone, send it to an LLM and convert 
   <Step title="Launch the frontend">
     We have already created a simple frontend using our [React SDK](/javascript).
 
-    Change directory to the frontend directory.
-
-    ```bash
+    <CodeGroup>
+    ```bash MacOS/Linux
     cd ../frontend/
     ```
 
-    Install the dependencies and run the frontend.
-    ```bash
+    ```bash Windows
+    cd ../frontend/
+    ```
+    </CodeGroup>
+
+    <CodeGroup>
+    ```bash MacOS/Linux
     npm install
     ```
-    ```bash
+
+    ```bash Windows
+    npm install
+    ```
+    </CodeGroup>
+
+    <CodeGroup>
+    ```bash MacOS/Linux
     npm run dev
     ```
+
+    ```bash Windows
+    npm run dev
+    ```
+    </CodeGroup>
 
     This will launch a simple frontend to interact with the backend.
     You can then browse to the following page with your browser:

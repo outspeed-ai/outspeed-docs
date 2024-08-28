@@ -1,64 +1,91 @@
 ---
-title: realtime.App
+title: rt.App
 ---
 
 ## Overview
 
-The `@realtime.App` decorator is used to define a class as a Realtime application. 
-This decorator enhances the class, enabling it to interact seamlessly with various Realtime services.
+The `@realtime.App()` decorator is used to define a class as a Realtime application. This decorator enhances the class, enabling it to interact seamlessly with various Realtime services and manage the application lifecycle.
 
 ## Creating an App
 
-To create an app, you simply define a class and decorate it with `@realtime.App`. Here is a minimal example:
+To create an app, define a class and decorate it with `@realtime.App()`. Here's a minimal example:
 
 ```python
-import realtime
+import realtime as rt
 
-@realtime.App()
+@rt.App()
 class MyApplication:
 
-    async def setup(self):
+    def setup(self):
         # Initialization code here
         print("App is setting up!")
 
-    async def run(self):
+    def run(self):
         # Main logic here
         print("App is running!")
 
-    async def teardown(self):
+    def teardown(self):
         # Cleanup code here
         print("App is tearing down!")
 ```
 
-<Info>A realtime App must have a `run` method.</Info>
+<Info>
+  A Realtime App should have `setup`, `run`, and `teardown` methods, although
+  only `run` is strictly required.
+</Info>
 
-The `run` method is called when the app is running, and it is responsible for handling the main logic of the app. 
-The `setup` method is called when the app starts, and the `teardown` method is called when the app is about to shut down, allowing for proper resource management.
+- The `setup` method is called when the app starts, allowing for initialization.
+- The `run` method contains the main logic of the app and is required.
+- The `teardown` method is called when the app is shutting down, enabling proper resource cleanup.
 
-## Calling Methods within the App
+## App Lifecycle
 
-Methods within the app can be called directly if you are running the app locally, or they can be triggered by external events when deployed on the Realtime platform.
+The `RealtimeApp` class manages the application lifecycle:
 
-## Specifying Additional Data for Apps
+1. It calls the `setup` method asynchronously.
+2. It runs the `run` method (as many times as required).
+3. After the main execution, it calls the `teardown` method.
 
-You can specify additional metadata and configuration for your app using parameters in the `@realtime.App` decorator:
+## Realtime Functions
 
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| name | str | Defines the name of the app | Default is determined by the system |
-| metadata | realtime.Metadata | Extra information about the app to be shown on the dashboard | None |
-| cpu | int | The number of CPUs to allocate to the app | 1 |
-| memory | int | The amount of memory to allocate to the app | 100mb |
-| gpu | int | The number of GPUs to allocate to the app | 0 |
-| gpu_type | str | The type of GPU to allocate to the app | None |
+The app can include Realtime functions, which are methods decorated with `@realtime.function()`. The current implementation supports only one Realtime function per app class.
 
-Here is an example of specifying additional data:
+<Warning>
+  If more than one Realtime function is defined in the app class, a RuntimeError
+  will be raised.
+</Warning>
 
+If a Realtime function is defined, it will be executed concurrently with the `RealtimeServer`, replacing the need for a separate `run` method.
+
+```python
+import realtime
+@realtime.App()
+class MyApplication:
+@realtime.function()
+async def my_realtime_function(self):
+# Realtime function logic here
+pass
+async def run(self):
+# Main app logic here
+pass
+```
 
 ## Best Practices
 
-- Ensure that all external resources are properly initialized and closed in the `setup` and `teardown` methods.
-- Use type hints for all method parameters and return types to enhance clarity and usability in the Realtime dashboard.
-- Test your app thoroughly locally before deploying to ensure that all components interact correctly.
+- Implement `setup` and `teardown` methods in your app class for proper initialization and cleanup.
+- Use either a `run` method or a single Realtime function as the main execution point of your app.
+- Use type hints for all method parameters and return types to enhance clarity.
+- Limit your app to one Realtime function to comply with current implementation constraints.
+- Implement error handling within your methods to manage exceptions gracefully.
+- Test your app thoroughly locally before deploying to ensure all components interact correctly.
 
-By following these guidelines, you can create powerful and efficient applications using the Realtime platform.
+By following these guidelines, you can create robust and efficient applications using the Realtime platform.
+
+## Error Handling
+
+The `RealtimeApp` includes basic error handling:
+
+- If an exception occurs during the app lifecycle (setup, run/Realtime function execution, or teardown), it will be logged as an error.
+- In case of an error, the `RealtimeServer` will be shut down gracefully.
+
+It's recommended to implement your own error handling within your app methods for more specific error management.
