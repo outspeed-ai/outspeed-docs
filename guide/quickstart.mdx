@@ -1,0 +1,173 @@
+---
+title: "Quickstart"
+description: "Create an interactive, low-latency voice bot in 15 lines of code."
+---
+
+Adapt's Python SDK provides a powerful and flexible way to build realtime AI applications on top of video, voice, and text data.
+In this quickstart guide, we'll create a simple and interactive voice bot.
+    
+<Card title="Checkout Demo" icon="link" href="/content/components/card-group">
+To try out this voice bot without deployment, go to our showcase.
+</Card>
+
+
+## Demo
+
+Here's a short demo of what the voice bot looks like:
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/32HnQDZ3Jfk?si=E24k_zNrufSQ9RPk"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
+
+## **Getting Started**
+
+<Info>
+  Make sure you have obtained an Adapt API key before running this example. To
+  obtain an API key, [Contact us](mailto:contact@getadapt.ai)
+</Info>
+
+### **Creating a Voice Bot in 3 steps**
+
+This app will process input from your microphone, send it to an LLM and convert the response back to voice.
+<Info>
+  This application will initially support only English as the source language.
+</Info>
+
+<Steps>
+  <Step title="Install python SDK">
+
+    <CodeGroup>
+    ```bash MacOS/Linux
+    # Create a virtual environment
+    python3 -m venv .venv
+    # Activate the virtual environment
+    source .venv/bin/activate
+    # Install the realtime-client package
+    pip install realtime-client
+    ```
+
+    ```batch Windows
+    REM Create a virtual environment
+    python -m venv .venv
+    REM Activate the virtual environment
+    call .venv\Scripts\activate.bat
+    REM Install the realtime-client package
+    pip install realtime-client
+    ```
+    </CodeGroup>
+
+  </Step>
+  <Step title="Create your realtime application">
+    Use realtime [Python SDK](/python_client) to create and deploy your application.
+
+    Create a file named `voice_bot.py` with this code:
+
+```python
+# voice_bot.py
+import realtime as rt
+
+# Wrap you application with @rt.App() decorator
+@rt.App()
+class VoiceBot:
+    # VoiceBot class represents a voice-based AI assistant.
+
+    async def setup(self) -> None:
+        # Set up the AI service pipeline
+        self.stt_node = rt.DeepgramSTT(sample_rate=8000)
+        self.llm_node = rt.FireworksLLM(system_prompt="You are a helpful assistant.")
+        self.token_aggregator_node = rt.TokenAggregator()
+        self.tts_node = rt.CartesiaTTS(voice_id="95856005-0332-41b0-935f-352e296aa0df")
+
+    @rt.streaming_endpoint()
+    async def run(self, audio_input_queue: rt.AudioStream) -> rt.AudioStream:
+        # take in AudioStream input, pass it through nodes, and return audio
+        stt_stream: rt.TextStream = self.stt_node.run(audio_input_queue)
+        llm_token_stream, _ = self.llm_node.run(stt_stream)
+        token_aggregator_stream: rt.TextStream = self.token_aggregator_node.run(llm_token_stream)
+        tts_stream: rt.AudioStream = self.tts_node.run(token_aggregator_stream)
+
+        return tts_stream
+
+    async def teardown(self) -> None:
+        self.stt_node.close()
+        self.llm_node.close()
+        self.tts_node.close()
+
+
+if __name__ == "__main__":
+    # Start the VoiceBot when the script is run directly
+    VoiceBot().start()
+
+```
+    Hit save on the file. Your application code is fully contained in `voice_bot.py`.
+
+  </Step>
+  <Step title="Deploy Application">
+    <Info>
+      Make sure that you're in the same directory as `voice_bot.py` before running the commands.
+    </Info>
+
+    To deploy your application, use the `realtime` CLI command
+
+    <CodeGroup>
+    ```bash MacOS/Linux
+    # set your ADAPT_API_KEY
+    export ADAPT_API_KEY=<API_KEY>
+    # deploy your application
+    realtime deploy --api-key=$ADAPT_API_KEY voice_bot.py
+    ```
+
+    ```batch Windows
+    REM set your ADAPT_API_KEY
+    set ADAPT_API_KEY=<API_KEY>
+    REM deploy your application
+    realtime deploy --api-key=%ADAPT_API_KEY% voice_bot.py
+    ```
+    </CodeGroup>
+
+    Your app will spin-up in seconds, and then you'll receive a link to your deployment.
+    Copy the link.
+
+    Navigate to [Adapt Playground](https://getadapt.ai/playground), paste your function link
+    and hit **Run** to give your application a spin.
+
+    (Coming soon) You can also go to your app on the [Realtime dashboard](https://www.getadapt.ai/dashboard) and get the link.
+
+  </Step>
+</Steps>
+
+### Next Steps
+
+This is only a simple voice bot. To build more advanced voice bots or other realtime applications of Adapt,
+you can explore further applications and capabilities here.
+
+<CardGroup cols={2}>
+  <Card
+    title="About Adapt"
+    href="introduction"
+    icon="image"
+    color="#ea5a0c"
+  >
+  Learn about Adapt, how it works and what you can build with it.
+  </Card>
+  <Card
+    title="Conversational AI Guide"
+    href="conversational_ai/introduction"
+    icon="image"
+    color="#ea5a0c"
+  >
+    Create conversational AI that can handle interruptions, perform RAG, backchannel, and have conversational pathways.
+  </Card>
+</CardGroup>
+
+
+## Support
+
+For any assistance or questions, feel free to join our [Discord community](https://discord.gg/cmfFw6SYvp). We're excited to see what you build!

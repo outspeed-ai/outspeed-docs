@@ -1,0 +1,36 @@
+---
+title: "Avatar in Zoom Meeting"
+description: "Meeting bot that can join a Zoom Meeting"
+---
+
+In this example, we will build a ZoomBot that connects to a zoom meeting.
+
+## Demo
+
+
+## Create a chatbot
+
+First, refer to the example in [3D Avatar Voice Bot](/examples/3d_chatbot) to create the backend.
+
+## Join Zoom Meeting
+
+Once the function is deployed, you'll get the link for the function on Adapt's infrastructure.
+
+For any zoom meeting, send the following payload to our backend to have your Avatar join the meeting
+
+```
+{
+  meeting_id: <meeting_id>,
+  function_url: <function_url>
+}
+```
+
+Send the request to:
+
+```
+POST "https://getadapt.ai/stream"
+```
+
+## Support
+
+For any assistance or questions, feel free to join our [Discord community](https://discord.gg/cmfFw6SYvp). We're excited to see what you build!

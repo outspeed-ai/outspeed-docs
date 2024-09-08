@@ -23,13 +23,17 @@
     }
   ],
   "topbarCtaButton": {
-    "name": "Raise an issue",
-    "url": "https://github.com/xAlpha8/realtime-docs"
+    "name": "Get API Key",
+    "url": "https://cal.com/outspeed-sahil/30min"
   },
   "primaryTab": {
-    "name": "Examples"
+    "name": "Get Started"
   },
   "tabs": [
+    {
+    "name": "Examples",
+    "url": "examples"
+    },
     {
       "name": "Realtime SDK",
       "url": "realtime_sdk"
@@ -55,7 +59,42 @@
     {
       "group": "General",
       "pages": [
-        "examples/quickstart",
+        "guide/quickstart",
+        "guide/introduction",
+        "guide/local_development"
+      ]
+    },
+    {
+      "group": "Conversational Bots",
+      "pages": [
+        {
+          "group": "Advanced Voice Bots",
+          "pages": [
+            "examples/conversational_ai/introduction",
+            "examples/conversational_ai/interruption_handling",
+            "examples/conversational_ai/pathways",
+            "examples/conversational_ai/backchanneling",
+            "examples/conversational_ai/recording",
+            "examples/conversational_ai/RAG",
+            "examples/conversational_ai/integrations",
+            "examples/conversational_ai/meetings"
+          ]
+        },
+        {
+          "group": "Interactive Avatars",
+          "pages": [
+            "examples/avatars/introduction",
+            "examples/avatars/interviewing",
+            "examples/avatars/language_learning",
+            "examples/avatars/customer_support",
+            "examples/avatars/custom_avatar"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "General",
+      "pages": [
         "examples/commentator",
         "examples/cooking",
         "examples/3d_chatbot"
@@ -73,11 +112,16 @@
       "group": "Python API",
       "pages": [
         "realtime_sdk/sdk/app",
-        "realtime_sdk/sdk/openai",
-        "realtime_sdk/sdk/elevenlabs",
-        "realtime_sdk/sdk/fireworksai",
-        "realtime_sdk/sdk/deepgram",
-        "realtime_sdk/sdk/streaming_endpoint"
+        "realtime_sdk/sdk/streaming_endpoint",
+        {
+          "group": "Plugins",
+          "pages": [
+        "realtime_sdk/sdk/plugins/openai",
+        "realtime_sdk/sdk/plugins/elevenlabs",
+        "realtime_sdk/sdk/plugins/fireworksai",
+        "realtime_sdk/sdk/plugins/deepgram"
+          ]
+        }
       ]
     },
     {
