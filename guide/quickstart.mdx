@@ -49,8 +49,8 @@ This app will process input from your microphone, send it to an LLM and convert 
     python3 -m venv .venv
     # Activate the virtual environment
     source .venv/bin/activate
-    # Install the realtime-client package
-    pip install realtime-client
+    # Install the outspeed package
+    pip install outspeed
     ```
 
     ```batch Windows
@@ -58,40 +58,40 @@ This app will process input from your microphone, send it to an LLM and convert 
     python -m venv .venv
     REM Activate the virtual environment
     call .venv\Scripts\activate.bat
-    REM Install the realtime-client package
-    pip install realtime-client
+    REM Install the outspeed package
+    pip install outspeed
     ```
     </CodeGroup>
 
   </Step>
   <Step title="Create your realtime application">
-    Use realtime [Python SDK](/python_client) to create and deploy your application.
+    Use outspeed [Python SDK](/outspeed_sdk) to create and deploy your application.
 
     Create a file named `voice_bot.py` with this code:
 
 ```python
 # voice_bot.py
-import realtime as rt
+import outspeed as rt
 
-# Wrap you application with @rt.App() decorator
-@rt.App()
+# Wrap you application with @sp.App() decorator
+@sp.App()
 class VoiceBot:
     # VoiceBot class represents a voice-based AI assistant.
 
     async def setup(self) -> None:
         # Set up the AI service pipeline
-        self.stt_node = rt.DeepgramSTT(sample_rate=8000)
-        self.llm_node = rt.FireworksLLM(system_prompt="You are a helpful assistant.")
-        self.token_aggregator_node = rt.TokenAggregator()
-        self.tts_node = rt.CartesiaTTS(voice_id="95856005-0332-41b0-935f-352e296aa0df")
+        self.stt_node = sp.DeepgramSTT(sample_rate=8000)
+        self.llm_node = sp.FireworksLLM(system_prompt="You are a helpful assistant.")
+        self.token_aggregator_node = sp.TokenAggregator()
+        self.tts_node = sp.CartesiaTTS(voice_id="95856005-0332-41b0-935f-352e296aa0df")
 
-    @rt.streaming_endpoint()
-    async def run(self, audio_input_queue: rt.AudioStream) -> rt.AudioStream:
+    @sp.streaming_endpoint()
+    async def run(self, audio_input_queue: sp.AudioStream) -> sp.AudioStream:
         # take in AudioStream input, pass it through nodes, and return audio
-        stt_stream: rt.TextStream = self.stt_node.run(audio_input_queue)
+        stt_stream: sp.TextStream = self.stt_node.run(audio_input_queue)
         llm_token_stream, _ = self.llm_node.run(stt_stream)
-        token_aggregator_stream: rt.TextStream = self.token_aggregator_node.run(llm_token_stream)
-        tts_stream: rt.AudioStream = self.tts_node.run(token_aggregator_stream)
+        token_aggregator_stream: sp.TextStream = self.token_aggregator_node.run(llm_token_stream)
+        tts_stream: sp.AudioStream = self.tts_node.run(token_aggregator_stream)
 
         return tts_stream
 
@@ -114,21 +114,21 @@ if __name__ == "__main__":
       Make sure that you're in the same directory as `voice_bot.py` before running the commands.
     </Info>
 
-    To deploy your application, use the `realtime` CLI command
+    To deploy your application, use the `outspeed` CLI command
 
     <CodeGroup>
     ```bash MacOS/Linux
     # set your OUTSPEED_API_KEY
     export OUTSPEED_API_KEY=<API_KEY>
     # deploy your application
-    realtime deploy --api-key=$OUTSPEED_API_KEY voice_bot.py
+    outspeed deploy --api-key=$OUTSPEED_API_KEY voice_bot.py
     ```
 
     ```batch Windows
     REM set your OUTSPEED_API_KEY
     set OUTSPEED_API_KEY=<API_KEY>
     REM deploy your application
-    realtime deploy --api-key=%OUTSPEED_API_KEY% voice_bot.py
+    outspeed deploy --api-key=%OUTSPEED_API_KEY% voice_bot.py
     ```
     </CodeGroup>
 
@@ -138,7 +138,7 @@ if __name__ == "__main__":
     Navigate to [Outspeed Playground](https://outspeed.ai/playground), paste your function link
     and hit **Run** to give your application a spin.
 
-    (Coming soon) You can also go to your app on the [Realtime dashboard](https://www.outspeed.ai/dashboard) and get the link.
+    (Coming soon) You can also go to your app on the [Outspeed dashboard](https://www.outspeed.ai/dashboard) and get the link.
 
   </Step>
 </Steps>
