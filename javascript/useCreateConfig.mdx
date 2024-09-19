@@ -41,73 +41,95 @@ It also offers a set of setters and getters to update or retrieve values.
 
 ### Returns
 
-#### `functionURL: string`
+<ParamField body="functionURL" type="string">
 - The URL of the function for the backend, obtained after deploying the app using `outspeed-client`.
+</ParamField>
 
-#### `setFunctionURL: (functionURL: string) => void`
+<ParamField body="setFunctionURL" type="(functionURL: string) => void">
 - A function to update the `functionURL`.
+</ParamField>
 
-#### `audioDeviceId: string | null`
+<ParamField body="audioDeviceId" type="string | null">
 - The ID of the selected audio device. `null` if no device is selected.
+</ParamField>
 
-#### `setAudioDeviceId: (audioDeviceId: string | null) => void`
+<ParamField body="setAudioDeviceId" type="(audioDeviceId: string | null) => void">
 - A function to update the `audioDeviceId`.
+</ParamField>
 
-#### `videoDeviceId: string | null`
+<ParamField body="videoDeviceId" type="string | null">
 - The ID of the selected video device. `null` if no device is selected.
+</ParamField>
 
-#### `setVideoDeviceId: (videoDeviceId: string | null) => void`
+<ParamField body="setVideoDeviceId" type="(videoDeviceId: string | null) => void">
 - A function to update the `videoDeviceId`.
+</ParamField>
 
-#### `audioConstraints: MediaTrackConstraints`
+<ParamField body="audioConstraints" type="MediaTrackConstraints">
 - The audio constraints used for obtaining media from the `navigator`.
+</ParamField>
 
-#### `setAudioConstraints: (audioConstraints: MediaTrackConstraints) => void`
+<ParamField body="setAudioConstraints" type="(audioConstraints: MediaTrackConstraints) => void">
 - A function to update the `audioConstraints`.
+</ParamField>
 
-#### `videoConstraints: MediaTrackConstraints`
+<ParamField body="videoConstraints" type="MediaTrackConstraints">
 - The video constraints used for obtaining media from the `navigator`.
+</ParamField>
 
-#### `setVideoConstraints: (videoConstraints: MediaTrackConstraints) => void`
+<ParamField body="setVideoConstraints" type="(videoConstraints: MediaTrackConstraints) => void">
 - A function to update the `videoConstraints`.
+</ParamField>
 
-#### `screenConstraints: MediaTrackConstraints`
+<ParamField body="screenConstraints" type="MediaTrackConstraints">
 - The screen constraints used for capturing screen media.
+</ParamField>
 
-#### `setScreenConstraints: (screenConstraints: MediaTrackConstraints) => void`
+<ParamField body="setScreenConstraints" type="(screenConstraints: MediaTrackConstraints) => void">
 - A function to update the `screenConstraints`.
+</ParamField>
 
-#### `audioCodec: string`
+<ParamField body="audioCodec" type="string">
 - The codec used for audio.
+</ParamField>
 
-#### `setAudioCodec: (audioCodec: string) => void`
+<ParamField body="setAudioCodec" type="(audioCodec: string) => void">
 - A function to update the `audioCodec`.
+</ParamField>
 
-#### `videoCodec: string`
+<ParamField body="videoCodec" type="string">
 - The codec used for video.
+</ParamField>
 
-#### `setVideoCodec: (videoCodec: string) => void`
+<ParamField body="setVideoCodec" type="(videoCodec: string) => void">
 - A function to update the `videoCodec`.
+</ParamField>
 
-#### `dataChannelOptions: RTCDataChannelInit`
+<ParamField body="dataChannelOptions" type="RTCDataChannelInit">
 - Options for configuring the WebRTC data channel.
+</ParamField>
 
-#### `setDataChannelOptions: (dataChannelOptions: RTCDataChannelInit) => void`
+<ParamField body="setDataChannelOptions" type="(dataChannelOptions: RTCDataChannelInit) => void">
 - A function to update the `dataChannelOptions`.
+</ParamField>
 
-#### `rtcConfig: RTCConfiguration`
+<ParamField body="rtcConfig" type="RTCConfiguration">
 - The configuration used for setting up the WebRTC peer connection.
+</ParamField>
 
-#### `setRTCConfig: (rtcConfig: RTCConfiguration) => void`
+<ParamField body="setRTCConfig" type="(rtcConfig: RTCConfiguration) => void">
 - A function to update the `rtcConfig`.
+</ParamField>
 
-#### `logger: Logger`
+<ParamField body="logger" type="Logger">
 - The logger instance used for handling and storing logs.
+</ParamField>
 
-#### `setLogger: (logger: Logger) => void`
+<ParamField body="setLogger" type="(logger: Logger) => void">
 - A function to update the `logger`.
+</ParamField>
 
-#### `getConfig: () => TRealtimeWebSocketConfig`
+<ParamField body="getConfig" type="() => TRealtimeWebSocketConfig">
 - A function that builds and returns the configuration object.
 - Internally, it passes all inputs to [createConfig](./createConfig) and returns its output.
-
+</ParamField>

@@ -94,57 +94,57 @@ As we continuously update the internal logic and configuration options, using th
 will generally ensure that you stay up-to-date with the latest features without needing to
 make any manual updates.
 
-<ResponseField name="functionURL" type="string | undefined">
+<ParamField body="functionURL" type="string | undefined">
 - The URL of the function to be used in the configuration.
 - Either `functionURL` or `offerURL` is required. Otherwise, `createConfig` will throw an error.
-</ResponseField>
+</ParamField>
 
-<ResponseField name="offerURL" type="string | undefined">
+<ParamField body="offerURL" type="string | undefined">
 - Optional URL for local testing. If both `functionURL` and `offerURL` are provided, `functionURL` takes precedence.
 - Either `functionURL` or `offerURL` is required. Otherwise, `createConfig` will throw an error.
-</ResponseField>
+</ParamField>
 
-<ResponseField name="audioDeviceId" type="string | undefined">
+<ParamField body="audioDeviceId" type="string | undefined">
 - Optional device ID for the selected audio input device.
-</ResponseField>
+</ParamField>
 
-<ResponseField name="videoDeviceId" type="string | undefined">
+<ParamField body="videoDeviceId" type="string | undefined">
 - Optional device ID for the selected video input device.
-</ResponseField>
+</ParamField>
 
-<ResponseField name="audioConstraints" type="MediaTrackConstraints | undefined">
+<ParamField body="audioConstraints" type="MediaTrackConstraints | undefined">
 - Optional media track constraints for capturing audio.
-</ResponseField>
+</ParamField>
 
-<ResponseField name="videoConstraints" type="MediaTrackConstraints | undefined">
+<ParamField body="videoConstraints" type="MediaTrackConstraints | undefined">
 - Optional media track constraints for capturing video.
-</ResponseField>
+</ParamField>
 
-<ResponseField name="screenConstraints" type="DisplayMediaStreamOptions | undefined">
+<ParamField body="screenConstraints" type="DisplayMediaStreamOptions | undefined">
 - Optional constraints for screen sharing.
-</ResponseField>
+</ParamField>
 
-<ResponseField name="audioCodec" type="TAudioCodec | undefined">
+<ParamField body="audioCodec" type="TAudioCodec | undefined">
 - Optional codec for audio, defaults to `"PCMU/8000"` if not provided.
-</ResponseField>
+</ParamField>
 
-<ResponseField name="videoCodec" type="TVideoCodec | undefined">
+<ParamField body="videoCodec" type="TVideoCodec | undefined">
 - Optional codec for video.
-</ResponseField>
+</ParamField>
 
-<ResponseField name="videoTransform" type="TVideoTransform | undefined">
+<ParamField body="videoTransform" type="TVideoTransform | undefined">
 - Optional transformation type for video processing.
-</ResponseField>
+</ParamField>
 
-<ResponseField name="dataChannelOptions" type="RTCDataChannelInit | undefined">
+<ParamField body="dataChannelOptions" type="RTCDataChannelInit | undefined">
 - Optional configuration options for the RTC data channel.
-</ResponseField>
+</ParamField>
 
-<ResponseField name="rtcConfig" type="RTCConfiguration | undefined">
+<ParamField body="rtcConfig" type="RTCConfiguration | undefined">
 - Optional configuration object for setting up the WebRTC connection.
-</ResponseField>
+</ParamField>
 
-<ResponseField name="logger" type="Logger | undefined">
+<ParamField body="logger" type="Logger | undefined">
 - Optional logger for logging and debugging purposes.
 - This must implement the [Logger](https://github.com/outspeed-ai/outspeed-js/blob/main/packages/core/src/Logger/Logger.ts) class.
-</ResponseField>
+</ParamField>

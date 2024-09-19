@@ -32,66 +32,76 @@ The `useWebRTC` hook handles all the necessary logic to manage a WebRTC connecti
 
 ### Options
 
-#### `config: TRealtimeConfig`
+<ParamField body="config" type="TRealtimeConfig">
 - **Required**
 - This configuration is used by the `useWebRTC` hook to initialize local audio and video streams, set up peer connections, enable logging, and more.
 - Learn more about `config` [here](./useCreateConfig).
+</ParamField>
 
 ### Returns
 
-#### `connectionStatus: TWebRTCConnectionStatus`
-- Possible values:
-  - `Init` when the component mounts and `config` is undefined.
-  - `SetupCompleted` when `config` is defined but `connect` hasn't been called.
-  - `Connecting` when `connect` is called and the connection to the backend is in progress.
-  - `Connected` when the connection to the backend is successful.
-  - `Failed` if the connection to the backend fails.
-  - `Disconnecting` when attempting to disconnect from the backend.
-  - `Disconnected` when successfully disconnected from the backend.
+<ParamField body="connectionStatus" type="TWebRTCConnectionStatus">
+- `Init` when the component mounts and `config` is undefined.
+- `SetupCompleted` when `config` is defined but `connect` hasn't been called.
+- `Connecting` when `connect` is called and the connection to the backend is in progress.
+- `Connected` when the connection to the backend is successful.
+- `Failed` if the connection to the backend fails.
+- `Disconnecting` when attempting to disconnect from the backend.
+- `Disconnected` when successfully disconnected from the backend.
+</ParamField>
 
-
-#### `connect: () => void`
+<ParamField body="connect" type="() => void">
 - A function that initiates the connection to the backend.
 - Be sure to call this when `connectionStatus` is `SetupCompleted`, otherwise it will have no effect.
+</ParamField>
 
-#### `disconnect: () => void`
+<ParamField body="disconnect" type="() => void">
 - A function to disconnect from the backend.
 - Be sure to call this when `connectionStatus` is `Connected`, otherwise it will have no effect.
+</ParamField>
 
-#### `reset: () => void`
+<ParamField body="reset" type="() => void">
 - A function to reset the connection.
 - Be sure to call this when `connectionStatus` is `Disconnected`, otherwise it will have no effect.
 - This will set the `connectionStatus` to `Init`.
+</ParamField>
 
-#### `dataChannel: WebRTCDataChannel`
+<ParamField body="dataChannel" type="WebRTCDataChannel">
 - A WebRTC data channel for sending and receiving messages.
 - To send a message to the backend, use `dataChannel.send({ type: "message", data: "Hello" })`.
 - To listen for messages from the backend, use `dataChannel.addEventListener('message', (message) => console.log(message))`.
 - To remove a message listener, use `dataChannel.removeEventListener('message', onMessage)`.
 - The available events are `open` (triggered when the data channel opens), `close` (triggered when the data channel closes), and `message` (triggered when a message is received).
+</ParamField>
 
-#### `addEventListener: (type: TRealtimeConnectionListenerType, listener: TRealtimeConnectionListener) => TUseWebRTCReturn`
-- To attach event listener to the RTCPeerConnection.
+<ParamField body="addEventListener" type="(type: TRealtimeConnectionListenerType, listener: TRealtimeConnectionListener) => TUseWebRTCReturn">
+- To attach an event listener to the RTCPeerConnection.
 - Refer to this [MDN doc](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection#events) to learn more.
+</ParamField>
 
-#### `removeEventListener: (type: TRealtimeConnectionListenerType, listener: TRealtimeConnectionListener) => TUseWebRTCReturn`
-- To remove event listener from the RTCPeerConnection.
+<ParamField body="removeEventListener" type="(type: TRealtimeConnectionListenerType, listener: TRealtimeConnectionListener) => TUseWebRTCReturn">
+- To remove an event listener from the RTCPeerConnection.
+</ParamField>
 
-#### `getLocalAudioTrack: () => Track | null`
+<ParamField body="getLocalAudioTrack" type="() => Track | null">
 - Returns the first local audio track, or `null` if no audio track is available.
 - This is a reactive function that may trigger a re-render when a track is added or removed.
+</ParamField>
 
-#### `getLocalVideoTrack: () => Track | null`
+<ParamField body="getLocalVideoTrack" type="() => Track | null">
 - Returns the first local video track, or `null` if no video track is available.
 - This is a reactive function that may trigger a re-render when a track is added or removed.
+</ParamField>
 
-#### `getRemoteAudioTrack: (remoteId: string) => Track | null | undefined`
+<ParamField body="getRemoteAudioTrack" type="(remoteId: string) => Track | null | undefined">
 - Returns the first active remote audio track, or `null` if it doesn't exist. If the connection is still in progress, it may return `undefined`. Once the connection is updated, it will return the track.
 - This is a reactive function that may trigger a re-render when a track is added or removed.
+</ParamField>
 
-#### `getRemoteVideoTrack: (remoteId: string) => Track | null | undefined`
+<ParamField body="getRemoteVideoTrack" type="(remoteId: string) => Track | null | undefined">
 - Returns the first active remote video track, or `null` if it doesn't exist. If the connection is still in progress, it may return `undefined`. Once the connection is updated, it will return the track.
 - This is a reactive function that may trigger a re-render when a track is added or removed.
+</ParamField>
 
 
 ### Resources
