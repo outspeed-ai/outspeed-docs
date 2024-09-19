@@ -1,0 +1,70 @@
+---
+title: 'RealtimeAudio'
+description: 'A component for managing local or remote audio track.'
+---
+
+<RequestExample>
+
+```jsx AudioContainer.jsx
+import { RealtimeAudio } from "@outspeed/react";
+
+
+export function AudioContainer() {
+  const { audioTrack } = props
+
+  return (
+    <div>
+      <RealtimeAudio track={audioTrack} />
+    </div>
+  );
+}
+```
+
+```tsx AudioContainer.tsx
+import { Track } from "@outspeed/core";
+import { RealtimeAudio } from "@outspeed/react";
+
+type TAudioContainerProps = {
+  audioTrack?: Track;
+}
+
+export function AudioContainer(props: TAudioContainerProps) {
+  const { audioTrack } = props
+
+  return (
+    <div>
+      <RealtimeAudio track={audioTrack} />
+    </div>
+  );
+}
+```
+</RequestExample>
+
+<Note>All of our components are built using Tailwind CSS. Make sure to set it up correctly by following the guide available [here](https://tailwindcss.com/docs/installation).</Note>
+
+
+`RealtimeAudio` can manage local or remote audio tracks. It uses an HTML audio element internally to
+play the audio track. 
+
+## Props
+
+<ResponseField name="track" type="Track">
+  A local or remote audio track.
+</ResponseField>
+
+<ResponseField name="volume" type="number">
+  The volume level for the audio track, ranging from 0 to 100. The default is 100.
+</ResponseField>
+
+### Resources
+
+<CardGroup cols={1}>
+  <Card
+    title="RealtimeAudio"
+    icon="github"
+    iconType="solid"
+    href="https://github.com/outspeed-ai/outspeed-js/blob/main/packages/react/src/components/realtime-audio.tsx"
+  >
+    Explore the `<RealtimeAudio />` code on GitHub to learn how to create your own chat component.
+  </Card>
+</CardGroup>

@@ -1,0 +1,93 @@
+---
+title: "Form"
+description: "All necessary components to build forms to take user inputs."
+---
+
+<RequestExample>
+```tsx TakeInput.tsx
+import React from "react";
+import {
+  RealtimeForm,
+  RealtimeFunctionURLInput,
+  RealtimeAudioInput,
+  RealtimeVideoInput,
+  RealtimeFormButton,
+} from "@outspeed/react";
+import { TRealtimeConfig, createConfig, ConsoleLogger } from "@outspeed/core";
+
+export type TTakeUserInputProps = {
+  /**
+   * A call back when form is submitted.
+   */
+  onSubmit: (config: TRealtimeConfig) => void;
+};
+
+export function TakeUserInput(props: TTakeUserInputProps) {
+  const { onSubmit } = props;
+  const [audioDeviceId, setAudioDeviceId] = React.useState("");
+  const [videoDeviceId, setVideoDeviceId] = React.useState("");
+  const [functionURL, setFunctionURL] = React.useState("http://localhost:8080");
+
+  function handleFormSubmit() {
+    try {
+      const config = createConfig({
+        functionURL,
+        audioDeviceId,
+        videoDeviceId,
+        logger: ConsoleLogger.getLogger(),
+      });
+      onSubmit(config);
+    } catch (error) {
+      console.error("Unable to create config", error);
+    }
+  }
+
+  return (
+    <RealtimeForm>
+      <RealtimeFunctionURLInput
+        onChange={(e) => setFunctionURL(e.currentTarget.value)}
+        value={functionURL}
+      />
+      <RealtimeAudioInput
+        value={audioDeviceId}
+        onChange={setAudioDeviceId}
+        description="Select the microphone you want to use. If you don't see your microphone, make sure it is plugged in."
+      />
+      <RealtimeVideoInput
+        value={videoDeviceId}
+        onChange={setVideoDeviceId}
+        description="Select the camera you want to use. If you don't see your camera, make sure it is plugged in."
+      />
+      <RealtimeFormButton onClick={handleFormSubmit}>Run</RealtimeFormButton>
+    </RealtimeForm>
+  );
+}
+```
+</RequestExample>
+
+<Note>All of our components are built using Tailwind CSS. Make sure to set it up correctly by following the guide available [here](https://tailwindcss.com/docs/installation).</Note>
+
+We offer several useful React components that you can use to create a form for user input.
+
+### Components
+
+<ResponseField name="<RealtimeForm />">
+A styled form component.
+</ResponseField>
+
+<ResponseField name="<RealtimeFunctionURLInput />">
+A styled input component for entering the function URL.
+</ResponseField>
+
+<ResponseField name="<RealtimeAudioInput />">
+A styled select component designed for selecting audio input. It utilizes `useAvailableMediaDevices` to show a list of all audio devices connected to the system, allowing users to choose from them.
+</ResponseField>
+
+<ResponseField name="<RealtimeVideoInput />">
+A styled select component designed for selecting video input. It uses `useAvailableMediaDevices` to display a list of all video devices connected to the system, enabling users to select from them.
+</ResponseField>
+
+<ResponseField name="<RealtimeFormButton />">
+A styled button component for form submission.
+</ResponseField>
+

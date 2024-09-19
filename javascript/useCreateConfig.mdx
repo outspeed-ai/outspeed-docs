@@ -1,0 +1,113 @@
+---
+title: "useCreateConfig"
+description: "A hook that helps you build configuration for `useWebRTC`."
+---
+
+<RequestExample>
+```ts useCreateConfig.ts
+import { useCreateConfig } from "@outspeed/react"
+
+const {
+  functionURL,
+  setFunctionURL,
+  audioDeviceId,
+  setAudioDeviceId,
+  videoDeviceId,
+  setVideoDeviceId,
+  audioConstraints,
+  setAudioConstraints,
+  videoConstraints,
+  setVideoConstraints,
+  screenConstraints,
+  setScreenConstraints,
+  audioCodec,
+  setAudioCodec,
+  videoCodec,
+  setVideoCodec,
+  dataChannelOptions,
+  setDataChannelOptions,
+  rtcConfig,
+  setRTCConfig,
+  logger,
+  setLogger,
+  getConfig,
+} = useCreateConfig()
+
+```
+
+</RequestExample>
+
+It also offers a set of setters and getters to update or retrieve values.
+
+### Returns
+
+#### `functionURL: string`
+- The URL of the function for the backend, obtained after deploying the app using `outspeed-client`.
+
+#### `setFunctionURL: (functionURL: string) => void`
+- A function to update the `functionURL`.
+
+#### `audioDeviceId: string | null`
+- The ID of the selected audio device. `null` if no device is selected.
+
+#### `setAudioDeviceId: (audioDeviceId: string | null) => void`
+- A function to update the `audioDeviceId`.
+
+#### `videoDeviceId: string | null`
+- The ID of the selected video device. `null` if no device is selected.
+
+#### `setVideoDeviceId: (videoDeviceId: string | null) => void`
+- A function to update the `videoDeviceId`.
+
+#### `audioConstraints: MediaTrackConstraints`
+- The audio constraints used for obtaining media from the `navigator`.
+
+#### `setAudioConstraints: (audioConstraints: MediaTrackConstraints) => void`
+- A function to update the `audioConstraints`.
+
+#### `videoConstraints: MediaTrackConstraints`
+- The video constraints used for obtaining media from the `navigator`.
+
+#### `setVideoConstraints: (videoConstraints: MediaTrackConstraints) => void`
+- A function to update the `videoConstraints`.
+
+#### `screenConstraints: MediaTrackConstraints`
+- The screen constraints used for capturing screen media.
+
+#### `setScreenConstraints: (screenConstraints: MediaTrackConstraints) => void`
+- A function to update the `screenConstraints`.
+
+#### `audioCodec: string`
+- The codec used for audio.
+
+#### `setAudioCodec: (audioCodec: string) => void`
+- A function to update the `audioCodec`.
+
+#### `videoCodec: string`
+- The codec used for video.
+
+#### `setVideoCodec: (videoCodec: string) => void`
+- A function to update the `videoCodec`.
+
+#### `dataChannelOptions: RTCDataChannelInit`
+- Options for configuring the WebRTC data channel.
+
+#### `setDataChannelOptions: (dataChannelOptions: RTCDataChannelInit) => void`
+- A function to update the `dataChannelOptions`.
+
+#### `rtcConfig: RTCConfiguration`
+- The configuration used for setting up the WebRTC peer connection.
+
+#### `setRTCConfig: (rtcConfig: RTCConfiguration) => void`
+- A function to update the `rtcConfig`.
+
+#### `logger: Logger`
+- The logger instance used for handling and storing logs.
+
+#### `setLogger: (logger: Logger) => void`
+- A function to update the `logger`.
+
+#### `getConfig: () => TRealtimeWebSocketConfig`
+- A function that builds and returns the configuration object.
+- Internally, it passes all inputs to [createConfig](./createConfig) and returns its output.
+
