@@ -92,3 +92,24 @@ The `useWebRTC` hook handles all the necessary logic to manage a WebRTC connecti
 #### `getRemoteVideoTrack: (remoteId: string) => Track | null | undefined`
 - Returns the first active remote video track, or `null` if it doesn't exist. If the connection is still in progress, it may return `undefined`. Once the connection is updated, it will return the track.
 - This is a reactive function that may trigger a re-render when a track is added or removed.
+
+
+
+<CardGroup cols={2}>
+  <Card
+    title="WebRTC Realtime App"
+    icon="github"
+    iconType="solid"
+    href="https://github.com/outspeed-ai/outspeed-js/blob/main/examples/playground-js/src/webrtc/RealtimeApp.tsx"
+  >
+    Check out WebRTC Realtime App on GitHub
+  </Card>
+  <Card
+    title="useWebRTC"
+    icon="github"
+    iconType="solid"
+    href="https://github.com/outspeed-ai/outspeed-js/blob/main/packages/react/src/hooks/useWebRTC.ts"
+  >
+    Check out our useWebRTC code on Github.
+  </Card>
+</CardGroup>
