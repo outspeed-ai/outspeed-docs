@@ -13,10 +13,10 @@ You can build applications like:
 3. Physical security for theft detection, permiter protection, etc.
 4. Video intelligence systems for object search, OCR, action detection, etc.
 
-To write your application backend, use `realtime-client` PythonSDK that's purpose built for voice and video apps.
+To write your application backend, use `outspeed` PythonSDK that's purpose built for voice and video apps.
 The frontend components are available in `realtime-react` npm package and help you integrate with the deployed backend easily.
 
-## Introduction to `realtime-client` Python SDK
+## Introduction to `outspeed` Python SDK
 
 Outspeed's Python SDK provides a powerful and flexible way to build realtime AI applications on top of video, voice, and text data. With this SDK, you can easily create interactive voice bots, AI avatars, physical security systems, and video intelligence applications.
 
@@ -42,7 +42,7 @@ To get started with Outspeed's Python SDK, you'll need Python 3.9 or later. Inst
 
 <CodeGroup>
 ```bash MacOS/Linux
-pip install realtime-client
+pip install outspeed
 ```
 </CodeGroup>
 
@@ -52,16 +52,16 @@ pip install realtime-client
 Here's the scaffolding for a realtime application built using Outspeed's Python SDK:
 
 ```python
-import realtime as rt
+import outspeed as sp
 
-@rt.App()
+@sp.App()
 class MyApplication:
     def setup(self):
         # Initialize your services, databases and models
         pass
 
-    @rt.streaming_endpoint()
-    async def run(self, video_input: rt.VideoStream) -> rt.VideoStream:
+    @sp.streaming_endpoint()
+    async def run(self, video_input: sp.VideoStream) -> sp.VideoStream:
         # Process the video stream
         pass
 
@@ -74,19 +74,19 @@ class MyApplication:
 
 This demonstrates the basic structure of an Outspeed application:
 
-1. We use the `@rt.App()` decorator to define our application class.
+1. We use the `@sp.App()` decorator to define our application class.
 2. The `setup` method is used to initialize services and load models.
-3. The `run` method is decorated with `@rt.streaming_endpoint()` to handle realtime streaming data.
+3. The `run` method is decorated with `@sp.streaming_endpoint()` to handle realtime streaming data.
 4. The `teardown` method is used for cleaning up resources when the application stops.
 
 
 ## Core Concepts
 
 
-1. **`rt.App`**: The main application class that encapsulates your entire application logic. This is what's deployed on Outspeed cloud and scales based on the number of concurrent connections
+1. **`sp.App`**: The main application class that encapsulates your entire application logic. This is what's deployed on Outspeed cloud and scales based on the number of concurrent connections
 to the endpoint.
 
-2. **Endpoint**: In this scafolding, we use a `rt.streaming_endpoint()` which is a WebRTC endpoints. You can learn about other types of endpoints [here](). WIP.
+2. **Endpoint**: In this scafolding, we use a `sp.streaming_endpoint()` which is a WebRTC endpoints. You can learn about other types of endpoints [here](). WIP.
 
 3. **Streams**: A streaming endpoint can accept multiple types of streams. The supported stream types are: `TextStream`, `AudioStream`, `VideoStream`, and `ByteStream`. Currently, you can only have one argument of each stream type in your endpoint function. Outspeed's infrastructure handles the streams on the frontend and connects them to your realtime application python code. You can read more about stream types [here](). (Note: This section is a work in progress.)
 
@@ -95,7 +95,7 @@ to the endpoint.
 Once you've built your application, you can deploy it to Outspeed's serverless infrastructure using the CLI:
 
 <Info>
-You need to have `realtime-client` python package installed for this CLI command.
+You need to have `outspeed` python package installed for this CLI command.
 </Info>
 
 ```bash

@@ -5,7 +5,7 @@
     "dark": "/logo/3.svg",
     "light": "/logo/2.svg"
   },
-  "openapi": "/realtime_sdk/openapi.json",
+  "openapi": "/outspeed_sdk/openapi.json",
   "favicon": "/logo/1.svg",
   "colors": {
     "primary": "#0D9373",
@@ -35,8 +35,8 @@
     "url": "examples"
     },
     {
-      "name": "Realtime SDK",
-      "url": "realtime_sdk"
+      "name": "Outspeed Python SDK",
+      "url": "outspeed_sdk"
     },
     {
       "name": "React/JS Client SDK",
@@ -102,24 +102,24 @@
     },
     {
       "group": "General",
-      "pages": ["realtime_sdk/installation"]
+      "pages": ["outspeed_sdk/installation"]
     },
     {
       "group": "CLI",
-      "pages": ["realtime_sdk/cli/deploy"]
+      "pages": ["outspeed_sdk/cli/deploy"]
     },
     {
       "group": "Python API",
       "pages": [
-        "realtime_sdk/sdk/app",
-        "realtime_sdk/sdk/streaming_endpoint",
+        "outspeed_sdk/sdk/app",
+        "outspeed_sdk/sdk/streaming_endpoint",
         {
           "group": "Plugins",
           "pages": [
-        "realtime_sdk/sdk/plugins/openai",
-        "realtime_sdk/sdk/plugins/elevenlabs",
-        "realtime_sdk/sdk/plugins/fireworksai",
-        "realtime_sdk/sdk/plugins/deepgram"
+        "outspeed_sdk/sdk/plugins/openai",
+        "outspeed_sdk/sdk/plugins/elevenlabs",
+        "outspeed_sdk/sdk/plugins/fireworksai",
+        "outspeed_sdk/sdk/plugins/deepgram"
           ]
         }
       ]
