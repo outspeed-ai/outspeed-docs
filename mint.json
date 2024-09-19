@@ -31,8 +31,8 @@
   },
   "tabs": [
     {
-    "name": "Examples",
-    "url": "examples"
+      "name": "Examples",
+      "url": "examples"
     },
     {
       "name": "Realtime SDK",
@@ -102,11 +102,15 @@
     },
     {
       "group": "General",
-      "pages": ["realtime_sdk/installation"]
+      "pages": [
+        "realtime_sdk/installation"
+      ]
     },
     {
       "group": "CLI",
-      "pages": ["realtime_sdk/cli/deploy"]
+      "pages": [
+        "realtime_sdk/cli/deploy"
+      ]
     },
     {
       "group": "Python API",
@@ -116,27 +120,33 @@
         {
           "group": "Plugins",
           "pages": [
-        "realtime_sdk/sdk/plugins/openai",
-        "realtime_sdk/sdk/plugins/elevenlabs",
-        "realtime_sdk/sdk/plugins/fireworksai",
-        "realtime_sdk/sdk/plugins/deepgram"
+            "realtime_sdk/sdk/plugins/openai",
+            "realtime_sdk/sdk/plugins/elevenlabs",
+            "realtime_sdk/sdk/plugins/fireworksai",
+            "realtime_sdk/sdk/plugins/deepgram"
           ]
         }
       ]
     },
     {
-      "group": "General",
-      "pages": ["javascript/usage"]
+      "group": "Getting Started",
+      "pages": [
+        "javascript/introduction",
+        "javascript/installation",
+        "javascript/usage"
+      ]
     },
     {
-      "group": "Components",
+      "group": "React Components API",
       "pages": [
-        "javascript/useRealtime",
-        "javascript/useConfig",
-        "javascript/RtAudio",
-        "javascript/RtVideo",
-        "javascript/RtChat",
-        "javascript/RtAudioVisualizer"
+        "javascript/useWebRTC",
+        "javascript/useWebSocket",
+        "javascript/useAvailableMediaDevices",
+        "javascript/useCreateConfig",
+        "javascript/useRealtimeToast",
+        "javascript/RealtimeVideo",
+        "javascript/RealtimeAudio",
+        "javascript/RealtimeChat"
       ]
     }
   ],
