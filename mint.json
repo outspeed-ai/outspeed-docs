@@ -132,8 +132,15 @@
       "group": "Getting Started",
       "pages": [
         "javascript/introduction",
-        "javascript/installation",
-        "javascript/usage"
+        "javascript/installation"
+      ]
+    },
+    {
+      "group": "Usage",
+      "pages": [
+        "javascript/usage",
+        "javascript/connect-webrtc",
+        "javascript/connect-websocket"
       ]
     },
     {

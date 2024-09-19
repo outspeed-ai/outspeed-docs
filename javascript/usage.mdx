@@ -1,68 +1,47 @@
 ---
 title: "Usage"
 sidebarTitle: "Usage"
-description: "Easily integrate realtime's functionality into your web applications."
+description: ""
 ---
 
-Realtime's Web SDK offers a straightforward API that enables web developers to utilize realtime audio/video capabilities efficiently.
+`@outspeed/react` simplifies connecting your React frontend to a backend
+deployed with `outspeed-client`. It provides all the necessary components and
+hooks to easily establish the connection between your application and the backend.
 
-### Installation
+This guide assumes that you've already deployed your backend using `outspeed-client`,
+have a `function URL` ready, and have an existing React app set up. If not, please
+follow [this tutorial](/todo-add-a-link-to-the-tutorial) to deploy your backend with
+`outspeed-client`.
 
-To install the package, use:
-
-```bash
-npm install @adaptai/realtime-react
-```
-
-You can find the source code on [GitHub](https://github.com/xAlpha8/realtime-js)
+By the end of this guide, you'll learn how to connect your React frontend to
+the backend deployed using `realtime-client`.
 
 
-### Importing
+### Resources
 
-To import the package:
-
-```javascript
-import { useRealtime } from "@adaptai/realtime-react";
-```
-
-Next, initialize the realtime class by passing your **Function URL** to the constructor:
-
-```javascript
-const realtime = useRealtime({ functionURL: "your-function-url" });
-```
-
-Function URL is returned after deploying your realtime function using the python CLI `realtime deploy`.
-You'll need an API key to deploy the realtime function. [Contact us](mailto:contact@getadapt.ai) to get the API key.
-
----
-
-## Resources
-
-<CardGroup cols={2}>
+<CardGroup cols={3}>
   <Card
-    title="NPM"
-    icon="npm"
-    iconType="solid"
-    href="https://www.npmjs.com/package/@adaptai/realtime-react"
-  >
-    Explore the package on NPM.
-  </Card>
-  <Card
-    title="GitHub"
+    title="Playground"
     icon="github"
     iconType="solid"
-    href="https://github.com/xAlpha8/realtime-js"
+    href="https://github.com/outspeed-ai/outspeed-js"
   >
-    Check out the GitHub repository.
+    Check out our playground code on Github.
   </Card>
-</CardGroup>
-<CardGroup cols={1}>
   <Card
-    title="Quickstart Guide"
-    icon="bolt"
+    title="WebRTC Example"
+    icon="github"
     iconType="solid"
-    href="/quickstart"
+    href="https://github.com/outspeed-ai/outspeed-js/tree/main/examples/playground-js/src/webrtc"
   >
-    Jumpstart your implementation with the Web SDK.
+    Check out our WebRTC App on Github.
+  </Card>
+  <Card
+    title="WebSocket Example"
+    icon="github"
+    iconType="solid"
+    href="https://github.com/outspeed-ai/outspeed-js/tree/main/examples/playground-js/src/websocket"
+  >
+    Check out our WebSocket App on Github.
   </Card>
 </CardGroup>
