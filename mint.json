@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Outspeed Docs",
+  "name": "Adapt AI Docs",
   "logo": {
     "dark": "/logo/3.svg",
     "light": "/logo/2.svg"
   },
-  "openapi": "/outspeed_sdk/openapi.json",
+  "openapi": "/realtime_sdk/openapi.json",
   "favicon": "/logo/1.svg",
   "colors": {
     "primary": "#0D9373",
@@ -23,7 +23,7 @@
     }
   ],
   "topbarCtaButton": {
-    "name": "Get API Key",
+    "name": "Raise an Issue",
     "url": "https://cal.com/outspeed-sahil/30min"
   },
   "primaryTab": {
@@ -35,8 +35,8 @@
     "url": "examples"
     },
     {
-      "name": "Outspeed Python SDK",
-      "url": "outspeed_sdk"
+      "name": "Realtime SDK",
+      "url": "realtime_sdk"
     },
     {
       "name": "React/JS Client SDK",
@@ -102,24 +102,24 @@
     },
     {
       "group": "General",
-      "pages": ["outspeed_sdk/installation"]
+      "pages": ["realtime_sdk/installation"]
     },
     {
       "group": "CLI",
-      "pages": ["outspeed_sdk/cli/deploy"]
+      "pages": ["realtime_sdk/cli/deploy"]
     },
     {
       "group": "Python API",
       "pages": [
-        "outspeed_sdk/sdk/app",
-        "outspeed_sdk/sdk/streaming_endpoint",
+        "realtime_sdk/sdk/app",
+        "realtime_sdk/sdk/streaming_endpoint",
         {
           "group": "Plugins",
           "pages": [
-        "outspeed_sdk/sdk/plugins/openai",
-        "outspeed_sdk/sdk/plugins/elevenlabs",
-        "outspeed_sdk/sdk/plugins/fireworksai",
-        "outspeed_sdk/sdk/plugins/deepgram"
+        "realtime_sdk/sdk/plugins/openai",
+        "realtime_sdk/sdk/plugins/elevenlabs",
+        "realtime_sdk/sdk/plugins/fireworksai",
+        "realtime_sdk/sdk/plugins/deepgram"
           ]
         }
       ]

@@ -5,12 +5,12 @@ description: "React hook to setup connection configuration."
 
 <RequestExample>
 ```jsx
-import { useConfig, RealtimeComponent } from '@outspeed/react';
+import { useConfig, RealtimeComponent } from '@adaptai/realtime-react';
 
 function App() {
   const [config, setConfig] = useState(null);
   const configDefault = {
-  functionURL: "http://infra.outspeed.ai/run/f5a918c87dx5ca0xc4811fccef0d4d08",
+  functionURL: "http://infra.getadapt.ai/run/f5a918c87dx5ca0xc4811fccef0d4d08",
   isDataEnabled: true,
   dataParameters: { ordered: true },
   isVideoEnabled: true,

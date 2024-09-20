@@ -3,9 +3,9 @@ title: "Introduction"
 description: "Quickly build realtime AI applications using RealtimeSDK"
 ---
 
-## What is Outspeed?
+## What is Adapt?
 
-Outspeed allows you to quickly build realtime AI applications on video and voice.
+Adapt allows you to quickly build realtime AI applications on video and voice.
 
 You can build applications like:
 1. Interactive voice bot for information collection, customer support, therapy, companionship, etc.
@@ -13,12 +13,12 @@ You can build applications like:
 3. Physical security for theft detection, permiter protection, etc.
 4. Video intelligence systems for object search, OCR, action detection, etc.
 
-To write your application backend, use `outspeed` PythonSDK that's purpose built for voice and video apps.
+To write your application backend, use `realtime-client` PythonSDK that's purpose built for voice and video apps.
 The frontend components are available in `realtime-react` npm package and help you integrate with the deployed backend easily.
 
-## Introduction to `outspeed` Python SDK
+## Introduction to `realtime-client` Python SDK
 
-Outspeed's Python SDK provides a powerful and flexible way to build realtime AI applications on top of video, voice, and text data. With this SDK, you can easily create interactive voice bots, AI avatars, physical security systems, and video intelligence applications.
+Adapt's Python SDK provides a powerful and flexible way to build realtime AI applications on top of video, voice, and text data. With this SDK, you can easily create interactive voice bots, AI avatars, physical security systems, and video intelligence applications.
 
 
 ### Key Features
@@ -38,30 +38,30 @@ Outspeed's Python SDK provides a powerful and flexible way to build realtime AI 
 ### Installation
 
 
-To get started with Outspeed's Python SDK, you'll need Python 3.9 or later. Install the SDK using pip:
+To get started with Adapt's Python SDK, you'll need Python 3.9 or later. Install the SDK using pip:
 
 <CodeGroup>
 ```bash MacOS/Linux
-pip install outspeed
+pip install realtime-client
 ```
 </CodeGroup>
 
 
 ### Basic Usage
 
-Here's the scaffolding for a realtime application built using Outspeed's Python SDK:
+Here's the scaffolding for a realtime application built using Adapt's Python SDK:
 
 ```python
-import outspeed as sp
+import realtime as rt
 
-@sp.App()
+@rt.App()
 class MyApplication:
     def setup(self):
         # Initialize your services, databases and models
         pass
 
-    @sp.streaming_endpoint()
-    async def run(self, video_input: sp.VideoStream) -> sp.VideoStream:
+    @rt.streaming_endpoint()
+    async def run(self, video_input: rt.VideoStream) -> rt.VideoStream:
         # Process the video stream
         pass
 
@@ -72,33 +72,33 @@ class MyApplication:
 ```
 
 
-This demonstrates the basic structure of an Outspeed application:
+This demonstrates the basic structure of an Adapt application:
 
-1. We use the `@sp.App()` decorator to define our application class.
+1. We use the `@rt.App()` decorator to define our application class.
 2. The `setup` method is used to initialize services and load models.
-3. The `run` method is decorated with `@sp.streaming_endpoint()` to handle realtime streaming data.
+3. The `run` method is decorated with `@rt.streaming_endpoint()` to handle realtime streaming data.
 4. The `teardown` method is used for cleaning up resources when the application stops.
 
 
 ## Core Concepts
 
 
-1. **`sp.App`**: The main application class that encapsulates your entire application logic. This is what's deployed on Outspeed cloud and scales based on the number of concurrent connections
+1. **`rt.App`**: The main application class that encapsulates your entire application logic. This is what's deployed on Adapt cloud and scales based on the number of concurrent connections
 to the endpoint.
 
-2. **Endpoint**: In this scafolding, we use a `sp.streaming_endpoint()` which is a WebRTC endpoints. You can learn about other types of endpoints [here](). WIP.
+2. **Endpoint**: In this scafolding, we use a `rt.streaming_endpoint()` which is a WebRTC endpoints. You can learn about other types of endpoints [here](). WIP.
 
-3. **Streams**: A streaming endpoint can accept multiple types of streams. The supported stream types are: `TextStream`, `AudioStream`, `VideoStream`, and `ByteStream`. Currently, you can only have one argument of each stream type in your endpoint function. Outspeed's infrastructure handles the streams on the frontend and connects them to your realtime application python code. You can read more about stream types [here](). (Note: This section is a work in progress.)
+3. **Streams**: A streaming endpoint can accept multiple types of streams. The supported stream types are: `TextStream`, `AudioStream`, `VideoStream`, and `ByteStream`. Currently, you can only have one argument of each stream type in your endpoint function. Adapt's infrastructure handles the streams on the frontend and connects them to your realtime application python code. You can read more about stream types [here](). (Note: This section is a work in progress.)
 
 ## Deployment
 
-Once you've built your application, you can deploy it to Outspeed's serverless infrastructure using the CLI:
+Once you've built your application, you can deploy it to Adapt's serverless infrastructure using the CLI:
 
 <Info>
-You need to have `outspeed` python package installed for this CLI command.
+You need to have `realtime-client` python package installed for this CLI command.
 </Info>
 
 ```bash
-export OUTSPEED_API_KEY=<your-api-key>
-realtime deploy --api-key=$OUTSPEED_API_KEY your_app_file.py
+export ADAPT_API_KEY=<your-api-key>
+realtime deploy --api-key=$ADAPT_API_KEY your_app_file.py
 ```
