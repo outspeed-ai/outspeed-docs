@@ -369,3 +369,11 @@ html:not(.dark) #table-of-contents div ul li .py-1.block.font-medium.-ml-px.text
   border-bottom: 2px solid #00B5CB;
   transition: .3s linear ease-in-out;
 }
+
+#content-container ol li a{
+  border-bottom: 2px solid #19D8D8;
+}
+
+#content-container div div p a{
+  border-bottom: 2px solid #19D8D8;
+}
