@@ -229,7 +229,7 @@ h1.inline-block.text-2xl.sm\:text-3xl.font-extrabold.text-gray-900.tracking-tigh
   font-size: 3rem;
   margin-bottom: 7px;
 }
-@media (max-width: 500px) {
+@media (max-width: 501px) {
   h1.inline-block.text-2xl.sm\:text-3xl.font-extrabold.text-gray-900.tracking-tight.dark\:text-gray-200 {
     font-weight: 500;
     font-size: 2.2rem;
