@@ -356,3 +356,16 @@ background-color: rgba(25, 216, 216, 0.3) !important;
   border-color: rgba(25, 216, 216, 0.3) !important;
   border: 1px solid #80dae5;
 }
+#table-of-contents div ul li .py-1.block.font-medium.-ml-px.text-primary.dark\:text-primary-light.border-l.border-primary.dark\:border-primary-light {
+  /* Apply your desired styles here */
+  color: white !important;
+  border-bottom: 2px solid #19D8D8;
+  transition: .3s linear ease-in-out;
+}
+
+html:not(.dark) #table-of-contents div ul li .py-1.block.font-medium.-ml-px.text-primary.dark\:text-primary-light.border-l.border-primary.dark\:border-primary-light {
+  /* Apply your desired styles here */
+  color: black !important;
+  border-bottom: 2px solid #00B5CB;
+  transition: .3s linear ease-in-out;
+}
