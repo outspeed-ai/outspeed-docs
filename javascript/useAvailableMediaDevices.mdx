@@ -1,0 +1,42 @@
+---
+title: "useAvailableMediaDevices"
+sidebarTitle: "useAvailableMediaDevices"
+description: "A hook that returns all the media devices connected to the system."
+---
+
+<RequestExample>
+```ts useAvailableMediaDevices.ts
+import { useAvailableMediaDevices } from "@outspeed/react"
+
+const {
+    availableAudioDevices,
+    availableVideoDevices,
+} = useAvailableMediaDevices();
+
+```
+</RequestExample>
+
+### Returns
+
+<ParamField body="availableAudioDevices" type="MediaDeviceInfo[]">
+- Returns a list of all audio input devices connected to the system.
+</ParamField>
+
+<ParamField body="availableVideoDevices" type="MediaDeviceInfo[]">
+- Returns a list of all video input devices connected to the system.
+</ParamField>
+
+
+
+### Resources
+
+<CardGroup cols={1}>
+  <Card
+    title="Component using useAvailableMediaDevices"
+    icon="github"
+    iconType="solid"
+    href="https://github.com/outspeed-ai/outspeed-js/blob/main/packages/react/src/components/realtime-audio-input.tsx"
+  >
+    Check out `RealtimeAudioInput` component that uses `useAvailableMediaDevices` under the hood.
+  </Card>
+</CardGroup>
