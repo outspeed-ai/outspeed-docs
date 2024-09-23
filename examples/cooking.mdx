@@ -51,36 +51,36 @@ This app will process input from your microphone, video from camera, send it to 
     ```bash MacOS/Linux
     python3 -m venv .venv
     source .venv/bin/activate
-    pip install realtime-client
+    pip install outspeed
     ```
 
     ```bash Windows
     python -m venv .venv
     .venv\Scripts\activate
-    pip install realtime-client
+    pip install outspeed
     ```
     </CodeGroup>
 
   </Step>
-  <Step title="Deploy to Realtime">
+  <Step title="Deploy to Outspeed">
     <Warning>Ensure you're in the same directory as cooking_assistant.py!</Warning>
-    We will use our realtime [Python SDK](/python_client) to deploy our application.
+    We will use our outspeed [Python SDK](/python_client) to deploy our application.
 
     <CodeGroup>
     ```bash MacOS/Linux
     cd ./multimodal_ai_demos/backend/
-    realtime deploy --api-key=<your-api-key> cooking_assistant.py
+    outspeed deploy --api-key=<your-api-key> cooking_assistant.py
     ```
 
     ```bash Windows
     cd .\multimodal_ai_demos\backend\
-    realtime deploy --api-key=<your-api-key> cooking_assistant.py
+    outspeed deploy --api-key=<your-api-key> cooking_assistant.py
     ```
     </CodeGroup>
 
-    Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime server. Copy the link.
+    Your build will complete in seconds, and then you'll receive a link to your deployed function on the Outspeed server. Copy the link.
 
-    (Coming soon) You can also go to your app on the [Realtime dashboard](https://www.getadapt.ai/dashboard) and get the link.
+    (Coming soon) You can also go to your app on the [Outspeed dashboard](https://www.getadapt.ai/dashboard) and get the link.
 
   </Step>
   <Step title="Launch the frontend">
@@ -165,7 +165,7 @@ This method handles the real-time processing of audio and video streams:
 
 This method ensures that all services are properly closed and resources are freed up when the application is shutting down. Each component is closed sequentially to ensure no dependencies are left hanging.
 
-Deploying with `realtime deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Realtime dashboard!
+Deploying with `outspeed deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Outspeed dashboard!
 
 ## Support
 

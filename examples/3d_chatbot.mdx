@@ -3,13 +3,25 @@ title: "3D Avatar Voice Bot"
 description: "A voice bot with a 3D avatar with realtime lip sync and animation."
 ---
 
-<Info>Make sure you have gone over [QuickStart](/examples/quickstart) before trying this example.</Info>
+<Info>
+  Make sure you have gone over [QuickStart](/examples/quickstart) before trying
+  this example.
+</Info>
 
-In this example, we will build a realtime 3D chatbot. 
+In this example, we will build a realtime 3D chatbot.
 
 ## Demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ehFB2RMf8tc?si=zS68dk8Yten7H0lr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/ehFB2RMf8tc?si=zS68dk8Yten7H0lr"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
 
 ## **Creating a 3D Chatbot in 3 steps**
 
@@ -17,7 +29,9 @@ This app will process input from your microphone, send it to an LLM and convert 
 
 - The full github repository is available [here.](https://github.com/xAlpha8/realtime-examples)
 
-<Info>This application will initially support only English as the source language.</Info>
+<Info>
+  This application will initially support only English as the source language.
+</Info>
 
 <Steps>
   <Step title="Start by cloning the repository">
@@ -36,34 +50,36 @@ This app will process input from your microphone, send it to an LLM and convert 
     ```bash MacOS/Linux
     python3 -m venv .venv
     source .venv/bin/activate
-    pip install realtime-client
+    pip install outspeed
     ```
 
     ```bash Windows
     python -m venv .venv
     .venv\Scripts\activate
-    pip install realtime-client
+    pip install outspeed
     ```
     </CodeGroup>
+
   </Step>
-  <Step title="Deploy to Realtime">
+  <Step title="Deploy to Outspeed">
     <Warning>Ensure you're in the same directory as poker_commentator.py!</Warning>
-    We will use our realtime [Python SDK](/python_client) to deploy our application.
+    We will use our outspeed [Python SDK](/python_client) to deploy our application.
     <CodeGroup>
     ```bash MacOS/Linux
     cd ./3d_avatar_chatbot/backend/
-    realtime deploy --api-key=<your-api-key> chatbot.py
+    outspeed deploy --api-key=<your-api-key> chatbot.py
     ```
 
     ```bash Windows
     cd .\3d_avatar_chatbot\backend\
-    realtime deploy --api-key=<your-api-key> chatbot.py
+    outspeed deploy --api-key=<your-api-key> chatbot.py
     ```
     </CodeGroup>
 
-    Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime server. Copy the link.
-    
-    (Coming soon) You can also go to your app on the [Realtime dashboard](https://www.getadapt.ai/dashboard) and get the link.
+    Your build will complete in seconds, and then you'll receive a link to your deployed function on the Outspeed server. Copy the link.
+
+    (Coming soon) You can also go to your app on the [Outspeed dashboard](https://www.getadapt.ai/dashboard) and get the link.
+
   </Step>
   <Step title="Launch the frontend">
     We have already created a simple frontend using our [React SDK](/javascript).
@@ -88,7 +104,7 @@ This app will process input from your microphone, send it to an LLM and convert 
 
     http://127.0.0.1:5173
 
-    In the function URL field, paste the link you got after `realtime deploy`.
+    In the function URL field, paste the link you got after `outspeed deploy`.
 
     Click `Run`.
 
@@ -124,7 +140,7 @@ The `run` method acts as the streaming endpoint for audio input:
 
 The `teardown` method is responsible for gracefully shutting down and releasing resources associated with each service when the application is closing.
 
-Deploying with `realtime deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Realtime dashboard!
+Deploying with `outspeed deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Outspeed dashboard!
 
 ## Support
 

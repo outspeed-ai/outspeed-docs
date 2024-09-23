@@ -1,18 +1,18 @@
 ---
-title: realtime.streaming_endpoint
+title: outspeed.streaming_endpoint
 ---
 
 ## Overview
 
-The `@realtime.streaming_endpoint` decorator is used to define asynchronous functions that handle streaming data in realtime applications. This decorator allows the function to process continuous streams of data such as audio, video, or any other streamable data types.
+The `@outspeed.streaming_endpoint` decorator is used to define asynchronous functions that handle streaming data in outspeed applications. This decorator allows the function to process continuous streams of data such as audio, video, or any other streamable data types.
 
 ## Creating Streaming Functions
 
-Streaming functions are defined using the `@realtime.streaming_endpoint` decorator. Below is an example of how to create a streaming function that processes audio and video streams:
+Streaming functions are defined using the `@outspeed.streaming_endpoint` decorator. Below is an example of how to create a streaming function that processes audio and video streams:
 
 ```python
-from realtime import App, streaming_endpoint
-from realtime.streams import AudioStream, VideoStream, Stream
+from outspeed import App, streaming_endpoint
+from outspeed.streams import AudioStream, VideoStream, Stream
 
 @App()
 class MediaProcessor:
@@ -25,18 +25,22 @@ class MediaProcessor:
         return processed_audio, processed_video
 ```
 
-<Info>Note the type hints in the function’s arguments. These are strictly required. Type hints are picked up by the realtime package, and are used to generate the streams.</Info>
+<Info>
+  Note the type hints in the function’s arguments. These are strictly required.
+  Type hints are picked up by the outspeed package, and are used to generate the
+  streams.
+</Info>
 
 ## Specifying Additional Data for Streaming Functions
 
-You can customize the environment of your streaming functions using various parameters in the `@realtime.streaming_endpoint` decorator:
+You can customize the environment of your streaming functions using various parameters in the `@outspeed.streaming_endpoint` decorator:
 
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| name | str | Defines the name of the streaming function | Default is determined by the system |
-| python_version | str | Specifies the Python version to be used | Default is determined by the system |
-| python_packages | List[str] | Specifies additional Python packages to be installed | `[]` |
-| system_packages | List[str] | Specifies additional system packages to be installed | `[]` |
-| metadata | realtime.Metadata | Provides additional metadata about the function to be displayed on the dashboard | None |
+| Parameter       | Type              | Description                                                                      | Default                             |
+| --------------- | ----------------- | -------------------------------------------------------------------------------- | ----------------------------------- |
+| name            | str               | Defines the name of the streaming function                                       | Default is determined by the system |
+| python_version  | str               | Specifies the Python version to be used                                          | Default is determined by the system |
+| python_packages | List[str]         | Specifies additional Python packages to be installed                             | `[]`                                |
+| system_packages | List[str]         | Specifies additional system packages to be installed                             | `[]`                                |
+| metadata        | outspeed.Metadata | Provides additional metadata about the function to be displayed on the dashboard | None                                |
 
 These parameters help tailor the execution environment to the specific needs of your streaming function, ensuring optimal performance and compatibility.

@@ -4,20 +4,22 @@ description: "Guide."
 ---
 
 In this guide, we'll develop an advanced voice over 7 tutorials. The voice bot will have the following capabilities:
+
 1. **Introduction**: Start here (this page 👇🏽). Learn about the essential elements of a voice bot built using AdaptSDK.
 2. [Recording](/examples/conversational_ai/recording): Add an endpoint where the call recording is stored.
 3. [Interruption Handling](/examples/conversational_ai/interruption_handling): The bot will use a voice activity detector to handle interruptions
 4. [Backchanneling](/examples/conversational_ai/backchanneling): The bot will be able to respond with filler words to make conversation sound more human.
 5. [Conversational Pathways](/examples/conversational_ai/pathways): Add conversational pathways to reduce hallucination, and implement voice-based workflows
 6. [Database](/examples/conversational_ai/rag): Add a database to add to the knowledge
-that the bot has access to
+   that the bot has access to
 7. [Integrations](/examples/conversational_ai/integrations): Add an endpoint for alerting, or integration with a webhook to your bot
 8. [Meetings](/examples/conversational_ai/meetings): Make your voice bot available in a Zoom meeting!
 
 ### **Understanding the Process**
 
 <Info>
-Refer to [Quickstart](/quickstart) guide to clone the examples directory before proceeding.
+  Refer to [Quickstart](/quickstart) guide to clone the examples directory
+  before proceeding.
 </Info>
 
 Review the code in `voice_bot.py`.
@@ -34,7 +36,7 @@ The `VoiceBot` class initializes with the `setup` method, which is automatically
 
 #### **Streaming Endpoint**
 
-The `run` method is decorated with `@realtime.streaming_endpoint()`, indicating it handles real-time streaming data. This method is triggered whenever a new connection request is received. It processes incoming audio streams and coordinates the flow of data through various services:
+The `run` method is decorated with `@outspeed.streaming_endpoint()`, indicating it handles real-time streaming data. This method is triggered whenever a new connection request is received. It processes incoming audio streams and coordinates the flow of data through various services:
 
 1. **Audio Cloning**: Clones the incoming audio stream to allow simultaneous processing by different services.
 2. **Speech Recognition**: Converts the cloned audio stream to text using DeepgramSTT.
@@ -47,7 +49,7 @@ The `run` method is decorated with `@realtime.streaming_endpoint()`, indicating 
 
 The `teardown` method is called when the application is stopped or shutdown unexpectedly. It ensures that all services are properly closed and resources are cleaned up, preventing resource leaks and ensuring the application can restart cleanly if necessary.
 
-Deploying with `realtime deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Realtime dashboard!
+Deploying with `outspeed deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Outspeed dashboard!
 
 ## **Next Steps**
 

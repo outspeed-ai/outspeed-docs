@@ -1,13 +1,13 @@
 ---
-title: "realtime deploy"
+title: "outspeed deploy"
 ---
 
-Deploy functions and models to Realtime serverless.
+Deploy functions and models to Outspeed serverless.
 
 ## Usage
 
 ```bash
-realtime deploy [OPTIONS] FILE_PATH
+outspe deploy [OPTIONS] FILE_PATH
 ```
 
 ## Options
@@ -15,7 +15,7 @@ realtime deploy [OPTIONS] FILE_PATH
 <Info>To obtain an API key, [Contact us](mailto:contact@outspeed.ai)</Info>
 
 - `--api-key` Your API key. Can be set via the `OUTSPEED_API_KEY` environment variable.
-- `--base-url` Base URL of the Realtime endpoint. Defaults to "https://infra.outspeed.ai".
+- `--base-url` Base URL of the Outspeed endpoint. Defaults to "https://infra.outspeed.ai".
 - `--help` Show help message and exit.
 
 ## Arguments
@@ -31,7 +31,7 @@ realtime deploy [OPTIONS] FILE_PATH
 Deploy a function defined in `test.py`:
 
 ```bash
-realtime deploy --api-key=<your-api-key> test.py
+outspeed deploy --api-key=<your-api-key> test.py
 ```
 
 ## Notes
