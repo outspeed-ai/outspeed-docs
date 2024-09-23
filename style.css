@@ -65,7 +65,7 @@ html:not(.dark).text-primary-light {
   width: 150px !important;
   height: 38px !important;
   border-radius: 7px !important;
-
+background: red;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -227,12 +227,14 @@ svg.h-4.w-4.secondary-opacity.group-hover\:fill-primary-dark.group-hover\:bg-whi
 h1.inline-block.text-2xl.sm\:text-3xl.font-extrabold.text-gray-900.tracking-tight.dark\:text-gray-200 {
   font-weight: 500;
   font-size: 3rem;
+  line-height: 55px;
   margin-bottom: 7px;
 }
 @media (max-width: 501px) {
   h1.inline-block.text-2xl.sm\:text-3xl.font-extrabold.text-gray-900.tracking-tight.dark\:text-gray-200 {
     font-weight: 500;
     font-size: 2.2rem;
+    line-height: 45px;
     margin-bottom: 7px;
   }
 }
@@ -379,5 +381,12 @@ html:not(.dark) #table-of-contents div ul li .py-1.block.font-medium.-ml-px.text
 }
 
 #content-container div div p a{
+  border-bottom: 2px solid #19D8D8;
+}
+
+.text-sm.prose.min-w-0.text-sky-900 a{
+  border-bottom: 2px solid #19D8D8;
+}
+.relative.mt-8.prose.prose-gray ul li a{
   border-bottom: 2px solid #19D8D8;
 }
