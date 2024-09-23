@@ -26,7 +26,7 @@
     "url": "https://cal.com/outspeed-sahil/30min"
   },
   "primaryTab": {
-    "name": "Get Started"
+    "name": "Examples"
   },
   "tabs": [
     {
@@ -56,12 +56,8 @@
   ],
   "navigation": [
     {
-      "group": "General",
-      "pages": [
-        "guide/quickstart",
-        "guide/introduction",
-        "guide/local_development"
-      ]
+      "group": "Get Started",
+      "pages": ["examples/quickstart"]
     },
     {
       "group": "Conversational Bots",
