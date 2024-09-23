@@ -5,7 +5,6 @@
     "dark": "/logo/3.svg",
     "light": "/logo/2.svg"
   },
-  "openapi": "/realtime_sdk/openapi.json",
   "favicon": "/logo/1.svg",
   "colors": {
     "primary": "#0D9373",
@@ -35,8 +34,8 @@
       "url": "examples"
     },
     {
-      "name": "Realtime SDK",
-      "url": "realtime_sdk"
+      "name": "Outspeed Python SDK",
+      "url": "outspeed_sdk"
     },
     {
       "name": "Outspeed JS SDK",
@@ -102,21 +101,17 @@
     },
     {
       "group": "General",
-      "pages": [
-        "outspeed_sdk/installation"
-      ]
+      "pages": ["outspeed_sdk/installation"]
     },
     {
       "group": "CLI",
-      "pages": [
-        "outspeed_sdk/cli/deploy"
-      ]
+      "pages": ["outspeed_sdk/cli/deploy"]
     },
     {
       "group": "Python API",
       "pages": [
-        "realtime_sdk/sdk/app",
-        "realtime_sdk/sdk/streaming_endpoint",
+        "outspeed_sdk/sdk/app",
+        "outspeed_sdk/sdk/streaming_endpoint",
         {
           "group": "Plugins",
           "pages": [
@@ -130,10 +125,7 @@
     },
     {
       "group": "Getting Started",
-      "pages": [
-        "javascript/introduction",
-        "javascript/installation"
-      ]
+      "pages": ["javascript/introduction", "javascript/installation"]
     },
     {
       "group": "Usage",
