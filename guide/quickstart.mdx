@@ -1,14 +1,14 @@
 ---
-title: "Quickstart"
-description: "Create an interactive, low-latency voice bot in 15 lines of code."
+title: "Quick Start Voice Bot"
+description: "Realtime is a cutting-edge platform designed to facilitate the design and implementation of multi-modal AI features at scale."
 ---
 
-Outspeed's Python SDK provides a powerful and flexible way to build realtime AI applications on top of video, voice, and text data.
-In this quickstart guide, we'll create a simple and interactive voice bot.
+## What is Real-time?
+Realtime is a cutting-edge platform designed to facilitate the design and implementation of multi-modal AI features at scale.
     
-<Card title="Checkout Demo" icon="link" href="/content/components/card-group">
-To try out this voice bot without deployment, go to our showcase.
-</Card>
+Features include:
+* Ability to create complex applications using multiple AI models with minimal coding.
+* Scalable, reliable serverless infrastructure that adjusts based on traffic
 
 
 ## Demo
@@ -29,145 +29,90 @@ Here's a short demo of what the voice bot looks like:
 ## **Getting Started**
 
 <Info>
-  Make sure you have obtained an Outspeed API key before running this example. To
-  obtain an API key, [Contact us](mailto:contact@outspeed.ai)
+  Make sure you have obtained an Adapt API key before running this example. To obtain an API key [Contact us](mailto:contact@getadapt.ai)
 </Info>
 
-### **Creating a Voice Bot in 3 steps**
+### **Creating a Voice Bot in 3 steps!**
 
-This app will process input from your microphone, send it to an LLM and convert the response back to voice.
+This app will process input from your microphone, send it to an LLM and convert the reponse back to voice.
 <Info>
   This application will initially support only English as the source language.
 </Info>
 
 <Steps>
-  <Step title="Install python SDK">
+  <Step title="Start by cloning the repository">
 
-    <CodeGroup>
-    ```bash MacOS/Linux
-    # Create a virtual environment
-    python3 -m venv .venv
-    # Activate the virtual environment
-    source .venv/bin/activate
-    # Install the outspeed package
-    pip install outspeed
+    
+    ```bash 
+    git clone https://github.com/xAlpha8/realtime-examples.git
+    cd realtime-examples/
+    ```
+    Using Poetry:
+    ```bash 
+    git clone https://github.com/xAlpha8/realtime-examples.git
+    cd realtime-examples/
+    ```
+    Using Pip:
+    ```bash 
+    git clone https://github.com/xAlpha8/realtime-examples.git
+    cd realtime-examples/
     ```
 
-    ```batch Windows
-    REM Create a virtual environment
-    python -m venv .venv
-    REM Activate the virtual environment
-    call .venv\Scripts\activate.bat
-    REM Install the outspeed package
-    pip install outspeed
-    ```
-    </CodeGroup>
+   
 
   </Step>
-  <Step title="Create your realtime application">
-    Use outspeed [Python SDK](/outspeed_sdk) to create and deploy your application.
+  <Step title="Deploy to Realtime">
+  <Warning>
+  Ensure you’re in the same directory as voice_bot.py!
+</Warning>
+    We will use our realtime [Python SDK](/python_client) to deploy our application.
 
-    Create a file named `voice_bot.py` with this code:
-
-```python
-# voice_bot.py
-import outspeed as rt
-
-# Wrap you application with @sp.App() decorator
-@sp.App()
-class VoiceBot:
-    # VoiceBot class represents a voice-based AI assistant.
-
-    async def setup(self) -> None:
-        # Set up the AI service pipeline
-        self.stt_node = sp.DeepgramSTT(sample_rate=8000)
-        self.llm_node = sp.FireworksLLM(system_prompt="You are a helpful assistant.")
-        self.token_aggregator_node = sp.TokenAggregator()
-        self.tts_node = sp.CartesiaTTS(voice_id="95856005-0332-41b0-935f-352e296aa0df")
-
-    @sp.streaming_endpoint()
-    async def run(self, audio_input_queue: sp.AudioStream) -> sp.AudioStream:
-        # take in AudioStream input, pass it through nodes, and return audio
-        stt_stream: sp.TextStream = self.stt_node.run(audio_input_queue)
-        llm_token_stream, _ = self.llm_node.run(stt_stream)
-        token_aggregator_stream: sp.TextStream = self.token_aggregator_node.run(llm_token_stream)
-        tts_stream: sp.AudioStream = self.tts_node.run(token_aggregator_stream)
-
-        return tts_stream
-
-    async def teardown(self) -> None:
-        self.stt_node.close()
-        self.llm_node.close()
-        self.tts_node.close()
-
-
-if __name__ == "__main__":
-    # Start the VoiceBot when the script is run directly
-    VoiceBot().start()
-
+```bash
+git clone https://github.com/xAlpha8/realtime-examples.git
+cd realtime-examples/
 ```
-    Hit save on the file. Your application code is fully contained in `voice_bot.py`.
+Your build will complete in seconds, and then you’ll receive a link to your deployed function on the Realtime server. Copy the link.
+
+(Coming soon) You can also go to your app on the Realtime dashboard and get the link.
 
   </Step>
-  <Step title="Deploy Application">
-    <Info>
-      Make sure that you're in the same directory as `voice_bot.py` before running the commands.
-    </Info>
+  <Step title="Launch Front-End">
+  We have already created a simple frontend using our [React SDK](/react_client).
 
-    To deploy your application, use the `outspeed` CLI command
-
-    <CodeGroup>
-    ```bash MacOS/Linux
-    # set your OUTSPEED_API_KEY
-    export OUTSPEED_API_KEY=<API_KEY>
-    # deploy your application
-    outspeed deploy --api-key=$OUTSPEED_API_KEY voice_bot.py
+  Change directory to the frontend directory.
+ 
+      ```bash 
+    git clone https://github.com/xAlpha8/realtime-examples.git
+    cd realtime-examples/
+    ```
+    Install the dependencies and run the frontend.
+    ```bash 
+    npm install
+    cd ./multimodal_ai_demos/backend/
+    ```
+    ```bash 
+    npm run dev
+    cd ./multimodal_ai_demos/backend/
     ```
 
-    ```batch Windows
-    REM set your OUTSPEED_API_KEY
-    set OUTSPEED_API_KEY=<API_KEY>
-    REM deploy your application
-    outspeed deploy --api-key=%OUTSPEED_API_KEY% voice_bot.py
-    ```
-    </CodeGroup>
+    This will launch a simple frontend to interact with the backend. You can then browse to the following page with your browser:
 
-    Your app will spin-up in seconds, and then you'll receive a link to your deployment.
-    Copy the link.
+    http://127.0.0.1:5173
 
-    Navigate to [Outspeed Playground](https://outspeed.ai/playground), paste your function link
-    and hit **Run** to give your application a spin.
-
-    (Coming soon) You can also go to your app on the [Outspeed dashboard](https://www.outspeed.ai/dashboard) and get the link.
+Select Audio and Video and Click Start to begin.
 
   </Step>
 </Steps>
 
 ### Next Steps
 
-This is only a simple voice bot. To build more advanced voice bots or other realtime applications of Outspeed,
-you can explore further applications and capabilities here.
+You can explore further applications and capabilities here:
 
-<CardGroup cols={2}>
-  <Card
-    title="About Outspeed"
-    href="introduction"
-    icon="image"
-    color="#ea5a0c"
-  >
-  Learn about Outspeed, how it works and what you can build with it.
-  </Card>
-  <Card
-    title="Conversational AI Guide"
-    href="conversational_ai/introduction"
-    icon="image"
-    color="#ea5a0c"
-  >
-    Create conversational AI that can handle interruptions, perform RAG, backchannel, and have conversational pathways.
-  </Card>
-</CardGroup>
+<Info>
+Make sure you have obtained an Adapt API key before running this example. To obtain an API key [Contact us](mailto:contact@getadapt.ai)
+</Info>
 
 
 ## Support
 
-For any assistance or questions, feel free to join our [Discord community](https://discord.gg/cmfFw6SYvp). We're excited to see what you build!
+For any assistance or questions, feel free to join our [Discord community](https://discord.gg/cmfFw6SYvp). We’re excited to see what you build!

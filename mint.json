@@ -1,11 +1,10 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Outspeed Docs",
+  "name": "Adapt AI Docs",
   "logo": {
     "dark": "/logo/3.svg",
     "light": "/logo/2.svg"
   },
-  "openapi": "/outspeed_sdk/openapi.json",
   "favicon": "/logo/1.svg",
   "colors": {
     "primary": "#0D9373",
@@ -23,7 +22,7 @@
     }
   ],
   "topbarCtaButton": {
-    "name": "Get API Key",
+    "name": "Raise an Issue",
     "url": "https://cal.com/outspeed-sahil/30min"
   },
   "primaryTab": {
@@ -102,15 +101,11 @@
     },
     {
       "group": "General",
-      "pages": [
-        "outspeed_sdk/installation"
-      ]
+      "pages": ["outspeed_sdk/installation"]
     },
     {
       "group": "CLI",
-      "pages": [
-        "outspeed_sdk/cli/deploy"
-      ]
+      "pages": ["outspeed_sdk/cli/deploy"]
     },
     {
       "group": "Python API",
@@ -130,10 +125,7 @@
     },
     {
       "group": "Getting Started",
-      "pages": [
-        "javascript/introduction",
-        "javascript/installation"
-      ]
+      "pages": ["javascript/introduction", "javascript/installation"]
     },
     {
       "group": "Usage",
