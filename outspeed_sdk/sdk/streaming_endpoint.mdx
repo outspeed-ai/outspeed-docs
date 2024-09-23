@@ -1,5 +1,5 @@
 ---
-title: outspeed.streaming_endpoint
+title: sp.streaming_endpoint
 ---
 
 ## Overview
@@ -11,14 +11,13 @@ The `@outspeed.streaming_endpoint` decorator is used to define asynchronous func
 Streaming functions are defined using the `@outspeed.streaming_endpoint` decorator. Below is an example of how to create a streaming function that processes audio and video streams:
 
 ```python
-from outspeed import App, streaming_endpoint
-from outspeed.streams import AudioStream, VideoStream, Stream
+import outspeed as sp
 
-@App()
+@sp.App()
 class MediaProcessor:
 
-    @streaming_endpoint()
-    async def run(self, audio_input: AudioStream, video_input: VideoStream) -> Tuple[Stream, ...]:
+    @sp.streaming_endpoint()
+    async def run(self, audio_input: sp.AudioStream, video_input: sp.VideoStream):
     # Process the incoming streams
         processed_audio = await self.process_audio(audio_input)
         processed_video = await self.process_video(video_input)

@@ -24,7 +24,7 @@ We accomplish by using screenshare to capture the live game on Youtube and micro
   allowfullscreen
 ></iframe>
 
-## **Creating a Poker Commentator in 3 steps**
+## **Creating a Sports Commentator in 4 steps**
 
 This app will process input from your microphone, video from screenshare, send it to an LLM and convert the reponse back to voice.
 
@@ -36,92 +36,96 @@ This app will process input from your microphone, video from screenshare, send i
 
 <Steps>
   <Step title="Start by cloning the repository">
-    <CodeGroup>
-    ```bash MacOS/Linux
+
+    ```bash
     git clone https://github.com/outspeed-ai/outspeed.git
-    cd examples/
+    cd examples/sports_commentator/
     ```
 
-    ```bash Windows
-    git clone https://github.com/outspeed-ai/outspeed.git
-    cd examples/
-    ```
-    </CodeGroup>
+  </Step>
 
+<Step title="Install Dependencies">
     <CodeGroup>
     ```bash MacOS/Linux
+    # Create a virtual environment
     python3 -m venv .venv
+    # Activate the virtual environment
     source .venv/bin/activate
+    # Install the outspeed package
     pip install outspeed
     ```
 
-    ```bash Windows
+    ```batch Windows
+    REM Create a virtual environment
     python -m venv .venv
-    .venv\Scripts\activate
+    REM Activate the virtual environment
+    call .venv\Scripts\activate.bat
+    REM Install the outspeed package
     pip install outspeed
     ```
     </CodeGroup>
+    </Step>
+
+  <Step title="Run Backend">
+  <Warning>
+  Ensure you’re in the same directory as voice_bot.py!
+</Warning>
+
+<Tabs>
+
+<Tab title="Local Server">
+You will need the following environment variables:
+
+1. `DEEPGRAM_API_KEY` - You can get this by going to https://console.deepgram.com/ and clicking on the API key tab.
+2. `GROQ_API_KEY` - You can get this by going to https://console.groq.com/keys and clicking on the API key tab.
+3. `CARTESIA_API_KEY` - You can get this by going to https://play.cartesia.ai/keys and clicking on the API key tab.
+
+All of these providers have a free tier. Once you have your keys, run the following command:
+
+```bash
+export DEEPGRAM_API_KEY=<your_deepgram_api_key>
+export GROQ_API_KEY=<your_groq_api_key>
+export CARTESIA_API_KEY=<your_cartesia_api_key>
+```
+
+Finally, run the following command to start the server:
+
+```bash
+python poker_commentator.py
+```
+
+The console will output the URL you can use to connect to the server (default is http://localhost:8080).
+
+</Tab>
+
+<Tab title="Outspeed Cloud">
+<Info>
+  Make sure you have obtained an Outspeed API key before running this example. To
+  obtain an API key [Contact us](mailto:contact@getadapt.ai)
+</Info>
+    We will use our outspeed [Python SDK](https://github.com/outspeed-ai/outspeed.git) to deploy our application.
+
+```bash
+outspeed deploy --api-key=<your-api-key> poker_commentator.py
+```
+
+Your build will complete in seconds, and then you’ll receive a link to your deployed function on the Outspeed server. Copy the link.
+
+(Coming soon) You can also go to your app on the Outspeed dashboard and get the link.
+
+</Tab>
+
+</Tabs>
 
   </Step>
-  <Step title="Deploy to Outspeed">
-    <Warning>Ensure you're in the same directory as poker_commentator.py!</Warning>
-    We will use our outspeed [Python SDK](/python_client) to deploy our application.
+  <Step title="Run Demo">
+  We have already created a simple frontend using our [React SDK](/javascript/introduction).
+  You can then browse to the following page with your browser:
 
-    <CodeGroup>
-    ```bash MacOS/Linux
-    cd ./sports_commentator/
-    outspeed deploy --api-key=<your-api-key> poker_commentator.py
-    ```
+https://playground.outspeed.com/webrtc
 
-    ```bash Windows
-    cd .\sports_commentator\
-    outspeed deploy --api-key=<your-api-key> poker_commentator.py
-    ```
-    </CodeGroup>
-
-    Your build will complete in seconds, and then you'll receive a link to your deployed function on the Outspeed server. Copy the link.
-
-    (Coming soon) You can also go to your app on the [Outspeed dashboard](https://www.getadapt.ai/dashboard) and get the link.
-
-  </Step>
-  <Step title="Launch the frontend">
-    We have already created a simple frontend using our [React SDK](/javascript).
-
-    Change directory to the frontend directory.
-
-    <CodeGroup>
-    ```bash MacOS/Linux
-    cd ../frontend/
-    ```
-
-    ```bash Windows
-    cd ..\frontend\
-    ```
-    </CodeGroup>
-
-    Install the dependencies and run the frontend.
-    <CodeGroup>
-    ```bash MacOS/Linux
-    npm install
-    npm run dev
-    ```
-
-    ```bash Windows
-    npm install
-    npm run dev
-    ```
-    </CodeGroup>
-
-    This will launch a simple frontend to interact with the backend.
-    You can then browse to the following page with your browser:
-
-    http://127.0.0.1:5173
-
-    Click on the settings icon and select the appropriate audio and video device.
-    In the functionURL field, enter the link of your deployed function.
-    Click and enable the `Enable Screen Share` checkbox to share your screen.
-    Close the settings menu and click `Start`.
-    Select the appropriate browser tab to share your screen.
+1. Paste the link your received from the previous step into the URL field.
+2. Select Audio device. Leave Video device blank. Click Run to begin.
 
   </Step>
 </Steps>
@@ -153,12 +157,6 @@ The `run` method in the `PokerCommentator` class is marked as a streaming endpoi
 6. **Audio Conversion**: Finally, the audio stream is formatted by the `AudioConverter` for output.
 
 The method outputs three streams: the audio stream of the commentary, the chat history text stream, and the cloned video input stream.
-
-#### **Teardown**
-
-The `teardown` method ensures that all services are properly closed and resources are released when the application is terminated. Each component used in the `setup` and during the streaming endpoint is methodically closed to prevent resource leakage and ensure the application shuts down smoothly.
-
-Deploying with `outspeed deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Outspeed dashboard!
 
 ## Support
 
