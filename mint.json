@@ -31,15 +31,15 @@
   },
   "tabs": [
     {
-    "name": "Examples",
-    "url": "examples"
+      "name": "Examples",
+      "url": "examples"
     },
     {
       "name": "Realtime SDK",
       "url": "realtime_sdk"
     },
     {
-      "name": "React/JS Client SDK",
+      "name": "Outspeed JS SDK",
       "url": "javascript"
     }
   ],
@@ -102,11 +102,15 @@
     },
     {
       "group": "General",
-      "pages": ["realtime_sdk/installation"]
+      "pages": [
+        "outspeed_sdk/installation"
+      ]
     },
     {
       "group": "CLI",
-      "pages": ["realtime_sdk/cli/deploy"]
+      "pages": [
+        "outspeed_sdk/cli/deploy"
+      ]
     },
     {
       "group": "Python API",
@@ -116,27 +120,42 @@
         {
           "group": "Plugins",
           "pages": [
-        "realtime_sdk/sdk/plugins/openai",
-        "realtime_sdk/sdk/plugins/elevenlabs",
-        "realtime_sdk/sdk/plugins/fireworksai",
-        "realtime_sdk/sdk/plugins/deepgram"
+            "outspeed_sdk/sdk/plugins/openai",
+            "outspeed_sdk/sdk/plugins/elevenlabs",
+            "outspeed_sdk/sdk/plugins/fireworksai",
+            "outspeed_sdk/sdk/plugins/deepgram"
           ]
         }
       ]
     },
     {
-      "group": "General",
-      "pages": ["javascript/usage"]
+      "group": "Getting Started",
+      "pages": [
+        "javascript/introduction",
+        "javascript/installation"
+      ]
     },
     {
-      "group": "Components",
+      "group": "Usage",
       "pages": [
-        "javascript/useRealtime",
-        "javascript/useConfig",
-        "javascript/RtAudio",
-        "javascript/RtVideo",
-        "javascript/RtChat",
-        "javascript/RtAudioVisualizer"
+        "javascript/usage",
+        "javascript/connect-webrtc",
+        "javascript/connect-websocket"
+      ]
+    },
+    {
+      "group": "API",
+      "pages": [
+        "javascript/createConfig",
+        "javascript/useWebRTC",
+        "javascript/useWebSocket",
+        "javascript/useAvailableMediaDevices",
+        "javascript/useCreateConfig",
+        "javascript/Form",
+        "javascript/RealtimeAudio",
+        "javascript/RealtimeAudioVisualizer",
+        "javascript/RealtimeVideo",
+        "javascript/RealtimeChat"
       ]
     }
   ],

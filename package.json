@@ -1,5 +1,12 @@
 {
+  "name": "realtime-docs",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "mintlify dev"
+  },
+  "keywords": [],
+  "author": "",
   "dependencies": {
-    "mintlify": "^4.0.222"
+    "mintlify": "^4.0.208"
   }
 }

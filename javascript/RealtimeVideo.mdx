@@ -1,0 +1,66 @@
+---
+title: 'RealtimeVideo'
+description: 'A component for managing local or remote video track.'
+---
+
+<RequestExample>
+
+```jsx VideoContainer.jsx
+import { RealtimeVideo } from "@outspeed/react";
+
+
+export function VideoContainer() {
+  const { videoTrack } = props
+
+  return (
+    <div>
+      <RealtimeVideo track={videoTrack} />
+    </div>
+  );
+}
+```
+
+```tsx VideoContainer.tsx
+import { Track } from "@outspeed/core";
+import { RealtimeVideo } from "@outspeed/react";
+
+type TVideoContainerProps = {
+  videoTrack?: Track;
+}
+
+export function VideoContainer(props: TVideoContainerProps) {
+  const { videoTrack } = props
+
+  return (
+    <div>
+      <RealtimeVideo track={videoTrack} />
+    </div>
+  );
+}
+```
+</RequestExample>
+
+<Note>All of our components are built using Tailwind CSS. Make sure to set it up correctly by following the guide available [here](https://tailwindcss.com/docs/installation).</Note>
+
+
+`RealtimeVideo` can manage local or remote video tracks. It uses an HTML video element internally to
+play the video track. 
+
+## Props
+
+<ParamField body="track" type="Track">
+  A local or remote video track.
+</ParamField>
+
+### Resources
+
+<CardGroup cols={1}>
+  <Card
+    title="RealtimeVideo"
+    icon="github"
+    iconType="solid"
+    href="https://github.com/outspeed-ai/outspeed-js/blob/main/packages/react/src/components/realtime-video.tsx"
+  >
+    Explore the `<RealtimeVideo />` code on GitHub to learn how to create your own chat component.
+  </Card>
+</CardGroup>

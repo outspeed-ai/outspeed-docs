@@ -1,0 +1,76 @@
+---
+title: "Connecting to a WebRTC backend"
+sidebarTitle: "WebRTC"
+description: "The useWebRTC hook simplify the process of connecting to Outspeed’s WebRTC backend."
+---
+
+<Note>We assume you have already deployed your backend. If not, please follow [this tutorial](/outspeed_sdk/cli/deploy) to deploy your backend with `outspeed-client`.</Note>
+
+<RequestExample>
+```tsx WebRTCApp.tsx
+import React from "react";
+import { useWebRTC, RealtimeVideo } from "@outspeed/react";
+
+export default function App() {
+  const { 
+    connect,
+    connectionStatus,
+    getRemoteVideoTrack,
+    getLocalVideoTrack
+    } = useWebRTC({
+      config: {
+        // Add your function URL.
+        functionURL: "<my-function-url>", 
+        audio: true,
+        video: true,
+      },
+    });
+
+  return (
+    <div>
+      <span>Connection Status: {connectionStatus}</span>
+      {connectionStatus === "SetupCompleted" && (
+        <button onClick={connect}>Connect</button>
+      )}
+      {/* To show remote video stream */}
+      <RealtimeVideo track={getRemoteVideoTrack()} />
+      {/* To show local video stream */}
+      <RealtimeVideo track={getLocalVideoTrack()} />
+    </div>
+  );
+}
+```
+</RequestExample>
+
+The code shown establishes a peer connection with the backend and streams local audio and video to it.
+If the backend is configured to return the audio and video, they will be displayed as well.
+
+- We import necessary components from the `@outspeed/react` library.
+- `useWebRTC`: This hook is used to manage WebRTC connections. It provides methods like connect,
+getRemoteVideoTrack, and getLocalVideoTrack. Visit [here](./useWebRTC) to learn more about `useWebRTC`.
+- The `useWebRTC` hook is set up with a URL (`functionURL`) and options to enable audio and video. We can also use `useCreateConfig` to create a config, visit [here](./useCreateConfig).
+  - `audio: true`: This selects the default audio input device, and stream it to the backend.
+  - `video: true`: This selects the default video input device, and stream it to the backend.
+- Video Streams: Using `RealtimeVideo` component to view streams. Learn more about `RealtimeVideo` component [here](./RealtimeVideo).
+
+
+### Resources
+
+<CardGroup cols={2}>
+  <Card
+    title="WebRTC Example"
+    icon="github"
+    iconType="solid"
+    href="https://github.com/outspeed-ai/outspeed-js/tree/main/examples/playground-js/src/webrtc"
+  >
+    Check out our WebRTC App on Github.
+  </Card>
+  <Card
+    title="Playground"
+    icon="github"
+    iconType="solid"
+    href="https://github.com/outspeed-ai/outspeed-js"
+  >
+    Check out our playground code on Github.
+  </Card>
+</CardGroup>

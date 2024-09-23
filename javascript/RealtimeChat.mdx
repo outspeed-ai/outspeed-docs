@@ -1,0 +1,68 @@
+---
+title: 'RealtimeChat'
+description: 'A component for adding chat feature in you app.'
+---
+
+<RequestExample>
+
+```jsx ChatContainer.jsx
+import { RealtimeChat } from "@outspeed/react";
+
+
+export function ChatContainer() {
+  const { dataChannel } = props
+
+  if (!dataChannel) return null
+
+  return (
+    <div>
+      <RealtimeChat dataChannel={dataChannel} />
+    </div>
+  );
+}
+```
+
+```tsx ChatContainer.tsx
+import { DataChannel } from "@outspeed/core";
+import { RealtimeChat } from "@outspeed/react";
+
+type TChatContainerProps = {
+  dataChannel?: DataChannel<unknown>;
+}
+
+export function ChatContainer(props: TChatContainerProps) {
+  const { dataChannel } = props
+
+  if (!dataChannel) return null
+
+  return (
+    <div>
+      <RealtimeChat track={dataChannel} />
+    </div>
+  );
+}
+```
+</RequestExample>
+
+<Note>All of our components are built using Tailwind CSS. Make sure to set it up correctly by following the guide available [here](https://tailwindcss.com/docs/installation).</Note>
+
+`RealtimeChat` is a chat interface that utilizes `dataChannel` to send and receive messages to and from the backend. It keeps a record of all messages exchanged. 
+
+## Props
+
+<ParamField body="dataChannel" type="DataChannel<unknown>">
+  WebRTC or WebSocket data channel.
+</ParamField>
+
+### Resources
+
+<CardGroup cols={1}>
+  <Card
+    title="RealtimeChat"
+    icon="github"
+    iconType="solid"
+    href="https://github.com/outspeed-ai/outspeed-js/blob/main/packages/react/src/components/realtime-chat.tsx"
+  >
+    Explore the `<RealtimeChat />` code on GitHub to learn how to create your own chat component.
+  </Card>
+</CardGroup>
