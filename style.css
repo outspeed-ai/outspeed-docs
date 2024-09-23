@@ -3,7 +3,7 @@
   padding: 0px;
   text-align: center;
 }
-#navbar .flex-1.flex.items-center.gap-x-4 img{
+#navbar .flex-1.flex.items-center.gap-x-4 img {
   width: 169px;
   height: 48px;
 }
@@ -65,10 +65,11 @@ html:not(.dark).text-primary-light {
   width: 150px !important;
   height: 38px !important;
   border-radius: 7px !important;
-background: red;
+  font-weight: 500 !important;
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 180px  !important;
   transform: translate(-50%, -50%);
 
   text-align: center;
@@ -80,7 +81,7 @@ html:not(.dark) #topbar-cta-button .group .absolute {
   width: 150px !important;
   height: 38px !important;
   border-radius: 7px !important;
-
+  width: 180px  !important;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -138,8 +139,8 @@ html:not(.dark) #topbar-cta-button .group svg {
 .mt-12.lg\:mt-8 li a div {
   color: white !important;
 }
-.mt-12.lg\:mt-8 li a{
-    background: transparent !important;
+.mt-12.lg\:mt-8 li a {
+  background: transparent !important;
 }
 .mt-12.lg\:mt-8 li a.active,
 .mt-12.lg\:mt-8 li a:focus,
@@ -354,39 +355,48 @@ html:not(.dark)
   margin-top: -0.5rem !important;
   margin-bottom: -0.25rem !important;
 }
-#navigation-items div li{
-    background: transparent;
-    margin-bottom: 5px;
+#navigation-items div li {
+  background: transparent;
+  margin-bottom: 5px;
 }
-#navigation-items div li a:hover{
-background: transparent;
-background-color: rgba(25, 216, 216, 0.3) !important;
+#navigation-items div li a:hover {
+  background: transparent;
+  background-color: rgba(25, 216, 216, 0.3) !important;
   border-color: rgba(25, 216, 216, 0.3) !important;
   border: 1px solid #80dae5;
 }
-#table-of-contents div ul li .py-1.block.font-medium.-ml-px.text-primary.dark\:text-primary-light.border-l.border-primary.dark\:border-primary-light {
+#table-of-contents
+  div
+  ul
+  li
+  .py-1.block.font-medium.-ml-px.text-primary.dark\:text-primary-light.border-l.border-primary.dark\:border-primary-light {
   color: white !important;
-  border-bottom: 2px solid #19D8D8;
-  transition: .3s linear ease-in-out;
+  border-bottom: 2px solid #19d8d8;
+  transition: 0.3s linear ease-in-out;
 }
 
-html:not(.dark) #table-of-contents div ul li .py-1.block.font-medium.-ml-px.text-primary.dark\:text-primary-light.border-l.border-primary.dark\:border-primary-light {
+html:not(.dark)
+  #table-of-contents
+  div
+  ul
+  li
+  .py-1.block.font-medium.-ml-px.text-primary.dark\:text-primary-light.border-l.border-primary.dark\:border-primary-light {
   color: black !important;
-  border-bottom: 2px solid #00B5CB;
-  transition: .3s linear ease-in-out;
+  border-bottom: 2px solid #00b5cb;
+  transition: 0.3s linear ease-in-out;
 }
 
-#content-container ol li a{
-  border-bottom: 2px solid #19D8D8;
+#content-container ol li a {
+  border-bottom: 2px solid #19d8d8;
 }
 
-#content-container div div p a{
-  border-bottom: 2px solid #19D8D8;
+#content-container div div p a {
+  border-bottom: 2px solid #19d8d8;
 }
 
-.text-sm.prose.min-w-0.text-sky-900 a{
-  border-bottom: 2px solid #19D8D8;
+.text-sm.prose.min-w-0.text-sky-900 a {
+  border-bottom: 2px solid #19d8d8;
 }
-.relative.mt-8.prose.prose-gray ul li a{
-  border-bottom: 2px solid #19D8D8;
+.relative.mt-8.prose.prose-gray ul li a {
+  border-bottom: 2px solid #19d8d8;
 }
