@@ -23,7 +23,7 @@
   ],
   "topbarCtaButton": {
     "name": "Raise an Issue",
-    "url": "https://github.com/outspeed-ai/outspeed-docs"
+    "url": "https://github.com/outspeed-ai/outspeed-docs/issues"
   },
   "primaryTab": {
     "name": "Examples"
