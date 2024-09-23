@@ -23,11 +23,11 @@ In this example, we will build a realtime cooking assistant that uses audio from
   allowfullscreen
 ></iframe>
 
-## **Creating a Cooking Assistant in 3 steps**
+## **Creating a Cooking Assistant in 4 steps**
 
 This app will process input from your microphone, video from camera, send it to an LLM and convert the reponse back to voice.
 
-- The full github repository is available [here.](https://github.com/xAlpha8/realtime-examples)
+- The full github repository is available [here.](https://github.com/outspeed-ai/outspeed.git)
 
 <Info>
   This application will initially support only English as the source language.
@@ -35,92 +35,100 @@ This app will process input from your microphone, video from camera, send it to 
 
 <Steps>
   <Step title="Start by cloning the repository">
-    <CodeGroup>
-    ```bash MacOS/Linux
-    git clone https://github.com/xAlpha8/realtime-examples.git
-    cd realtime-examples/
-    ```
 
-    ```bash Windows
-    git clone https://github.com/xAlpha8/realtime-examples.git
-    cd realtime-examples/
+    ```bash
+    git clone https://github.com/outspeed-ai/outspeed.git
+    cd examples/cooking_assistant/
     ```
-    </CodeGroup>
-
-    <CodeGroup>
-    ```bash MacOS/Linux
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip install realtime-client
-    ```
-
-    ```bash Windows
-    python -m venv .venv
-    .venv\Scripts\activate
-    pip install realtime-client
-    ```
-    </CodeGroup>
 
   </Step>
-  <Step title="Deploy to Realtime">
-    <Warning>Ensure you're in the same directory as cooking_assistant.py!</Warning>
-    We will use our realtime [Python SDK](/python_client) to deploy our application.
 
-    <CodeGroup>
-    ```bash MacOS/Linux
-    cd ./multimodal_ai_demos/backend/
-    realtime deploy --api-key=<your-api-key> cooking_assistant.py
-    ```
+  <Step title="Install Dependencies">
+      <CodeGroup>
+      ```bash MacOS/Linux
+      # Create a virtual environment
+      python3 -m venv .venv
+      # Activate the virtual environment
+      source .venv/bin/activate
+      # Install the outspeed package
+      pip install outspeed
+      ```
 
-    ```bash Windows
-    cd .\multimodal_ai_demos\backend\
-    realtime deploy --api-key=<your-api-key> cooking_assistant.py
-    ```
-    </CodeGroup>
+      ```batch Windows
+      REM Create a virtual environment
+      python -m venv .venv
+      REM Activate the virtual environment
+      call .venv\Scripts\activate.bat
+      REM Install the outspeed package
+      pip install outspeed
+      ```
+      </CodeGroup>
+    </Step>
 
-    Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime server. Copy the link.
+    <Step title="Run Backend">
+      <Warning>
+      Ensure you’re in the same directory as voice_bot.py!
+      </Warning>
 
-    (Coming soon) You can also go to your app on the [Realtime dashboard](https://www.getadapt.ai/dashboard) and get the link.
+      <Tabs>
 
-  </Step>
-  <Step title="Launch the frontend">
-    We have already created a simple frontend using our [React SDK](/javascript).
+      <Tab title="Local Server">
+      You will need the following environment variables:
 
-    Change directory to the frontend directory.
+      1. `DEEPGRAM_API_KEY` - You can get this by going to https://console.deepgram.com/ and clicking on the API key tab.
+      2. `GROQ_API_KEY` - You can get this by going to https://console.groq.com/keys and clicking on the API key tab.
+      3. `CARTESIA_API_KEY` - You can get this by going to https://play.cartesia.ai/keys and clicking on the API key tab.
 
-    <CodeGroup>
-    ```bash MacOS/Linux
-    cd ../frontend/
-    ```
+      All of these providers have a free tier. Once you have your keys, run the following command:
 
-    ```bash Windows
-    cd ..\frontend\
-    ```
-    </CodeGroup>
+      ```bash
+      export DEEPGRAM_API_KEY=<your_deepgram_api_key>
+      export GROQ_API_KEY=<your_groq_api_key>
+      export CARTESIA_API_KEY=<your_cartesia_api_key>
+      ```
 
-    Install the dependencies and run the frontend.
-    <CodeGroup>
-    ```bash MacOS/Linux
-    npm install
-    npm run dev
-    ```
+      Finally, run the following command to start the server:
 
-    ```bash Windows
-    npm install
-    npm run dev
-    ```
-    </CodeGroup>
+      ```bash
+      python cooking_assistant.py
+      ```
 
-    This will launch a simple frontend to interact with the backend.
+      The console will output the URL you can use to connect to the server (default is http://localhost:8080).
+
+      </Tab>
+
+      <Tab title="Outspeed Cloud">
+      <Info>
+        Make sure you have obtained an Outspeed API key before running this example. To
+        obtain an API key [Contact us](mailto:contact@getadapt.ai)
+      </Info>
+          We will use our outspeed [Python SDK](https://github.com/outspeed-ai/outspeed.git) to deploy our application.
+
+      ```bash
+      outspeed deploy --api-key=<your-api-key> cooking_assistant.py
+      ```
+
+      Your build will complete in seconds, and then you’ll receive a link to your deployed function on the Outspeed server. Copy the link.
+
+      (Coming soon) You can also go to your app on the Outspeed dashboard and get the link.
+
+      </Tab>
+
+      </Tabs>
+
+    </Step>
+
+  <Step title="Run Demo">
+    We have already created a simple frontend using our [React SDK](/javascript/introduction).
     You can then browse to the following page with your browser:
 
-    http://127.0.0.1:5173
+    https://playground.outspeed.com/webrtc
 
-    Click on the settings icon and select the appropriate audio and video device.
-    In the functionURL field, enter the link of your deployed function.
-    Close the settings menu and click `Start`.
+    1. Paste the link your received from the previous step into the URL field.
+    2. Select Audio device. Leave Video device blank. Click Run to begin.
 
   </Step>
+
 </Steps>
 
 ## **Understanding the Process**
@@ -160,12 +168,6 @@ This method handles the real-time processing of audio and video streams:
 
 4. **Interruption Management**:
    - Sets up interruptions in the audio output based on voice activity detected by `SileroVAD` to manage the flow of responses.
-
-#### **Teardown**
-
-This method ensures that all services are properly closed and resources are freed up when the application is shutting down. Each component is closed sequentially to ensure no dependencies are left hanging.
-
-Deploying with `realtime deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Realtime dashboard!
 
 ## Support
 

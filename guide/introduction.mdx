@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-description: "Quickly build realtime AI applications using RealtimeSDK"
+description: "Quickly build realtime AI applications using OutspeedSDK"
 ---
 
 ## What is Adapt?
@@ -8,18 +8,18 @@ description: "Quickly build realtime AI applications using RealtimeSDK"
 Adapt allows you to quickly build realtime AI applications on video and voice.
 
 You can build applications like:
+
 1. Interactive voice bot for information collection, customer support, therapy, companionship, etc.
 2. AI avatar for gaming, sales, marketing, etc.
 3. Physical security for theft detection, permiter protection, etc.
 4. Video intelligence systems for object search, OCR, action detection, etc.
 
-To write your application backend, use `realtime-client` PythonSDK that's purpose built for voice and video apps.
+To write your application backend, use `outspeed` PythonSDK that's purpose built for voice and video apps.
 The frontend components are available in `realtime-react` npm package and help you integrate with the deployed backend easily.
 
-## Introduction to `realtime-client` Python SDK
+## Introduction to `outspeed` Python SDK
 
 Adapt's Python SDK provides a powerful and flexible way to build realtime AI applications on top of video, voice, and text data. With this SDK, you can easily create interactive voice bots, AI avatars, physical security systems, and video intelligence applications.
-
 
 ### Key Features
 
@@ -31,28 +31,20 @@ Adapt's Python SDK provides a powerful and flexible way to build realtime AI app
 
 4. **Flexible Architecture**: Build complex applications using a modular approach.
 
-
 ## Getting Started
-
 
 ### Installation
 
-
 To get started with Adapt's Python SDK, you'll need Python 3.9 or later. Install the SDK using pip:
 
-<CodeGroup>
-```bash MacOS/Linux
-pip install realtime-client
-```
-</CodeGroup>
-
+<CodeGroup>```bash MacOS/Linux pip install outspeed ```</CodeGroup>
 
 ### Basic Usage
 
 Here's the scaffolding for a realtime application built using Adapt's Python SDK:
 
 ```python
-import realtime as rt
+import outspeed as sp
 
 @rt.App()
 class MyApplication:
@@ -71,7 +63,6 @@ class MyApplication:
 
 ```
 
-
 This demonstrates the basic structure of an Adapt application:
 
 1. We use the `@rt.App()` decorator to define our application class.
@@ -79,12 +70,10 @@ This demonstrates the basic structure of an Adapt application:
 3. The `run` method is decorated with `@rt.streaming_endpoint()` to handle realtime streaming data.
 4. The `teardown` method is used for cleaning up resources when the application stops.
 
-
 ## Core Concepts
 
-
 1. **`rt.App`**: The main application class that encapsulates your entire application logic. This is what's deployed on Adapt cloud and scales based on the number of concurrent connections
-to the endpoint.
+   to the endpoint.
 
 2. **Endpoint**: In this scafolding, we use a `rt.streaming_endpoint()` which is a WebRTC endpoints. You can learn about other types of endpoints [here](). WIP.
 
@@ -95,10 +84,10 @@ to the endpoint.
 Once you've built your application, you can deploy it to Adapt's serverless infrastructure using the CLI:
 
 <Info>
-You need to have `realtime-client` python package installed for this CLI command.
+  You need to have `outspeed` python package installed for this CLI command.
 </Info>
 
 ```bash
 export ADAPT_API_KEY=<your-api-key>
-realtime deploy --api-key=$ADAPT_API_KEY your_app_file.py
+outspeed deploy --api-key=$ADAPT_API_KEY your_app_file.py
 ```

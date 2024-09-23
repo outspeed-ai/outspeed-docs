@@ -4,11 +4,11 @@ title: sp.App
 
 ## Overview
 
-The `@realtime.App()` decorator is used to define a class as a Realtime application. This decorator enhances the class, enabling it to interact seamlessly with various Realtime services and manage the application lifecycle.
+The `@outspeed.App()` decorator is used to define a class as a Outspeed application. This decorator enhances the class, enabling it to interact seamlessly with various Outspeed services and manage the application lifecycle.
 
 ## Creating an App
 
-To create an app, define a class and decorate it with `@realtime.App()`. Here's a minimal example:
+To create an app, define a class and decorate it with `@outspeed.App()`. Here's a minimal example:
 
 ```python
 import outspeed as sp
@@ -30,7 +30,7 @@ class MyApplication:
 ```
 
 <Info>
-  A Realtime App should have `setup`, `run`, and `teardown` methods, although
+  A Outspeed App should have `setup`, `run`, and `teardown` methods, although
   only `run` is strictly required.
 </Info>
 
@@ -40,30 +40,30 @@ class MyApplication:
 
 ## App Lifecycle
 
-The `RealtimeApp` class manages the application lifecycle:
+The `App` class manages the application lifecycle:
 
 1. It calls the `setup` method asynchronously.
 2. It runs the `run` method (as many times as required).
 3. After the main execution, it calls the `teardown` method.
 
-## Realtime Functions
+## Outspeed Functions
 
-The app can include Realtime functions, which are methods decorated with `@realtime.function()`. The current implementation supports only one Realtime function per app class.
+The app can include Outspeed functions, which are methods decorated with `@outspeed.function()`. The current implementation supports only one Outspeed function per app class.
 
 <Warning>
-  If more than one Realtime function is defined in the app class, a RuntimeError
+  If more than one Outspeed function is defined in the app class, a RuntimeError
   will be raised.
 </Warning>
 
-If a Realtime function is defined, it will be executed concurrently with the `RealtimeServer`, replacing the need for a separate `run` method.
+If a Outspeed function is defined, it will be executed concurrently with the `OutspeedServer`, replacing the need for a separate `run` method.
 
 ```python
-import realtime
-@realtime.App()
+import outspeed
+@outspeed.App()
 class MyApplication:
-@realtime.function()
-async def my_realtime_function(self):
-# Realtime function logic here
+@outspeed.function()
+async def my_outspeed_function(self):
+# Outspeed function logic here
 pass
 async def run(self):
 # Main app logic here
@@ -73,19 +73,19 @@ pass
 ## Best Practices
 
 - Implement `setup` and `teardown` methods in your app class for proper initialization and cleanup.
-- Use either a `run` method or a single Realtime function as the main execution point of your app.
+- Use either a `run` method or a single Outspeed function as the main execution point of your app.
 - Use type hints for all method parameters and return types to enhance clarity.
-- Limit your app to one Realtime function to comply with current implementation constraints.
+- Limit your app to one Outspeed function to comply with current implementation constraints.
 - Implement error handling within your methods to manage exceptions gracefully.
 - Test your app thoroughly locally before deploying to ensure all components interact correctly.
 
-By following these guidelines, you can create robust and efficient applications using the Realtime platform.
+By following these guidelines, you can create robust and efficient applications using the Outspeed platform.
 
 ## Error Handling
 
-The `RealtimeApp` includes basic error handling:
+The `App` includes basic error handling:
 
-- If an exception occurs during the app lifecycle (setup, run/Realtime function execution, or teardown), it will be logged as an error.
-- In case of an error, the `RealtimeServer` will be shut down gracefully.
+- If an exception occurs during the app lifecycle (setup, run/Outspeed function execution, or teardown), it will be logged as an error.
+- In case of an error, the `OutspeedServer` will be shut down gracefully.
 
 It's recommended to implement your own error handling within your app methods for more specific error management.

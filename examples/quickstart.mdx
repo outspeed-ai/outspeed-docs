@@ -1,0 +1,135 @@
+---
+title: "Quick Start - Simple Voice Bot"
+---
+
+## What is Outspeed?
+
+Outspeed is a cutting-edge platform designed to facilitate the design and implementation of realtime, multi-modal AI features at scale.
+
+Features include:
+
+- Ability to create complex applications using multiple AI models with minimal coding.
+- Scalable, reliable serverless infrastructure that adjusts based on traffic
+
+## Demo
+
+Here's a short demo of what the voice bot looks like:
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/32HnQDZ3Jfk?si=E24k_zNrufSQ9RPk"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
+
+## **Creating a Voice Bot in 4 steps!**
+
+This app will process input from your microphone, send it to an LLM and convert the reponse back to voice.
+
+<Info>
+  This application will initially support only English as the source language.
+</Info>
+
+<Steps>
+  <Step title="Start by cloning the repository">
+
+    ```bash
+    git clone https://github.com/outspeed-ai/outspeed.git
+    cd examples/voice_bot/
+    ```
+
+  </Step>
+
+<Step title="Install Dependencies">
+    <CodeGroup>
+    ```bash MacOS/Linux
+    # Create a virtual environment
+    python3 -m venv .venv
+    # Activate the virtual environment
+    source .venv/bin/activate
+    # Install the outspeed package
+    pip install outspeed
+    ```
+
+    ```batch Windows
+    REM Create a virtual environment
+    python -m venv .venv
+    REM Activate the virtual environment
+    call .venv\Scripts\activate.bat
+    REM Install the outspeed package
+    pip install outspeed
+    ```
+    </CodeGroup>
+    </Step>
+
+  <Step title="Run Backend">
+  <Warning>
+  Ensure you’re in the same directory as voice_bot.py!
+</Warning>
+
+<Tabs>
+
+<Tab title="Local Server">
+You will need the following environment variables:
+
+1. `DEEPGRAM_API_KEY` - You can get this by going to https://console.deepgram.com/ and clicking on the API key tab.
+2. `GROQ_API_KEY` - You can get this by going to https://console.groq.com/keys and clicking on the API key tab.
+3. `CARTESIA_API_KEY` - You can get this by going to https://play.cartesia.ai/keys and clicking on the API key tab.
+
+All of these providers have a free tier. Once you have your keys, run the following command:
+
+```bash
+export DEEPGRAM_API_KEY=<your_deepgram_api_key>
+export GROQ_API_KEY=<your_groq_api_key>
+export CARTESIA_API_KEY=<your_cartesia_api_key>
+```
+
+Finally, run the following command to start the server:
+
+```bash
+python voice_bot.py
+```
+
+The console will output the URL you can use to connect to the server (default is http://localhost:8080).
+
+</Tab>
+
+<Tab title="Outspeed Cloud">
+<Info>
+  Make sure you have obtained an Outspeed API key before running this example. To
+  obtain an API key [Contact us](mailto:contact@getadapt.ai)
+</Info>
+    We will use our outspeed [Python SDK](https://github.com/outspeed-ai/outspeed.git) to deploy our application.
+
+```bash
+outspeed deploy --api-key=<your-api-key> voice_bot.py
+```
+
+Your build will complete in seconds, and then you’ll receive a link to your deployed function on the Outspeed server. Copy the link.
+
+(Coming soon) You can also go to your app on the Outspeed dashboard and get the link.
+
+</Tab>
+
+</Tabs>
+
+  </Step>
+  <Step title="Run Demo">
+  We have already created a simple frontend using our [React SDK](/javascript/introduction).
+  You can then browse to the following page with your browser:
+
+https://playground.outspeed.com/webrtc
+
+1. Paste the link your received from the previous step into the URL field.
+2. Select Audio device. Leave Video device blank. Click Run to begin.
+
+  </Step>
+</Steps>
+
+## Support
+
+For any assistance or questions, feel free to join our [Discord community](https://discord.gg/cmfFw6SYvp). We’re excited to see what you build!

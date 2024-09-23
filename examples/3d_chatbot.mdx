@@ -3,96 +3,132 @@ title: "3D Avatar Voice Bot"
 description: "A voice bot with a 3D avatar with realtime lip sync and animation."
 ---
 
-<Info>Make sure you have gone over [QuickStart](/examples/quickstart) before trying this example.</Info>
+<Info>
+  Make sure you have gone over [QuickStart](/examples/quickstart) before trying
+  this example.
+</Info>
 
-In this example, we will build a realtime 3D chatbot. 
+In this example, we will build a realtime 3D chatbot.
 
 ## Demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ehFB2RMf8tc?si=zS68dk8Yten7H0lr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/ehFB2RMf8tc?si=zS68dk8Yten7H0lr"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
 
 ## **Creating a 3D Chatbot in 3 steps**
 
 This app will process input from your microphone, send it to an LLM and convert the reponse back to voice. It will also generate the necessary lip sync and animation to make the avatar move.
 
-- The full github repository is available [here.](https://github.com/xAlpha8/realtime-examples)
+- The full github repository is available [here.](https://github.com/outspeed-ai/outspeed.git)
 
-<Info>This application will initially support only English as the source language.</Info>
+<Info>
+  This application will initially support only English as the source language.
+</Info>
 
 <Steps>
   <Step title="Start by cloning the repository">
-    <CodeGroup>
-    ```bash MacOS/Linux
-    git clone https://github.com/xAlpha8/realtime-examples.git
-    cd realtime-examples/
+
+    ```bash
+    git clone https://github.com/outspeed-ai/outspeed.git
+    cd examples/cooking_assistant/
     ```
 
-    ```bash Windows
-    git clone https://github.com/xAlpha8/realtime-examples.git
-    cd realtime-examples/
-    ```
-    </CodeGroup>
-    <CodeGroup>
-    ```bash MacOS/Linux
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip install realtime-client
-    ```
-
-    ```bash Windows
-    python -m venv .venv
-    .venv\Scripts\activate
-    pip install realtime-client
-    ```
-    </CodeGroup>
   </Step>
-  <Step title="Deploy to Realtime">
-    <Warning>Ensure you're in the same directory as poker_commentator.py!</Warning>
-    We will use our realtime [Python SDK](/python_client) to deploy our application.
-    <CodeGroup>
-    ```bash MacOS/Linux
-    cd ./3d_avatar_chatbot/backend/
-    realtime deploy --api-key=<your-api-key> chatbot.py
-    ```
 
-    ```bash Windows
-    cd .\3d_avatar_chatbot\backend\
-    realtime deploy --api-key=<your-api-key> chatbot.py
-    ```
-    </CodeGroup>
+  <Step title="Install Dependencies">
+      <CodeGroup>
+      ```bash MacOS/Linux
+      # Create a virtual environment
+      python3 -m venv .venv
+      # Activate the virtual environment
+      source .venv/bin/activate
+      # Install the outspeed package
+      pip install outspeed
+      ```
 
-    Your build will complete in seconds, and then you'll receive a link to your deployed function on the Realtime server. Copy the link.
-    
-    (Coming soon) You can also go to your app on the [Realtime dashboard](https://www.getadapt.ai/dashboard) and get the link.
-  </Step>
-  <Step title="Launch the frontend">
-    We have already created a simple frontend using our [React SDK](/javascript).
+      ```batch Windows
+      REM Create a virtual environment
+      python -m venv .venv
+      REM Activate the virtual environment
+      call .venv\Scripts\activate.bat
+      REM Install the outspeed package
+      pip install outspeed
+      ```
+      </CodeGroup>
+    </Step>
 
-    Change directory to the frontend directory.
-    <CodeGroup>
-    ```bash MacOS/Linux
-    cd ../frontend/
-    npm install
-    npm run dev
-    ```
+    <Step title="Run Backend">
+      <Warning>
+      Ensure you’re in the same directory as voice_bot.py!
+      </Warning>
 
-    ```bash Windows
-    cd ..\frontend\
-    npm install
-    npm run dev
-    ```
-    </CodeGroup>
+      <Tabs>
 
-    This will launch a simple frontend to interact with the backend.
+      <Tab title="Local Server">
+      You will need the following environment variables:
+
+      1. `DEEPGRAM_API_KEY` - You can get this by going to https://console.deepgram.com/ and clicking on the API key tab.
+      2. `GROQ_API_KEY` - You can get this by going to https://console.groq.com/keys and clicking on the API key tab.
+      3. `CARTESIA_API_KEY` - You can get this by going to https://play.cartesia.ai/keys and clicking on the API key tab.
+
+      All of these providers have a free tier. Once you have your keys, run the following command:
+
+      ```bash
+      export DEEPGRAM_API_KEY=<your_deepgram_api_key>
+      export GROQ_API_KEY=<your_groq_api_key>
+      export CARTESIA_API_KEY=<your_cartesia_api_key>
+      ```
+
+      Finally, run the following command to start the server:
+
+      ```bash
+      python cooking_assistant.py
+      ```
+
+      The console will output the URL you can use to connect to the server (default is http://localhost:8080).
+
+      </Tab>
+
+      <Tab title="Outspeed Cloud">
+      <Info>
+        Make sure you have obtained an Outspeed API key before running this example. To
+        obtain an API key [Contact us](mailto:contact@getadapt.ai)
+      </Info>
+          We will use our outspeed [Python SDK](https://github.com/outspeed-ai/outspeed.git) to deploy our application.
+
+      ```bash
+      outspeed deploy --api-key=<your-api-key> cooking_assistant.py
+      ```
+
+      Your build will complete in seconds, and then you’ll receive a link to your deployed function on the Outspeed server. Copy the link.
+
+      (Coming soon) You can also go to your app on the Outspeed dashboard and get the link.
+
+      </Tab>
+
+      </Tabs>
+
+    </Step>
+
+  <Step title="Run Demo">
+    We have already created a simple frontend using our [React SDK](/javascript/introduction).
     You can then browse to the following page with your browser:
 
-    http://127.0.0.1:5173
+    https://playground.outspeed.com/webrtc
 
-    In the function URL field, paste the link you got after `realtime deploy`.
-
-    Click `Run`.
+    1. Paste the link your received from the previous step into the URL field.
+    2. Select Audio device. Leave Video device blank. Click Run to begin.
 
   </Step>
+
 </Steps>
 
 ## **Understanding the Process**
@@ -119,12 +155,6 @@ The `run` method acts as the streaming endpoint for audio input:
 4. **Generating Lip Sync Data**: Simultaneously, the text-to-speech audio is used to generate lip-sync data to match the avatar's mouth movements to the spoken audio.
 5. **Combining Outputs**: The audio stream and JSON data (now including lip-sync information) are combined and synchronized.
 6. **Audio Conversion**: Finally, the audio stream is converted to the appropriate format for output through the `AudioConverter`.
-
-#### **Teardown**
-
-The `teardown` method is responsible for gracefully shutting down and releasing resources associated with each service when the application is closing.
-
-Deploying with `realtime deploy` hosts it on our serverless backend and allows visual tracking of inputs and outputs via the Realtime dashboard!
 
 ## Support
 

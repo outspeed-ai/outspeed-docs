@@ -1,5 +1,5 @@
 {
-  "name": "realtime-docs",
+  "name": "outspeed-docs",
   "version": "1.0.0",
   "scripts": {
     "dev": "mintlify dev"
