@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Adapt AI Docs",
+  "name": "Outspeed Docs",
   "logo": {
     "dark": "/logo/3.svg",
     "light": "/logo/2.svg"
@@ -23,7 +23,7 @@
   ],
   "topbarCtaButton": {
     "name": "Raise an Issue",
-    "url": "https://github.com/outspeed-ai/outspeed-docs"
+    "url": "https://github.com/outspeed-ai/outspeed-docs/issues"
   },
   "primaryTab": {
     "name": "Examples"
@@ -51,7 +51,7 @@
     {
       "name": "Book a Demo",
       "icon": "phone",
-      "url": "https://cal.com/adaptsdk/30min"
+      "url": "https://cal.com/outspeed-sahil/30min"
     }
   ],
   "navigation": [
