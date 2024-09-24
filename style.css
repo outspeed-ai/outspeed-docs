@@ -410,3 +410,7 @@ html:not(.dark)
 html:not(.dark) .mt-12 li div{
   color: black !important;
 }
+html:not(.dark) .ml-4.flex.text-sm.leading-6.whitespace-nowrap.min-w-0.space-x-3 div span{
+  color: #000;
+  font-weight: 600;
+}
