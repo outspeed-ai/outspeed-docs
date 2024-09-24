@@ -363,7 +363,6 @@ html:not(.dark)
   background: transparent;
   background-color: rgba(25, 216, 216, 0.3) !important;
   border-color: rgba(25, 216, 216, 0.3) !important;
-  border: 1px solid #80dae5;
 }
 #table-of-contents
   div
@@ -403,4 +402,15 @@ html:not(.dark)
 
 .flex.items-center.flex-wrap.gap-2 .font-bold.text-primary{
   color: #19d8d8 !important;
+}
+.mt-12 li div{
+  color: white !important;
+}
+
+html:not(.dark) .mt-12 li div{
+  color: black !important;
+}
+html:not(.dark) .ml-4.flex.text-sm.leading-6.whitespace-nowrap.min-w-0.space-x-3 div span{
+  color: #000;
+  font-weight: 600;
 }
