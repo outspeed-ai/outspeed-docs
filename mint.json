@@ -72,7 +72,9 @@
             "examples/conversational_ai/recording",
             "examples/conversational_ai/RAG",
             "examples/conversational_ai/integrations",
-            "examples/conversational_ai/meetings"
+            "examples/conversational_ai/meetings",
+            "examples/conversational_ai/switching_voices",
+            "examples/conversational_ai/updating_prompts"
           ]
         },
         {
