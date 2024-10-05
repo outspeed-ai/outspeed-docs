@@ -9,6 +9,7 @@ The Outspeed SDK provides a simple and intuitive interface for building real-tim
 It abstracts away the complexities of handling multimedia inputs, allowing developers to focus on creating powerful multimodal AI experiences.
 
 Key features of the Outspeed SDK include:
+
 - Easy-to-use API inspired by **PyTorch**
 - Built-in support for processing voice and video inputs
 - Seamless integration with various AI models and services
@@ -53,27 +54,7 @@ This app will process input from your microphone, send it to an LLM and convert 
 </Info>
 
 <Steps>
-<Step title="Setup environment and install dependencies.">
-    <CodeGroup>
-    ```bash MacOS/Linux
-    # Create a virtual environment. Make sure python version >=3.9, <3.12
-    python3 -m venv .venv # python3.10 -m venv .venv to use python3.10 version
-    # Activate the virtual environment
-    source .venv/bin/activate
-    # Install the outspeed package
-    pip install outspeed[silero]
-    ```
 
-    ```batch Windows
-    REM Create a virtual environment. Make sure python version >=3.9, <3.12
-    python -m venv .venv
-    REM Activate the virtual environment
-    call .venv\Scripts\activate.bat
-    REM Install the outspeed package
-    pip install outspeed[silero]
-    ```
-    </CodeGroup>
-    </Step>
   <Step title="Clone the repository">
 
     ```bash
@@ -82,7 +63,11 @@ This app will process input from your microphone, send it to an LLM and convert 
     ```
 
   </Step>
-
+import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
+  
+  <Step title="Install Dependencies">
+    <InstallOutspeedSnippet />
+  </Step>
 
   <Step title="Run Backend">
   <Warning>
@@ -113,7 +98,7 @@ Finally, run the following command to start the server:
 python voice_bot.py
 ```
 
-The console will output the URL you can use to connect to the  (default is http://localhost:8080).
+The console will output the URL you can use to connect to the (default is http://localhost:8080).
 
 </Tab>
 
@@ -144,8 +129,8 @@ Your build will complete in seconds, and then you’ll receive a link to your de
   2. Paste the link your received from the previous step into the URL field.
   3. Select Audio device. Leave Video device blank. Click Run to begin.
 
-  The playground is built using our our [React SDK](/javascript/introduction).
-  You can use it to build your own frontends, or integrate with an existing one!
+The playground is built using our our [React SDK](/javascript/introduction).
+You can use it to build your own frontends, or integrate with an existing one!
 
   </Step>
 </Steps>

@@ -48,19 +48,21 @@ git clone https://github.com/outspeed-ai/examples
 
     Navigate to the URL printed in the terminal window.
     </Step>
-    <Step title="Run backend">
+import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
+  
+      <Step title="Run backend">
         Navigate to the `rt-apps` directory. Run and use the `starter.py` as a base for your applications.
         ```bash MacOS/Linux
         # Navigate to examples/rt-apps`
         cd ./examples/rt-apps
         # Install outspeed if not installed
-        pip install outspeed[silero]
+      <InstallOutspeedSnippet />
         # Run
         python starter.py
         ```
         You'll get the function endpoint when running it. By default, it's set to `http://localhost:8080`.
         <Info>
-        If you get a `ModuleNotFoundError`, then check if you've installed `outspeed`. Some examples require additional dependencies that you can install using `pip install outspeed[silero][extras]`.
+        If you get a `ModuleNotFoundError`, then check if you've installed `outspeed`. Some examples require additional dependencies that you can install using `pip install "outspeed[silero]>=0.1.141"`.
         </Info>
     </Step>
     <Step title="Test">

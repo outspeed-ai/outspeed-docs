@@ -3,6 +3,7 @@ title: "Live Sports Commentator"
 description: "A realtime commentator that provides live commentary on sports events."
 ---
 
+
 <Info>
   Make sure you have gone over [QuickStart](/examples/quickstart) before trying
   this example.
@@ -26,9 +27,9 @@ We accomplish by using screenshare to capture the live game on Youtube and micro
 
 ## **Creating a Sports Commentator in 4 steps**
 
-This app will process input from your microphone, video from screenshare, send it to an LLM and convert the reponse back to voice.
+This app will process input from your microphone, video from screenshare, send it to an LLM and convert the response back to voice.
 
-- The full github repository is available [here.](https://github.com/outspeed-ai/outspeed.git)
+- The full GitHub repository is available [here.](https://github.com/outspeed-ai/outspeed.git)
 
 <Info>
   This application will initially support only English as the source language.
@@ -44,88 +45,72 @@ This app will process input from your microphone, video from screenshare, send i
 
   </Step>
 
-<Step title="Install Dependencies">
-    <CodeGroup>
-    ```bash MacOS/Linux
-    # Create a virtual environment
-    python3 -m venv .venv
-    # Activate the virtual environment
-    source .venv/bin/activate
-    # Install the outspeed package
-    pip install outspeed[silero]
-    ```
-
-    ```batch Windows
-    REM Create a virtual environment
-    python -m venv .venv
-    REM Activate the virtual environment
-    call .venv\Scripts\activate.bat
-    REM Install the outspeed package
-    pip install outspeed[silero]
-    ```
-    </CodeGroup>
-    </Step>
+import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
+  
+  <Step title="Install Dependencies">
+    <InstallOutspeedSnippet />
+  </Step>
 
   <Step title="Run Backend">
-  <Warning>
-  Ensure you’re in the same directory as voice_bot.py!
-</Warning>
+    <Warning>
+    Ensure you’re in the same directory as poker_commentator.py!
+    </Warning>
 
-<Tabs>
+    <Tabs>
 
-<Tab title="Local Server">
-You will need the following environment variables:
+    <Tab title="Local Server">
+    You will need the following environment variables:
 
-1. `DEEPGRAM_API_KEY` - You can get this by going to https://console.deepgram.com/ and clicking on the API key tab.
-2. `GROQ_API_KEY` - You can get this by going to https://console.groq.com/keys and clicking on the API key tab.
-3. `CARTESIA_API_KEY` - You can get this by going to https://play.cartesia.ai/keys and clicking on the API key tab.
+    1. `DEEPGRAM_API_KEY` - You can get this by going to [Deepgram Console](https://console.deepgram.com/) and clicking on the API key tab.
+    2. `GOOGLE_API_KEY` - You can get this by visiting the [Gemini Developer Portal](https://aistudio.google.com/app/apikey) and navigating to the API keys section to generate a new key.
+    3. `CARTESIA_API_KEY` - You can get this by going to [Cartesia Keys](https://play.cartesia.ai/keys) and clicking on the API key tab.
 
-All of these providers have a free tier. Once you have your keys, run the following command:
+    All of these providers have a free tier. Once you have your keys, run the following command:
 
-```bash
-export DEEPGRAM_API_KEY=<your_deepgram_api_key>
-export GROQ_API_KEY=<your_groq_api_key>
-export CARTESIA_API_KEY=<your_cartesia_api_key>
-```
+    ```bash
+    export DEEPGRAM_API_KEY=<your_deepgram_api_key>
+    export GOOGLE_API_KEY=<your_gemini_api_key>
+    export CARTESIA_API_KEY=<your_cartesia_api_key>
+    ```
 
-Finally, run the following command to start the server:
+    Finally, run the following command to start the server:
 
-```bash
-python poker_commentator.py
-```
+    ```bash
+    python poker_commentator.py
+    ```
 
-The console will output the URL you can use to connect to the server (default is http://localhost:8080).
+    The console will output the URL you can use to connect to the server (default is http://localhost:8080).
 
-</Tab>
+    </Tab>
 
-<Tab title="Outspeed Cloud">
-<Info>
-  Make sure you have obtained an Outspeed API key before running this example. To
-  obtain an API key [Contact us](mailto:contact@outspeed.com)
-</Info>
-    We will use our outspeed [Python SDK](https://github.com/outspeed-ai/outspeed.git) to deploy our application.
+    <Tab title="Outspeed Cloud">
+    <Info>
+      Make sure you have obtained an Outspeed API key before running this example. To
+      obtain an API key [Contact us](mailto:contact@outspeed.com)
+    </Info>
+        We will use our outspeed [Python SDK](https://github.com/outspeed-ai/outspeed.git) to deploy our application.
 
-```bash
-outspeed deploy --api-key=<your-api-key> poker_commentator.py
-```
+    ```bash
+    outspeed deploy --api-key=<your-api-key> poker_commentator.py
+    ```
 
-Your build will complete in seconds, and then you’ll receive a link to your deployed function on the Outspeed server. Copy the link.
+    Your build will complete in seconds, and then you’ll receive a link to your deployed function on the Outspeed server. Copy the link.
 
-(Coming soon) You can also go to your app on the Outspeed dashboard and get the link.
+    (Coming soon) You can also go to your app on the Outspeed dashboard and get the link.
 
-</Tab>
+    </Tab>
 
-</Tabs>
+    </Tabs>
 
   </Step>
   <Step title="Run Demo">
-  We have already created a simple frontend using our [React SDK](/javascript/introduction).
-  You can then browse to the following page with your browser:
+    We have already created a simple frontend using our [React SDK](/javascript/introduction).
+    You can then browse to the following page with your browser:
 
-https://playground.outspeed.com/webrtc
+  https://playground.outspeed.com/webrtc
 
-1. Paste the link your received from the previous step into the URL field.
-2. Select Audio device. Leave Video device blank. Click Run to begin.
+  1. Paste the link you received from the previous step into the URL field.
+  2. Select your Audio device. Leave the Video device blank. Click Run to begin.
 
   </Step>
 </Steps>
@@ -143,7 +128,6 @@ The `PokerCommentator` class initializes with the `setup` method, which is autom
 - **GeminiVision**: Processes audio and video inputs to generate insightful poker commentary, guided by a detailed system prompt. It operates with a response temperature of 0.9 and maintains a chat history for context.
 - **TokenAggregator**: Aggregates tokens from GeminiVision to form coherent responses.
 - **ElevenLabsTTS**: Converts text responses back into spoken audio using Eleven Labs' text-to-speech API, optimized for low latency and using a specific voice model.
-- **AudioConverter**: Converts audio formats to ensure compatibility across different services.
 
 #### **Streaming Endpoint**
 
@@ -154,7 +138,6 @@ The `run` method in the `PokerCommentator` class is marked as a streaming endpoi
 3. **Commentary Generation**: The text from Deepgram and the video analysis from KeyFrameDetector are then processed by `GeminiVision` to generate commentary.
 4. **Token Aggregation**: The commentary tokens generated are refined by the `TokenAggregator` for coherence.
 5. **Text-to-Speech**: The coherent text is then converted into spoken audio by `ElevenLabsTTS`.
-6. **Audio Conversion**: Finally, the audio stream is formatted by the `AudioConverter` for output.
 
 The method outputs three streams: the audio stream of the commentary, the chat history text stream, and the cloned video input stream.
 
