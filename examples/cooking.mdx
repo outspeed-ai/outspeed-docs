@@ -60,14 +60,14 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
       You will need the following environment variables:
 
       1. `DEEPGRAM_API_KEY` - You can get this by going to https://console.deepgram.com/ and clicking on the API key tab.
-      2. `GROQ_API_KEY` - You can get this by going to https://console.groq.com/keys and clicking on the API key tab.
+      2. `GOOGLE_API_KEY` - You can get this by visiting the [Gemini Developer Portal](https://aistudio.google.com/app/apikey) and navigating to the API keys section to generate a new key.
       3. `CARTESIA_API_KEY` - You can get this by going to https://play.cartesia.ai/keys and clicking on the API key tab.
 
       All of these providers have a free tier. Once you have your keys, run the following command:
 
       ```bash
       export DEEPGRAM_API_KEY=<your_deepgram_api_key>
-      export GROQ_API_KEY=<your_groq_api_key>
+      export GOOGLE_API_KEY=<your_gemini_api_key>
       export CARTESIA_API_KEY=<your_cartesia_api_key>
       ```
 
@@ -128,7 +128,6 @@ The `CookingAssistant` class initializes with the `setup` method, which is autom
 - **TokenAggregator**: Aggregates tokens from OpenAIVision to ensure smooth and coherent data flow.
 - **ElevenLabsTTS**: Converts text instructions back into spoken audio using Eleven Labs' text-to-speech API.
 - **SileroVAD**: Detects voice activity to manage interruptions effectively during the audio stream processing.
-- **AudioConverter**: Converts audio formats to ensure compatibility across different services.
 
 #### **Streaming Endpoint (`run` method)**
 
@@ -148,7 +147,6 @@ This method handles the real-time processing of audio and video streams:
 
    - The text from `OpenAIVision` is aggregated by `TokenAggregator`.
    - `ElevenLabsTTS` converts the aggregated text into spoken audio.
-   - `AudioConverter` transforms this audio back into a stream format suitable for output.
 
 4. **Interruption Management**:
    - Sets up interruptions in the audio output based on voice activity detected by `SileroVAD` to manage the flow of responses.
