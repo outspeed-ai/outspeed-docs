@@ -25,35 +25,23 @@ We accomplish by using screenshare to capture the live game on Youtube and micro
   allowfullscreen
 ></iframe>
 
-## **Creating a Sports Commentator in 4 steps**
+## **Creating a Sports Commentator**
 
 This app will process input from your microphone, video from screenshare, send it to an LLM and convert the response back to voice.
 
-- The full GitHub repository is available [here.](https://github.com/outspeed-ai/outspeed.git)
+The full GitHub repository is available [here.](https://github.com/outspeed-ai/outspeed.git). You can find the code for this example
+at `examples/sports_commentator/poker_commentator.py` in the repository.
+
 
 <Info>
   This application will initially support only English as the source language.
 </Info>
 
 <Steps>
-  <Step title="Start by cloning the repository">
-
-    ```bash
-    git clone https://github.com/outspeed-ai/outspeed.git
-    cd examples/sports_commentator/
-    ```
-
-  </Step>
-
-import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
-  
-  <Step title="Install Dependencies">
-    <InstallOutspeedSnippet />
-  </Step>
-
   <Step title="Run Backend">
     <Warning>
-    Ensure you’re in the same directory as poker_commentator.py!
+    Ensure that you've followed the steps from [QuickStart](/examples/quickstart).
+    Navigate to the base directory of the cloned outspeed repository.
     </Warning>
 
     <Tabs>
@@ -76,10 +64,12 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
     Finally, run the following command to start the server:
 
     ```bash
+    cd examples/sports_commentator/poker_commentator.py
     python poker_commentator.py
     ```
 
     The console will output the URL you can use to connect to the server (default is http://localhost:8080).
+    This is the URL of your Outspeed App.
 
     </Tab>
 
@@ -107,11 +97,11 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
     We have already created a simple frontend using our [React SDK](/javascript/introduction).
  
   1. Open a Youtube video/stream of a poker tournament. Make sure the audio is muted and its full screen.
+  Here's an [example video](https://youtu.be/3wXxz5E2IiY?si=6ZyT3EdwivMK1FKM&t=117)
   2. In another tab, open the [Playground]( https://playground.outspeed.com/screen_share_input).
-  3. Paste the link you received from the previous step into the URL field.
-  4. Select your Audio device. Select the resolution. Click Run to begin.
+  3. Set the URL field to the URL of your Outspeed App (or localhost URL if running locally)
+  4. Select your Audio device. Select the resolution (works better with higher resolution). Click Run to begin.
   5. You will be prompted to share your screen. Select the Youtube tab and share it.
-  6. Click Connect.
 
   </Step>
 </Steps>
@@ -126,9 +116,9 @@ The `PokerCommentator` class initializes with the `setup` method, which is autom
 
 - **DeepgramSTT**: Converts spoken audio to text using Deepgram's speech-to-text API, configured with a sample rate of 8000 Hz.
 - **KeyFrameDetector**: Analyzes video streams to detect significant moments, using a sensitivity threshold of 0.2 and a maximum time interval of 15 seconds between key frames.
-- **OpenAIVision**: Processes audio and video inputs to generate insightful poker commentary, guided by a detailed system prompt. It operates with a response temperature of 0.9 and maintains a chat history for context.
-- **TokenAggregator**: Aggregates tokens from OpenAIVision to form coherent responses.
-- **ElevenLabsTTS**: Converts text responses back into spoken audio using Eleven Labs' text-to-speech API, optimized for low latency and using a specific voice model.
+- **GeminiVision**: Processes audio and video inputs to generate insightful poker commentary, guided by a detailed system prompt. It operates with a response temperature of 0.9 and maintains a chat history for context.
+- **TokenAggregator**: Aggregates tokens from GeminiVision to form coherent responses.
+- **CartesiaTTS**: Converts text responses back into spoken audio using Eleven Labs' text-to-speech API, optimized for low latency and using a specific voice model.
 
 #### **Streaming Endpoint**
 
@@ -138,7 +128,7 @@ The `run` method in the `PokerCommentator` class is marked as a streaming endpoi
 2. **Video Processing**: Simultaneously, the video input stream is analyzed by the `KeyFrameDetector` to identify key moments.
 3. **Commentary Generation**: The text from Deepgram and the video analysis from KeyFrameDetector are then processed by `OpenAIVision` to generate commentary.
 4. **Token Aggregation**: The commentary tokens generated are refined by the `TokenAggregator` for coherence.
-5. **Text-to-Speech**: The coherent text is then converted into spoken audio by `ElevenLabsTTS`.
+5. **Text-to-Speech**: The coherent text is then converted into spoken audio by `CartesiaTTS`.
 
 The method outputs three streams: the audio stream of the commentary, the chat history text stream, and the cloned video input stream.
 
