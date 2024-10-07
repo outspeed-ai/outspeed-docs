@@ -59,7 +59,6 @@ This app will process input from your microphone, send it to an LLM and convert 
 
     ```bash
     git clone https://github.com/outspeed-ai/outspeed.git
-    cd outspeed/examples/voice_bot/
     ```
 
   </Step>
@@ -71,8 +70,8 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
 
   <Step title="Run Backend">
   <Warning>
-  Ensure you’re in the same directory as `voice_bot.py`!
-</Warning>
+  Navigate to `examples/voice_bot` to view `voice_bot.py` code!
+  </Warning>
 
 `voice_bot.py` contains implementation of `@outspeed.App` annotated class which implements a low-latency conversational voice bot using `outspeed` SDK.
 
@@ -95,7 +94,7 @@ export CARTESIA_API_KEY=<your_cartesia_api_key>
 Finally, run the following command to start the server:
 
 ```bash
-python voice_bot.py
+python voice_bot.py # in examples/voice_bot
 ```
 
 The console will output the URL you can use to connect to the (default is http://localhost:8080).

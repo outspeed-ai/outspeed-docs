@@ -7,12 +7,14 @@
 
 <CodeGroup>
 ```bash MacOS/Linux
+# Check python version and make sure it's >=3.9,<3.12
+python3 --version # or python --version
 # Create a virtual environment
 python3 -m venv .venv
 # Activate the virtual environment
 source .venv/bin/activate
 # Install the outspeed package
-pip install "outspeed[silero]>=0.1.143"
+pip install --no-cache-dir "outspeed[silero]" # ensure no cache is used
 ```
 
 ```batch Windows
