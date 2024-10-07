@@ -62,14 +62,14 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
     You will need the following environment variables:
 
     1. `DEEPGRAM_API_KEY` - You can get this by going to [Deepgram Console](https://console.deepgram.com/) and clicking on the API key tab.
-    2. `GOOGLE_API_KEY` - You can get this by visiting the [Gemini Developer Portal](https://aistudio.google.com/app/apikey) and navigating to the API keys section to generate a new key.
+    2. `OPENAI_API_KEY` - You can get this by visiting the [OpenAI Developer Portal](https://platform.openai.com/api-keys) and navigating to the API keys section to generate a new key.
     3. `CARTESIA_API_KEY` - You can get this by going to [Cartesia Keys](https://play.cartesia.ai/keys) and clicking on the API key tab.
 
     All of these providers have a free tier. Once you have your keys, run the following command:
 
     ```bash
     export DEEPGRAM_API_KEY=<your_deepgram_api_key>
-    export GOOGLE_API_KEY=<your_gemini_api_key>
+    export OPENAI_API_KEY=<your_openai_api_key>
     export CARTESIA_API_KEY=<your_cartesia_api_key>
     ```
 
@@ -126,8 +126,8 @@ The `PokerCommentator` class initializes with the `setup` method, which is autom
 
 - **DeepgramSTT**: Converts spoken audio to text using Deepgram's speech-to-text API, configured with a sample rate of 8000 Hz.
 - **KeyFrameDetector**: Analyzes video streams to detect significant moments, using a sensitivity threshold of 0.2 and a maximum time interval of 15 seconds between key frames.
-- **GeminiVision**: Processes audio and video inputs to generate insightful poker commentary, guided by a detailed system prompt. It operates with a response temperature of 0.9 and maintains a chat history for context.
-- **TokenAggregator**: Aggregates tokens from GeminiVision to form coherent responses.
+- **OpenAIVision**: Processes audio and video inputs to generate insightful poker commentary, guided by a detailed system prompt. It operates with a response temperature of 0.9 and maintains a chat history for context.
+- **TokenAggregator**: Aggregates tokens from OpenAIVision to form coherent responses.
 - **ElevenLabsTTS**: Converts text responses back into spoken audio using Eleven Labs' text-to-speech API, optimized for low latency and using a specific voice model.
 
 #### **Streaming Endpoint**
@@ -136,7 +136,7 @@ The `run` method in the `PokerCommentator` class is marked as a streaming endpoi
 
 1. **Audio Processing**: The audio input stream is first converted to text using the `DeepgramSTT` service.
 2. **Video Processing**: Simultaneously, the video input stream is analyzed by the `KeyFrameDetector` to identify key moments.
-3. **Commentary Generation**: The text from Deepgram and the video analysis from KeyFrameDetector are then processed by `GeminiVision` to generate commentary.
+3. **Commentary Generation**: The text from Deepgram and the video analysis from KeyFrameDetector are then processed by `OpenAIVision` to generate commentary.
 4. **Token Aggregation**: The commentary tokens generated are refined by the `TokenAggregator` for coherence.
 5. **Text-to-Speech**: The coherent text is then converted into spoken audio by `ElevenLabsTTS`.
 
