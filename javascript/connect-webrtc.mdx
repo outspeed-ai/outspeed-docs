@@ -10,6 +10,7 @@ description: "The useWebRTC hook simplify the process of connecting to Outspeedâ
 ```tsx WebRTCApp.tsx
 import React from "react";
 import { useWebRTC, RealtimeVideo } from "@outspeed/react";
+import { createConfig } from "@outspeed/core";
 
 export default function App() {
   const { 
@@ -18,12 +19,12 @@ export default function App() {
     getRemoteVideoTrack,
     getLocalVideoTrack
     } = useWebRTC({
-      config: {
+      config: createConfig({
         // Add your function URL.
         functionURL: "<my-function-url>", 
-        audio: true,
-        video: true,
-      },
+        audioConstraints: {},
+        videoConstraints: {}
+      }),
     });
 
   return (
@@ -45,12 +46,12 @@ export default function App() {
 The code shown establishes a peer connection with the backend and streams local audio and video to it.
 If the backend is configured to return the audio and video, they will be displayed as well.
 
-- We import necessary components from the `@outspeed/react` library.
+- We import necessary components from the `@outspeed/react` and `@outspeed/core` libraries.
 - `useWebRTC`: This hook is used to manage WebRTC connections. It provides methods like connect,
 getRemoteVideoTrack, and getLocalVideoTrack. Visit [here](./useWebRTC) to learn more about `useWebRTC`.
 - The `useWebRTC` hook is set up with a URL (`functionURL`) and options to enable audio and video. We can also use `useCreateConfig` to create a config, visit [here](./useCreateConfig).
-  - `audio: true`: This selects the default audio input device, and stream it to the backend.
-  - `video: true`: This selects the default video input device, and stream it to the backend.
+  - `audioConstraints: {}`: This selects the default audio input device and streams the audio to the backend. You can also specify any [MediaTrackConstraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints) to customize the audio input.
+  - `videoConstraints: {}`: This selects the default video input device and streams the video to the backend. Similar to audio, you can pass [MediaTrackConstraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints) to define specific video input settings.
 - Video Streams: Using `RealtimeVideo` component to view streams. Learn more about `RealtimeVideo` component [here](./RealtimeVideo).
 
 
