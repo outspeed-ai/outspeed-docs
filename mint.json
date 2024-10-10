@@ -94,7 +94,8 @@
       "pages": [
         "examples/commentator",
         "examples/cooking",
-        "examples/3d_chatbot"
+        "examples/3d_chatbot",
+        "examples/openai_realtime"
       ]
     },
     {
