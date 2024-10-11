@@ -140,8 +140,8 @@
     {
       "group": "@outspeed/react",
       "pages": [
-        "javascript/installation",
         "javascript/usage",
+        "javascript/installation",
         "javascript/connect-webrtc",
         "javascript/connect-websocket",
         {
@@ -164,13 +164,14 @@
     {
       "group": "@outspeed/react-native",
       "pages": [
-        "javascript/react-native-installation",
         "javascript/react-native-usage",
+        "javascript/react-native-installation",
         "javascript/react-native-connect-webrtc",
         {
           "group": "API",
           "pages": [
             "javascript/react-native-useWebRTC",
+            "javascript/react-native-create-config",
             "javascript/react-native-RealtimePlayer"
           ]
         }

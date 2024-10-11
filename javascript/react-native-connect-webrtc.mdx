@@ -11,15 +11,17 @@ description: "The useWebRTC hook simplify the process of connecting to Outspeedâ
 import React from "react";
 import { Text, SafeAreaView, Button } from "react-native";
 import { registerGlobals } from "react-native-webrtc";
+import InCallManager from "react-native-incall-manager";
 import { useWebRTC, RealtimePlayer } from "@outspeed/react-native";
 import { createConfig } from "@outspeed/core/dist/create-config";
 
 registerGlobals();
 
 export default function HomeScreen() {
-  const { connect, remoteTracks, connectionStatus } = useWebRTC();
+  const { connect, remoteStreams, connectionStatus } = useWebRTC();
 
   const createConfigAndConnect = React.useCallback(async () => {
+    InCallManager.setSpeakerphoneOn(true);
     const config = createConfig({
       // Add your function url
       functionURL: "<my-function-url>", 
@@ -35,8 +37,8 @@ export default function HomeScreen() {
     <SafeAreaView style={{ display: "flex", marginTop: 50 }}>
       <Text>Connection Status: {connectionStatus}</Text>
       <Button title="Connect" onPress={createConfigAndConnect} />
-      {remoteTracks[0] && (
-        <RealtimePlayer streamURL={remoteTracks[0].toURL()} />
+      {remoteStreams[0] && (
+        <RealtimePlayer streamURL={remoteStreams[0].toURL()} />
       )}
     </SafeAreaView>
   );
