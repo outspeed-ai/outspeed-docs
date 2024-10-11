@@ -38,7 +38,7 @@ This app will process input from your microphone, send it to an LLM and convert 
 
     ```bash
     git clone https://github.com/outspeed-ai/outspeed.git
-    cd examples/cooking_assistant/
+    cd examples/3d_avatar_chatbot/
     ```
 
   </Step>
@@ -51,7 +51,7 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
 
     <Step title="Run Backend">
       <Warning>
-      Ensure you’re in the same directory as voice_bot.py!
+      Ensure you’re in the same directory as avatar_bot.py!
       </Warning>
 
       <Tabs>
@@ -74,7 +74,7 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
       Finally, run the following command to start the server:
 
       ```bash
-      python cooking_assistant.py
+      python avatar_bot.py
       ```
 
       The console will output the URL you can use to connect to the server (default is http://localhost:8080).
@@ -89,7 +89,7 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
           We will use our outspeed [Python SDK](https://github.com/outspeed-ai/outspeed.git) to deploy our application.
 
       ```bash
-      outspeed deploy --api-key=<your-api-key> cooking_assistant.py
+      outspeed deploy --api-key=<your-api-key> avatar_bot.py
       ```
 
       Your build will complete in seconds, and then you’ll receive a link to your deployed function on the Outspeed server. Copy the link.
@@ -106,7 +106,7 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
     We have already created a simple frontend using our [React SDK](/javascript/introduction).
     You can then browse to the following page with your browser:
 
-    https://playground.outspeed.com/webrtc
+    https://playground.outspeed.com/webrtc_input
 
     1. Paste the link your received from the previous step into the URL field.
     2. Select Audio device. Leave Video device blank. Click Run to begin.
@@ -117,7 +117,7 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
 
 ## **Understanding the Process**
 
-Review the code in `chatbot.py`.
+Review the code in `avatar_bot.py`.
 
 #### **Setup**
 
