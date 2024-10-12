@@ -40,7 +40,7 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
 
   <Step title="Run Backend">
     <Warning>
-      Ensure you’re in the same directory as voice_bot.py!
+      Ensure you’re in the same directory as voice_bot_with_online_search.py!
     </Warning>
 
     <Tabs>
@@ -49,17 +49,19 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
       You will need the following environment variables:
 
       1. `OPENAI_API_KEY` - You can get this by visiting the [OpenAI Realtime API documentation](https://platform.openai.com/docs/guides/realtime) and navigating to the API keys section to generate a new key.
+      2. `EXA_API_KEY` - You can get this by visiting the [Exa API documentation](https://exa.ai/api) and navigating to the API keys section to generate a new key.
 
       Once you have your keys, run the following command:
 
       ```bash
       export OPENAI_API_KEY=<your_openai_api_key>
+      export EXA_API_KEY=<your_exa_api_key>
       ```
 
       Finally, run the following command to start the server:
 
       ```bash
-      python voice_bot.py
+      python voice_bot_with_online_search.py
       ```
 
       The console will output the URL you can use to connect to the server (default is http://localhost:8080).
@@ -74,7 +76,7 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
       We will use our outspeed [Python SDK](https://github.com/outspeed-ai/outspeed.git) to deploy our application.
 
       ```bash
-      outspeed deploy --api-key=<your-api-key> voice_bot.py
+      outspeed deploy --api-key=<your-api-key> voice_bot_with_online_search.py
       ```
 
       Your build will complete in seconds, and then you’ll receive a link to your deployed function on the Outspeed server. Copy the link.
@@ -98,7 +100,7 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
 
 ## **Understanding the Process**
 
-Review the code in `voice_bot.py`.
+Review the code in `voice_bot_with_online_search.py`.
 
 #### **Setup**
 
