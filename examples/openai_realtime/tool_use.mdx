@@ -1,0 +1,116 @@
+---
+title: "Using Tools"
+description: "A guide on how to integrate and use tools in your realtime Voice Bot using OpenAI Realtime API."
+---
+
+<Info>
+  Ensure you have completed the [QuickStart](/examples/openai_realtime/quickstart) before proceeding with this guide.
+</Info>
+
+In this guide, we will extend the basic Voice Bot by integrating a **Search Tool** that allows the bot to perform online searches based on user queries. This enhancement enables your bot to provide more accurate and up-to-date information by fetching data from the web in real-time.
+
+## Demo
+
+Coming soon
+
+## **Integrating Tools into Your Voice Bot in 4 Steps**
+
+We will modify the existing Voice Bot to include a search functionality that interacts with the [Exa API](https://exa.ai/api). This involves creating a new tool, updating the bot's setup, and handling the search results.
+
+- The full GitHub repository is available [here.](https://github.com/outspeed-ai/outspeed.git)
+
+<Steps>
+  <Step title="Creating Pydantic Models">
+    To handle structured data within your tool, we utilize **Pydantic** models. These models provide type validation and ensure consistency across your application.
+
+        ### **Define the Models**
+
+        First, define the models for queries and search results.
+
+        ```python
+        from pydantic import BaseModel
+
+        class Query(BaseModel):
+            query: str
+
+        class SearchResult(BaseModel):
+            result: str
+        ```
+    </Step>
+
+  <Step title="Integrate the Search Tool">
+    <Warning>
+      Ensure you’re in the same directory as `voice_bot_with_online_search.py`!
+    </Warning>
+
+    ### **Create the Search Tool**
+
+    First, create a new tool that interacts with the Exa API to perform searches.
+
+    ```python
+    class SearchTool(sp.Tool):
+        async def run(self, query: Query) -> SearchResult:
+            url = "https://api.exa.ai/search"
+            headers = {
+                "accept": "application/json",
+                "content-type": "application/json",
+                "x-api-key": os.getenv("EXA_API_KEY"),  # Ensure EXA_API_KEY is set in your environment
+            }
+            payload = {
+                "query": query.query,
+                "type": "neural",
+                "useAutoprompt": True,
+                "numResults": 1,
+                "contents": {"text": True},
+            }
+
+            async with aiohttp.ClientSession() as session:
+                try:
+                    async with session.post(url, headers=headers, json=payload) as response:
+                        response.raise_for_status()  # Raise an exception for HTTP errors
+                        data = await response.json()
+                        # Process the response data as needed
+                        return SearchResult(result=str(data.get("results", [{}])[0].get("text", "")))
+                except aiohttp.ClientError as e:
+                    logging.error(f"HTTP request failed: {e}")
+                    return SearchResult(result="An error occurred while processing the search request.")
+    ```
+
+    ### **Update the VoiceBot Setup**
+
+    Modify the `setup` method to include the newly created `SearchTool`.
+
+    ```python
+    @sp.App()
+    class VoiceBot:
+        async def setup(self) -> None:
+            # Initialize the AI services
+            self.llm_node = sp.OpenAIRealtime(
+                tools=[
+                    SearchTool(
+                        name="search",
+                        description="Search the web for information",
+                        parameters_type=Query,
+                        response_type=SearchResult,
+                    )
+                ]
+            )
+    ```
+  </Step>
+</Steps>
+
+## **Understanding the Integration**
+
+### **SearchTool Class**
+
+The `SearchTool` class extends `sp.Tool` and is responsible for interacting with the Exa API to perform web searches based on user queries.
+
+- **run Method**: This asynchronous method takes a `Query` object, sends a POST request to the Exa API with the query parameters, and returns a `SearchResult` object containing the search outcome.
+
+### **VoiceBot Setup**
+
+In the `setup` method of the `VoiceBot` class, we initialize the `llm_node` with the `SearchTool`. This setup allows the bot to utilize the search functionality alongside other AI services.
+
+## Support
+
+For any assistance or questions, feel free to join our [Discord community](https://discord.gg/cmfFw6SYvp). We're excited to see what you build!
