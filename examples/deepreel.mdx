@@ -74,6 +74,26 @@ We will modify your existing application to include the DeepReel Plugin. This in
     Implement methods to connect to the WebSocket server and handle sending and receiving data.
 
     ```python
+    def run(self, audio_input_stream: sp.AudioStream) -> Tuple[sp.VideoStream, sp.AudioStream]:
+        """
+        Set up the plugin and start processing audio input.
+
+        Args:
+            audio_input_stream (AudioStream): The input audio stream to process.
+
+        Returns:
+            Tuple[VideoStream, AudioStream]: The output video and audio streams.
+        """
+        self.audio_input_stream = audio_input_stream
+        self.image_output_stream = sp.VideoStream()
+        self.audio_output_stream = sp.AudioStream()
+        self._send_thread = threading.Thread(target=self.send_task)
+        self._send_thread.start()
+        self._recv_thread = threading.Thread(target=self.recv_task)
+        self._recv_thread.start()
+
+        return self.image_output_stream, self.audio_output_stream
+
     async def _connect_ws(self):
         """
         Coroutine to establish a WebSocket connection.
