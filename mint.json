@@ -104,7 +104,8 @@
           ]
         },
         "examples/cartesia",
-        "examples/elevenlabs"
+        "examples/elevenlabs",
+        "examples/deepreel"
       ]
     },
     {
