@@ -1,0 +1,137 @@
+---
+title: "Eleven Labs Integration"
+description: "A guide on how to integrate and use Eleven Labs TTS in your realtime Voice Bot using Outspeed."
+---
+
+<Info>
+  Ensure you have completed the [Quick Start - Simple Voice Bot](/examples/quickstart) guide before proceeding with this guide.
+</Info>
+
+## **Integrating Eleven Labs TTS into Your Voice Bot**
+
+In this guide, we will enhance your basic Voice Bot by integrating **Eleven Labs TTS** (Text-to-Speech) to convert text responses into natural-sounding speech. This integration provides a more engaging and interactive user experience.
+
+- The full code is available [here.](https://github.com/outspeed-ai/outspeed/blob/main/examples/voice_bot/voice_bot.py)
+
+### **Prerequisites**
+
+Before integrating Eleven Labs TTS, ensure you have the following:
+
+1. **API Keys**:
+   - [Eleven Labs](https://elevenlabs.io/) - For text-to-speech. Sign up and navigate to your API keys to obtain your API key.
+   - Additionally, ensure you have API keys for [Deepgram](https://deepgram.com/) and [Groq](https://groq.com/) as outlined in the [Quick Start](./quickstart.mdx) guide.
+
+### **Setup Environment Variables**
+
+Create a `.env` file in the same directory as `voice_bot.py` and add your API keys:
+
+```bash
+DEEPGRAM_API_KEY=<your_deepgram_api_key>
+GROQ_API_KEY=<your_groq_api_key>
+ELEVEN_LABS_API_KEY=<your_eleven_labs_api_key>
+```
+
+### **Understanding the ElevenLabsTTS Plugin**
+
+The `ElevenLabsTTS` plugin is a powerful component that enables text-to-speech synthesis using the Eleven Labs API. Let's explore its key features and functionality:
+
+#### Initialization
+
+The plugin is initialized with several parameters:
+
+```python
+ElevenLabsTTS(
+    api_key: Optional[str] = None,
+    voice_id: str = "pNInz6obpgDQGcFmaJgB",
+    model: str = "eleven_turbo_v2_5",
+    output_format: str = "pcm_16000",
+    optimize_streaming_latency: int = 4,
+    stream: bool = True,
+)
+```
+
+- `api_key`: Your Eleven Labs API key (can be set via environment variable `ELEVEN_LABS_API_KEY`)
+- `voice_id`: The ID of the voice to use for synthesis
+- `model`: The TTS model to use (default is "eleven_turbo_v2_5")
+- `output_format`: The audio output format (`'pcm_16000'`, `'pcm_24000'`, `'mp3_22050_32'`, `'mp3_44100_128'`)
+- `optimize_streaming_latency`: Latency optimization level for streaming
+- `stream`: Whether to stream the audio output (default is `True`)
+
+#### Key Features
+
+1. **Asynchronous Operation**: The plugin operates asynchronously, efficiently managing text input and audio output streams.
+2. **Streaming Support**: It supports streaming audio output, allowing for low-latency speech synthesis.
+3. **Interrupt Handling**: The plugin can handle interruptions (e.g., when the user starts speaking) by cancelling ongoing TTS generation and clearing queues.
+4. **Flexible Output Formats**: Supports multiple audio output formats to suit different application needs.
+5. **Tracing and Logging**: Includes tracing and logging functionality for monitoring performance and debugging.
+
+#### Usage
+
+To use the ElevenLabsTTS plugin in your Voice Bot:
+
+1. **Initialize the plugin in your `setup` method**:
+
+    ```python
+    self.tts_node = sp.ElevenLabsTTS(
+        voice_id="pNInz6obpgDQGcFmaJgB",
+        api_key=os.getenv("ELEVEN_LABS_API_KEY")
+    )
+    ```
+
+2. **In your `run` method, connect the text input to the TTS node**:
+
+    ```python
+    tts_stream: sp.AudioStream = self.tts_node.run(token_aggregator_stream)
+    ```
+
+This integration allows your Voice Bot to convert text responses into natural-sounding speech, enhancing the interactive experience for users.
+
+### **Updating `voice_bot.py` to Use Eleven Labs TTS**
+
+Ensure your `voice_bot.py` includes the Eleven Labs TTS integration as shown below:
+
+```python
+# voice_bot.py
+import outspeed as sp
+import json
+
+@sp.App()
+class VoiceBot:
+    async def setup(self) -> None:
+        # Initialize the AI services
+        self.deepgram_node = sp.DeepgramSTT(sample_rate=8000)
+        self.llm_node = sp.GroqLLM(
+            system_prompt="You are a helpful assistant. Keep your answers very short. No special characters in responses.",
+        )
+        self.token_aggregator_node = sp.TokenAggregator()
+        self.tts_node = sp.ElevenLabsTTS(
+            voice_id="pNInz6obpgDQGcFmaJgB",
+            api_key=os.getenv("ELEVEN_LABS_API_KEY")  # Ensure API key is loaded from environment
+        )
+
+    @sp.streaming_endpoint()
+    async def run(self, audio_input_queue: sp.AudioStream, text_input_queue: sp.TextStream) -> sp.AudioStream:
+        deepgram_stream: sp.TextStream = self.deepgram_node.run(audio_input_queue)
+
+        text_input_queue = sp.map(text_input_queue, lambda x: json.loads(x).get("content"))
+
+        llm_input_queue: sp.TextStream = sp.merge(
+            [deepgram_stream, text_input_queue],
+        )
+
+        llm_token_stream, chat_history_stream = self.llm_node.run(llm_input_queue)
+
+        token_aggregator_stream: sp.TextStream = self.token_aggregator_node.run(llm_token_stream)
+        tts_stream: sp.AudioStream = self.tts_node.run(token_aggregator_stream)
+
+        return tts_stream
+
+    async def teardown(self) -> None:
+        await self.deepgram_node.close()
+        await self.llm_node.close()
+        await self.token_aggregator_node.close()
+        await self.tts_node.close()
+```
+
+This setup ensures that your Voice Bot utilizes the Eleven Labs TTS service for generating audio responses based on the processed text input.
+
