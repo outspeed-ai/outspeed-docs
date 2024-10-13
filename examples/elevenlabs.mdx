@@ -131,6 +131,9 @@ class VoiceBot:
         await self.llm_node.close()
         await self.token_aggregator_node.close()
         await self.tts_node.close()
+
+if __name__ == "__main__":
+    VoiceBot().start()
 ```
 
 This setup ensures that your Voice Bot utilizes the Eleven Labs TTS service for generating audio responses based on the processed text input.
