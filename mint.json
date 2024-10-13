@@ -102,7 +102,9 @@
             "examples/openai_realtime/tool_use",
             "examples/openai_realtime/rag"
           ]
-        }
+        },
+        "examples/cartesia",
+        "examples/elevenlabs"
       ]
     },
     {
