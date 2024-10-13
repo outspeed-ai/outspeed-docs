@@ -13,7 +13,7 @@ In this guide, we will extend the basic Voice Bot by integrating a **Search Tool
 
 We will modify the existing Voice Bot to include a search functionality that interacts with the [Exa API](https://exa.ai/api). This involves creating a new tool, updating the bot's setup, and handling the search results.
 
-- The full GitHub repository is available [here.](https://github.com/outspeed-ai/outspeed.git) and examples are in the `/examples` directory
+- The full code is available [here.](https://github.com/outspeed-ai/outspeed/blob/main/examples/openai_realtime/voice_bot_with_online_search.py)
 
 <Steps>
   <Step title="Creating Pydantic Models">
@@ -95,18 +95,20 @@ We will modify the existing Voice Bot to include a search functionality that int
     ### **Setup API Keys (if running locally)**
       You will need the following environment variables:
 
-      1. `EXA_API_KEY` - You can get this by visiting the [Exa API documentation](https://exa.ai/docs) and navigating to the API keys section to generate a new key.
+      1. `OPENAI_API_KEY` - You can get this by visiting the [OpenAI Realtime API documentation](https://platform.openai.com/docs/guides/realtime) and navigating to the API keys section to generate a new key.
+      2. `EXA_API_KEY` - You can get this by visiting the [Exa API documentation](https://exa.ai/docs) and navigating to the API keys section to generate a new key.
 
-      Once you have your key, run the following commands:
+      Once you have your keys, create a `.env` file in the same directory as `voice_bot_with_online_search.py` and add the following:
 
       ```bash
-      export EXA_API_KEY=<your_exa_api_key>
+      OPENAI_API_KEY=<your_openai_api_key>
+      EXA_API_KEY=<your_exa_api_key>
       ```
 
       Now you run the following command to start the server:
 
       ```bash
-      python voice_bot_rt.py
+      python voice_bot_with_online_search.py
       ```
   </Step>
 </Steps>

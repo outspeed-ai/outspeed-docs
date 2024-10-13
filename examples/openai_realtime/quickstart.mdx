@@ -18,7 +18,7 @@ We accomplish this by using microphone audio to interact with the bot.
 
 This app will process input from your microphone, send it to an LLM, and convert the response back to voice.
 
-- The full GitHub repository is available [here.](https://github.com/outspeed-ai/outspeed.git)
+- The full code is available [here.](https://github.com/outspeed-ai/outspeed/blob/main/examples/openai_realtime/voice_bot_with_rt.py)
 
 
 <Steps>
@@ -72,10 +72,10 @@ This app will process input from your microphone, send it to an LLM, and convert
 
       1. `OPENAI_API_KEY` - You can get this by visiting the [OpenAI Realtime API documentation](https://platform.openai.com/docs/guides/realtime) and navigating to the API keys section to generate a new key.
 
-      Once you have your key, run the following command:
+      Once you have your key, create a `.env` file in the same directory as `voice_bot_with_rt.py` and add the following:
 
       ```bash
-      export OPENAI_API_KEY=<your_openai_api_key>
+      OPENAI_API_KEY=<your_openai_api_key>
       ```
 
       Finally, run the following command to start the server:

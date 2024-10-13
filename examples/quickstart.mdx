@@ -178,12 +178,12 @@ To run this example locally, you'll need API keys setup in the environment varia
 2. [Groq](https://groq.com/) - For LLM. Sign up and navigate to https://console.groq.com/keys and to get the API key.
 3. [Cartesia](https://cartesia.ai/) - For text-to-speech. Sign up and navigate to https://play.cartesia.ai/keys to get the API key.
 
-All of these providers have a free tier. Once you have your keys, run the following command:
+All of these providers have a free tier. Once you have your keys, create a `.env` file in the same directory as `voice_bot.py` and add the following:
 
 ```bash
-export DEEPGRAM_API_KEY=<your_deepgram_api_key>
-export GROQ_API_KEY=<your_groq_api_key>
-export CARTESIA_API_KEY=<your_cartesia_api_key>
+DEEPGRAM_API_KEY=<your_deepgram_api_key>
+GROQ_API_KEY=<your_groq_api_key>
+CARTESIA_API_KEY=<your_cartesia_api_key>
 ```
 
 Finally, run the following command to start the server:
