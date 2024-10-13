@@ -190,7 +190,7 @@ html:not(.dark)
 }
 
 html:not(.dark) .bg-background-light {
-  background-color: #f2f2f2 !important;
+  background-color: #ffffff !important;
 }
 
 .dark .whitespace-nowrap.font-medium.text-gray-600 {
