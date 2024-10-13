@@ -1,7 +1,10 @@
 ---
-title: "QuickStart"
+title: "Get Started"
 description: "A realtime voice bot that uses OpenAI Realtime API in Python."
 ---
+
+import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
+  
 
 <Info>
   Make sure you have gone over [QuickStart](/examples/quickstart) before trying
@@ -11,11 +14,7 @@ description: "A realtime voice bot that uses OpenAI Realtime API in Python."
 In this example, we will build a realtime voice bot that uses OpenAI Realtime API.
 We accomplish this by using microphone audio to interact with the bot.
 
-## Demo
-
-Coming soon
-
-## **Creating a Voice Bot in 4 Steps**
+## **Setup Application with Realtime API in 4 steps**
 
 This app will process input from your microphone, send it to an LLM, and convert the response back to voice.
 
@@ -23,45 +22,66 @@ This app will process input from your microphone, send it to an LLM, and convert
 
 
 <Steps>
-  <Step title="Start by cloning the repository">
-
-    ```bash
-    git clone https://github.com/outspeed-ai/outspeed.git
-    cd examples/openai_realtime/
-    ```
-
-  </Step>
-
-import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
-  
   <Step title="Install Dependencies">
     <InstallOutspeedSnippet />
   </Step>
 
-  <Step title="Run Backend">
+  <Step title="Create VoiceBot Application (using Realtime API)">
     <Warning>
-      Ensure you’re in the same directory as voice_bot_with_online_search.py!
+    Go over to [QuickStart](/examples/quickstart) to understand the structure of an Outspeed application
     </Warning>
+  Create a file `voice_bot_rt.py` and add the following code:
+    ```python
+    import outspeed as sp
+
+    """
+    The @outspeed.App() decorator is used to wrap the VoiceBot class.
+    This tells the outspeed server which functions to run.
+    """
+    @sp.App()
+    class VoiceBot:
+        async def setup(self) -> None:
+            # Initialize the AI services
+            self.rt_node = sp.OpenAIRealtime()
+
+        @sp.streaming_endpoint()
+        async def run(self, audio_input_queue: sp.AudioStream, text_input_queue: sp.TextStream):
+            # Set up the AI service pipeline
+            audio_output_stream: sp.AudioStream
+            audio_output_stream, text_output_stream = self.rt_node.run(text_input_queue, audio_input_queue)
+
+            return audio_output_stream, text_output_stream
+
+        async def teardown(self) -> None:
+            # Close the OpenAI Realtime node when the application is shutting down
+            await self.rt_node.close()
+
+
+    if __name__ == "__main__":
+        # Start the VoiceBot when the script is run directly
+        VoiceBot().start()
+    ```
+  </Step>
+
+  <Step title="Setup API Keys and Run">
 
     <Tabs>
 
     <Tab title="Local Server">
-      You will need the following environment variables:
+      You will need the following environment variable:
 
       1. `OPENAI_API_KEY` - You can get this by visiting the [OpenAI Realtime API documentation](https://platform.openai.com/docs/guides/realtime) and navigating to the API keys section to generate a new key.
-      2. `EXA_API_KEY` - You can get this by visiting the [Exa API documentation](https://exa.ai/api) and navigating to the API keys section to generate a new key.
 
-      Once you have your keys, run the following command:
+      Once you have your key, run the following command:
 
       ```bash
       export OPENAI_API_KEY=<your_openai_api_key>
-      export EXA_API_KEY=<your_exa_api_key>
       ```
 
       Finally, run the following command to start the server:
 
       ```bash
-      python voice_bot_with_online_search.py
+      python voice_bot_rt.py
       ```
 
       The console will output the URL you can use to connect to the server (default is http://localhost:8080).
@@ -76,7 +96,7 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
       We will use our outspeed [Python SDK](https://github.com/outspeed-ai/outspeed.git) to deploy our application.
 
       ```bash
-      outspeed deploy --api-key=<your-api-key> voice_bot_with_online_search.py
+      outspeed deploy --api-key=<your-api-key> voice_bot_rt.py
       ```
 
       Your build will complete in seconds, and then you’ll receive a link to your deployed function on the Outspeed server. Copy the link.
@@ -89,18 +109,21 @@ import InstallOutspeedSnippet from "/snippets/install-outspeed.mdx";
 
   </Step>
   <Step title="Run Demo">
-    We have already created a simple frontend using our [React SDK](/javascript/introduction).
+  You can use our [playground](https://playground.outspeed.com) to interact with the voice bot.
+  
+  1. Navigate to [playground](https://playground.outspeed.com) and select "WebRTC"
+  2. Paste the link your received from the previous step into the URL field.
+  3. Select Audio device. Leave Video device blank. Click **Run** to begin.
 
-  1. Open the [Playground](https://playground.outspeed.com/webrtc_input).
-  2. Paste the link you received from the previous step into the URL field.
-  3. Select your Audio device. Click Run to begin.
+The playground is built using our our [React SDK](/javascript/introduction).
+You can use it to build your own frontends, or integrate with an existing one!
 
   </Step>
 </Steps>
 
 ## **Understanding the Process**
 
-Review the code in `voice_bot_with_online_search.py`.
+Review the code in `voice_bot_with_rt.py`.
 
 #### **Setup**
 
@@ -113,6 +136,10 @@ The `VoiceBot` class initializes with the `setup` method, which is automatically
 The `run` method in the `VoiceBot` class is marked as a streaming endpoint, handling real-time audio and text streams.
 
 The method outputs two streams: the audio stream of the commentary and the chat history text stream.
+
+## **Next Step**
+
+Now, we'll setup a [search tool](/examples/openai_realtime/tool_use) for the LLM in our application.
 
 ## Support
 

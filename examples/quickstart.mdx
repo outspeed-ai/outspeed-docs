@@ -47,7 +47,7 @@ Make sure to have the following installed:
 
 ## **Creating a Voice Bot in 4 steps!**
 
-This app will process input from your microphone, send it to an LLM and convert the reponse back to voice.
+This app will process input from your microphone or chatbox, send it to an LLM and convert the reponse back to voice.
 
 <Info>
   This application only supports English as the source language. For other
@@ -56,16 +56,119 @@ This app will process input from your microphone, send it to an LLM and convert 
 
 <Steps>
 
-  <Step title="Install package">
+  <Step title="Install Dependencies">
     <InstallOutspeedSnippet />
   </Step>
 
-  <Step title="Run Backend">
+  <Step title="Create VoiceBot application">
+  To create a simple voice bot, let's setup a file `voice_bot.py`.
+  ```python
+  # voice_bot.py
+  import outspeed as sp
+  ```
+  Next, we'll create an application class with a streaming endpoint. This endpoint will:
+  - Accept `sp.AudioStream` and `sp.TextStream` as inputs
+  - Respond with an `sp.AudioStream`
+
+  To create a real-time application in Outspeed:
+  1. Define a Python class
+  2. Annotate it with `@sp.App()`
+  3. Implement these three key methods:
+
+  | Method | Purpose |
+  |--------|---------|
+  | `setup()` | Initialize AI services and resources |
+  | `run()` | Define the main processing pipeline (use `@sp.streaming_endpoint()`) |
+  | `teardown()` | Clean up resources when the application stops |
+
+  ```python
+@sp.App()
+class VoiceBot:
+    async def setup(self) -> None:
+      # Initialize the AI services
+      # (Code for setup will be shown in the next snippet)
+
+    @sp.streaming_endpoint()
+    async def run(self, audio_input_queue: sp.AudioStream, text_input_queue: sp.TextStream) -> sp.AudioStream:
+      # Handle the main processing loop for the VoiceBot
+      # (Code for run will be shown in a separate snippet)
+
+    async def teardown(self) -> None:
+      # Clean up resources when the VoiceBot is shutting down
+      # (Code for teardown will be shown in the final snippet)
+  ```
+
+  Now let's break down each method:
+
+  1. **Setup method:**
+  ```python
+  async def setup(self) -> None:
+    # Initialize the AI services
+    self.deepgram_node = sp.DeepgramSTT(sample_rate=8000)
+    self.llm_node = sp.GroqLLM(
+        system_prompt="You are a helpful assistant. Keep your answers very short. No special characters in responses.",
+    )
+    self.token_aggregator_node = sp.TokenAggregator()
+    self.tts_node = sp.CartesiaTTS(
+        voice_id="95856005-0332-41b0-935f-352e296aa0df",
+    )
+  ```
+  The `setup` method initializes all the necessary AI services:
+  - `DeepgramSTT` for speech-to-text conversion
+  - `GroqLLM` for language model processing
+  - `TokenAggregator` for aggregating tokens
+  - `CartesiaTTS` for text-to-speech conversion
+
+  2. **Run method:**
+  ```python
+  @sp.streaming_endpoint()
+  async def run(self, audio_input_queue: sp.AudioStream, text_input_queue: sp.TextStream) -> sp.AudioStream:
+    deepgram_stream: sp.TextStream = self.deepgram_node.run(audio_input_queue)
+
+    text_input_queue = sp.map(text_input_queue, lambda x: json.loads(x).get("content"))
+
+    llm_input_queue: sp.TextStream = sp.merge(
+        [deepgram_stream, text_input_queue],
+    )
+
+    llm_token_stream: sp.TextStream
+    chat_history_stream: sp.TextStream
+    llm_token_stream, chat_history_stream = self.llm_node.run(llm_input_queue)
+
+    token_aggregator_stream: sp.TextStream = self.token_aggregator_node.run(llm_token_stream)
+    tts_stream: sp.AudioStream = self.tts_node.run(token_aggregator_stream)
+
+    return tts_stream
+  ```
+  The `run` method sets up the AI service pipeline:
+  - Converts audio input to text using Deepgram
+  - Processes any text input
+  - Merges speech-to-text and direct text inputs
+  - Runs the merged input through the LLM
+  - Aggregates LLM output tokens for improved TTS synthesis
+  - Converts the aggregated text to speech
+  - Returns the final audio stream
+
+  3. **Teardown method:**
+  ```python
+  async def teardown(self) -> None:
+    await self.deepgram_node.close()
+    await self.llm_node.close()
+    await self.token_aggregator_node.close()
+    await self.tts_node.close()
+  ```
+  The `teardown` method ensures proper cleanup of resources:
+  - Closes all initialized AI services (Deepgram, LLM, TokenAggregator, TTS)
+  - This method is called when the app stops or shuts down unexpectedly
+
+
   <Warning>
-  Navigate to `outspeed/examples/voice_bot` to view `voice_bot.py` code!
+  To view the full `voice_bot.py` code, navigate to the following link:
+  [View the complete voice_bot.py code](https://github.com/outspeed-ai/outspeed/blob/main/examples/voice_bot/voice_bot.py)
   </Warning>
 
-`voice_bot.py` contains implementation of `@outspeed.App` annotated class which implements a low-latency conversational voice bot using `outspeed` SDK.
+</Step>
+  <Step title="Setup API Keys and Run">
 
 <Tabs>
 
