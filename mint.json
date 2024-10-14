@@ -40,6 +40,10 @@
     {
       "name": "Outspeed JS SDK",
       "url": "javascript"
+    },
+    {
+      "name": "Outspeed React  SDK",
+      "url": "javascript"
     }
   ],
   "anchors": [
@@ -57,7 +61,9 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["examples/quickstart"]
+      "pages": [
+        "examples/quickstart"
+      ]
     },
     {
       "group": "Conversational Bots",
@@ -110,11 +116,15 @@
     },
     {
       "group": "General",
-      "pages": ["outspeed_sdk/installation"]
+      "pages": [
+        "outspeed_sdk/installation"
+      ]
     },
     {
       "group": "CLI",
-      "pages": ["outspeed_sdk/cli/deploy"]
+      "pages": [
+        "outspeed_sdk/cli/deploy"
+      ]
     },
     {
       "group": "Python API",
@@ -134,29 +144,48 @@
     },
     {
       "group": "Getting Started",
-      "pages": ["javascript/introduction", "javascript/installation"]
-    },
-    {
-      "group": "Usage",
       "pages": [
-        "javascript/usage",
-        "javascript/connect-webrtc",
-        "javascript/connect-websocket"
+        "javascript/introduction"
       ]
     },
     {
-      "group": "API",
+      "group": "@outspeed/react",
       "pages": [
-        "javascript/createConfig",
-        "javascript/useWebRTC",
-        "javascript/useWebSocket",
-        "javascript/useAvailableMediaDevices",
-        "javascript/useCreateConfig",
-        "javascript/Form",
-        "javascript/RealtimeAudio",
-        "javascript/RealtimeAudioVisualizer",
-        "javascript/RealtimeVideo",
-        "javascript/RealtimeChat"
+        "javascript/usage",
+        "javascript/installation",
+        "javascript/connect-webrtc",
+        "javascript/connect-websocket",
+        {
+          "group": "API",
+          "pages": [
+            "javascript/createConfig",
+            "javascript/useWebRTC",
+            "javascript/useWebSocket",
+            "javascript/useAvailableMediaDevices",
+            "javascript/useCreateConfig",
+            "javascript/Form",
+            "javascript/RealtimeAudio",
+            "javascript/RealtimeAudioVisualizer",
+            "javascript/RealtimeVideo",
+            "javascript/RealtimeChat"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "@outspeed/react-native",
+      "pages": [
+        "javascript/react-native-usage",
+        "javascript/react-native-installation",
+        "javascript/react-native-connect-webrtc",
+        {
+          "group": "API",
+          "pages": [
+            "javascript/react-native-useWebRTC",
+            "javascript/react-native-create-config",
+            "javascript/react-native-RealtimePlayer"
+          ]
+        }
       ]
     }
   ],
