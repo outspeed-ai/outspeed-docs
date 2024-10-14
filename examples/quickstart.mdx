@@ -156,6 +156,9 @@ class VoiceBot:
     await self.llm_node.close()
     await self.token_aggregator_node.close()
     await self.tts_node.close()
+
+  if __name__ == "__main__":
+    VoiceBot().start()
   ```
   The `teardown` method ensures proper cleanup of resources:
   - Closes all initialized AI services (Deepgram, LLM, TokenAggregator, TTS)
