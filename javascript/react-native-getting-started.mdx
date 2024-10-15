@@ -1,0 +1,96 @@
+---
+title: "Getting Started"
+sidebarTitle: "Getting Started"
+description: ""
+---
+
+<Steps>
+<Step title="Install the necessary dependencies">
+
+```bash
+npm install @outspeed/core @outspeed/react-native react-native-webrtc react-native-incall-manager
+```
+or if you're using yarn:
+```bash
+yarn add @outspeed/core @outspeed/react-native react-native-webrtc react-native-incall-manager
+```
+</Step>
+
+<Step title="Import the required components in your React Native file">
+
+```tsx
+import React from "react";
+import { Text, SafeAreaView, Button } from "react-native";
+import { registerGlobals } from "react-native-webrtc";
+import InCallManager from "react-native-incall-manager";
+import { useWebRTC, RealtimePlayer } from "@outspeed/react-native";
+import { createConfig } from "@outspeed/core/dist/create-config";
+```
+</Step>
+
+<Step title="Register WebRTC globals">
+
+```ts
+registerGlobals();
+```
+
+</Step>
+
+<Step title="Create a component that uses the useWebRTC hook">
+
+```tsx
+export default function HomeScreen() {
+  const { connect, remoteStreams, connectionStatus } = useWebRTC();
+
+  const createConfigAndConnect = React.useCallback(async () => {
+    InCallManager.setSpeakerphoneOn(true);
+    const config = createConfig({
+      functionURL: "", // Add your WebRTC backend function URL here
+      audioConstraints: {}
+    });
+
+    connect({
+      config,
+    });
+  }, [connect]);
+
+  return (
+    <SafeAreaView>
+      <Text>Connection Status: {connectionStatus}</Text>
+      <Button title="Connect" onPress={createConfigAndConnect} />
+      {remoteStreams[0] && (
+        <RealtimePlayer stream={remoteStreams[0]} />
+      )}
+    </SafeAreaView>
+  );
+}
+
+```
+
+</Step>
+
+<Step title="If you're using Expo">
+
+You'll need to take additional steps:
+Install expo-dev-client (follow instructions at https://docs.expo.dev/develop/development-builds/create-a-build/)
+Install @config-plugins/react-native-webrtc:
+
+```bash
+  npm install @config-plugins/react-native-webrtc
+```
+Add the plugin to your Expo configuration file:
+```json
+{
+  "expo": {
+    "plugins": ["@config-plugins/react-native-webrtc"]
+  }
+}
+```
+</Step>
+
+</Steps>
+
+Remember to replace the empty functionURL with your actual WebRTC backend URL. This setup will allow your React Native app to connect to a WebRTC backend, manage the connection status, and display remote streams when available.
+
+
+For detailed explanation move to the next page of the documenation.
