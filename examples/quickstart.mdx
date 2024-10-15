@@ -122,20 +122,12 @@ class VoiceBot:
   2. **Run method:**
   ```python
   @sp.streaming_endpoint()
-  async def run(self, audio_input_queue: sp.AudioStream, text_input_queue: sp.TextStream) -> sp.AudioStream:
+  async def run(self, audio_input_queue: sp.AudioStream) -> sp.AudioStream:
     deepgram_stream: sp.TextStream = self.deepgram_node.run(audio_input_queue)
 
-    text_input_queue = sp.map(text_input_queue, lambda x: json.loads(x).get("content"))
-
-    llm_input_queue: sp.TextStream = sp.merge(
-        [deepgram_stream, text_input_queue],
-    )
-
-    llm_token_stream: sp.TextStream
-    chat_history_stream: sp.TextStream
-    llm_token_stream, chat_history_stream = self.llm_node.run(llm_input_queue)
-
+    llm_token_stream, chat_history_stream = self.llm_node.run(deepgram_stream)
     token_aggregator_stream: sp.TextStream = self.token_aggregator_node.run(llm_token_stream)
+
     tts_stream: sp.AudioStream = self.tts_node.run(token_aggregator_stream)
 
     return tts_stream
