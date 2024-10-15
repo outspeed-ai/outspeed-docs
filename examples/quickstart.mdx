@@ -89,7 +89,7 @@ class VoiceBot:
       # (Code for setup will be shown in the next snippet)
 
     @sp.streaming_endpoint()
-    async def run(self, audio_input_queue: sp.AudioStream, text_input_queue: sp.TextStream) -> sp.AudioStream:
+    async def run(self, audio_input_queue: sp.AudioStream) -> sp.AudioStream:
       # Handle the main processing loop for the VoiceBot
       # (Code for run will be shown in a separate snippet)
 
