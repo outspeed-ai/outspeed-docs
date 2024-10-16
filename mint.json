@@ -175,6 +175,7 @@
     {
       "group": "@outspeed/react-native",
       "pages": [
+        "javascript/react-native-getting-started",
         "javascript/react-native-usage",
         "javascript/react-native-installation",
         "javascript/react-native-connect-webrtc",
