@@ -4,19 +4,47 @@ sidebarTitle: "Getting Started"
 description: ""
 ---
 
+<Note>
+  We assume you have already deployed your backend. If not, please follow 
+  [this tutorial](/outspeed_sdk/cli/deploy) to deploy your backend with `outspeed-client`.
+</Note>
+
+Let's create a mobile application using React Native to connect to the Outspeed backend. 
+If you haven't already set up a React Native (or Expo) app, you can follow the 
+[official setup guide](https://reactnative.dev/docs/environment-setup) to get started.
+
+
+
 <Steps>
 <Step title="Install the necessary dependencies">
 
-```bash
+<CodeGroup>
+
+```bash npm
 npm install @outspeed/core @outspeed/react-native react-native-webrtc react-native-incall-manager
 ```
-or if you're using yarn:
-```bash
+
+```bash yarn
 yarn add @outspeed/core @outspeed/react-native react-native-webrtc react-native-incall-manager
 ```
+
+```bash pnpm
+pnpm install @outspeed/core @outspeed/react-native react-native-webrtc react-native-incall-manager
+```
+</CodeGroup>
+
+The command above will add the following packages to your project dependencies. We'll begin by installing these packages:
+
+1. `@outspeed/core`
+2. `@outspeed/react-native`
+3. `react-native-webrtc`
+4. `react-native-incall-manager`
+
 </Step>
 
 <Step title="Import the required components in your React Native file">
+
+We will start with importing the neccessary things.
 
 ```tsx
 import React from "react";
@@ -24,16 +52,8 @@ import { Text, SafeAreaView, Button } from "react-native";
 import { registerGlobals } from "react-native-webrtc";
 import InCallManager from "react-native-incall-manager";
 import { useWebRTC, RealtimePlayer } from "@outspeed/react-native";
-import { createConfig } from "@outspeed/core/dist/create-config";
+import { createConfig } from "@outspeed/core/create-config";
 ```
-</Step>
-
-<Step title="Register WebRTC globals">
-
-```ts
-registerGlobals();
-```
-
 </Step>
 
 <Step title="Create a component that uses the useWebRTC hook">
@@ -45,7 +65,7 @@ export default function HomeScreen() {
   const createConfigAndConnect = React.useCallback(async () => {
     InCallManager.setSpeakerphoneOn(true);
     const config = createConfig({
-      functionURL: "", // Add your WebRTC backend function URL here
+      functionURL: "http://localhost:8080", // Add your WebRTC backend function URL here
       audioConstraints: {}
     });
 
@@ -69,20 +89,37 @@ export default function HomeScreen() {
 
 </Step>
 
-<Step title="If you're using Expo">
+<Step title="[OPTIONAL] If you're using Expo">
 
-You'll need to take additional steps:
-Install expo-dev-client (follow instructions at https://docs.expo.dev/develop/development-builds/create-a-build/)
-Install @config-plugins/react-native-webrtc:
+Since we are using `react-native-webrtc`, which includes native code, it is not available in the
+Expo Go app by default. To make it work, you'll need to do the following:
 
-```bash
-  npm install @config-plugins/react-native-webrtc
+1. Install `expo-dev-client` (follow the guide at [this link](https://docs.expo.dev/develop/development-builds/create-a-build/)).
+2. Install `@config-plugins/react-native-webrtc`.
+
+<CodeGroup>
+
+```bash npm
+npm install @config-plugins/react-native-webrtc
 ```
-Add the plugin to your Expo configuration file:
-```json
+
+```bash yarn
+yarn add @config-plugins/react-native-webrtc
+```
+
+```bash pnpm
+pnpm install @config-plugins/react-native-webrtc 
+```
+</CodeGroup>
+
+After installation, add the [config plugin]((https://docs.expo.dev/config-plugins/introduction/#use-a-config-plugin)) to the plugins array in the Expo
+configuration file. This ensures that Expo includes the plugin during the prebuild process.
+
+```json app.json
 {
   "expo": {
     "plugins": ["@config-plugins/react-native-webrtc"]
+		// ...
   }
 }
 ```
@@ -90,7 +127,7 @@ Add the plugin to your Expo configuration file:
 
 </Steps>
 
-Remember to replace the empty functionURL with your actual WebRTC backend URL. This setup will allow your React Native app to connect to a WebRTC backend, manage the connection status, and display remote streams when available.
-
-
-For detailed explanation move to the next page of the documenation.
+<Warning>
+Don't forget to replace the placeholder functionURL with the actual URL of your WebRTC backend.
+</Warning>
+For a more in-depth explanation, proceed to the next page of the documentation.
