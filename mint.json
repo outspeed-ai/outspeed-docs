@@ -61,9 +61,7 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": [
-        "examples/quickstart"
-      ]
+      "pages": ["examples/quickstart"]
     },
     {
       "group": "Conversational Bots",
@@ -109,6 +107,14 @@
             "examples/openai_realtime/rag"
           ]
         },
+        {
+          "group": "Multilingual Voice Bot",
+          "pages": [
+            "examples/multilingual/quickstart",
+            "examples/multilingual/switching_voices",
+            "examples/multilingual/updating_prompts"
+          ]
+        },
         "examples/cartesia",
         "examples/elevenlabs",
         "examples/deepreel"
@@ -116,15 +122,11 @@
     },
     {
       "group": "General",
-      "pages": [
-        "outspeed_sdk/installation"
-      ]
+      "pages": ["outspeed_sdk/installation"]
     },
     {
       "group": "CLI",
-      "pages": [
-        "outspeed_sdk/cli/deploy"
-      ]
+      "pages": ["outspeed_sdk/cli/deploy"]
     },
     {
       "group": "Python API",
@@ -144,9 +146,7 @@
     },
     {
       "group": "Getting Started",
-      "pages": [
-        "javascript/introduction"
-      ]
+      "pages": ["javascript/introduction"]
     },
     {
       "group": "@outspeed/react",
