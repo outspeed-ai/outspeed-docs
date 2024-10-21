@@ -112,7 +112,8 @@
           "pages": [
             "examples/multilingual/quickstart",
             "examples/multilingual/switching_voices",
-            "examples/multilingual/updating_prompts"
+            "examples/multilingual/updating_prompts",
+            "examples/multilingual/updating_languages"
           ]
         },
         "examples/cartesia",

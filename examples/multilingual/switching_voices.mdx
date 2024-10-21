@@ -31,9 +31,11 @@ class VoiceBot:
         """
         # ... existing code ...
         self.tts_node = sp.ElevenLabsTTS(
-            voice_id="your_voice_id_here",  # Update this line
-            output_format="pcm_16000",
-            model="eleven_multilingual_v2",
+            voice_id="your_voice_id_here",   # Update this line
+            model="eleven_multilingual_v2",  # Update the model
+            volume=0.7,                      # Update the volume
+            stability=0.7,                   # Update the stability
+            similarity=0.7,                  # Update the similarity
         )
         # ... existing code ...
 ```
