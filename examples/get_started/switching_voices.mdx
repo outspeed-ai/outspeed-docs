@@ -23,10 +23,17 @@ To switch voices in your voice bot, you'll need to modify the `voice_id` paramet
 ```python
 import outspeed as sp
 
-# Example of switching voices
-self.tts_node = sp.ElevenLabsTTS(
-    voice_id="your_voice_id_here",
-)
+@sp.App()
+class VoiceBot:
+    async def setup(self) -> None:
+        """
+        Initialize the VoiceBot.
+        """
+        # ... existing code ...
+        self.tts_node = sp.ElevenLabsTTS(
+            voice_id="your_voice_id_here",
+        )
+        # ... existing code ...
 ```
 
 ## **Cartesia TTS**
@@ -52,8 +59,15 @@ To switch voices using Cartesia TTS, you'll need to update the `voice_id` parame
 ```python
 import outspeed as sp
 
-# Example of switching voices
-self.tts_node = sp.CartesiaTTS(
-    voice_id="your_voice_id_here",
-)
+@sp.App()
+class VoiceBot:
+    async def setup(self) -> None:
+        """
+        Initialize the VoiceBot.
+        """
+        # ... existing code ...
+        self.tts_node = sp.CartesiaTTS(
+            voice_id="your_voice_id_here",
+        )
+        # ... existing code ...
 ```

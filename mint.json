@@ -61,36 +61,27 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["examples/quickstart"]
+      "pages": [
+        "examples/get_started/quickstart",
+        "examples/get_started/updating_prompts",
+        "examples/get_started/switching_voices"
+      ]
     },
     {
-      "group": "Conversational Bots",
+      "group": "Multilingual Voice Bot",
       "pages": [
-        {
-          "group": "Advanced Voice Bots",
-          "pages": [
-            "examples/conversational_ai/introduction",
-            "examples/conversational_ai/interruption_handling",
-            "examples/conversational_ai/pathways",
-            "examples/conversational_ai/backchanneling",
-            "examples/conversational_ai/recording",
-            "examples/conversational_ai/RAG",
-            "examples/conversational_ai/integrations",
-            "examples/conversational_ai/meetings",
-            "examples/conversational_ai/switching_voices",
-            "examples/conversational_ai/updating_prompts"
-          ]
-        },
-        {
-          "group": "Interactive Avatars",
-          "pages": [
-            "examples/avatars/introduction",
-            "examples/avatars/interviewing",
-            "examples/avatars/language_learning",
-            "examples/avatars/customer_support",
-            "examples/avatars/custom_avatar"
-          ]
-        }
+        "examples/multilingual/quickstart",
+        "examples/multilingual/switching_voices",
+        "examples/multilingual/updating_prompts",
+        "examples/multilingual/updating_languages"
+      ]
+    },
+    {
+      "group": "OpenAI Realtime API - Python",
+      "pages": [
+        "examples/openai_realtime/quickstart",
+        "examples/openai_realtime/tool_use",
+        "examples/openai_realtime/rag"
       ]
     },
     {
@@ -99,23 +90,6 @@
         "examples/commentator",
         "examples/cooking",
         "examples/3d_chatbot",
-        {
-          "group": "OpenAI Realtime API - Python",
-          "pages": [
-            "examples/openai_realtime/quickstart",
-            "examples/openai_realtime/tool_use",
-            "examples/openai_realtime/rag"
-          ]
-        },
-        {
-          "group": "Multilingual Voice Bot",
-          "pages": [
-            "examples/multilingual/quickstart",
-            "examples/multilingual/switching_voices",
-            "examples/multilingual/updating_prompts",
-            "examples/multilingual/updating_languages"
-          ]
-        },
         "examples/cartesia",
         "examples/elevenlabs",
         "examples/deepreel"
