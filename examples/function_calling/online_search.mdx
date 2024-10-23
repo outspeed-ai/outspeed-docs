@@ -1,0 +1,148 @@
+---
+title: "Using Online Search"
+description: "A guide on how to integrate and use tools in your realtime Voice Bot using OpenAI Realtime API."
+---
+
+<Info>
+  Ensure you have completed the [Overview](/examples/function_calling/overview) before proceeding with this guide.
+</Info>
+
+In this guide, we will extend the basic Voice Bot by integrating a **Search Tool** that allows the bot to perform online searches based on user queries. This enhancement enables your bot to provide more accurate and up-to-date information by fetching data from the web in real-time.
+
+## **Integrating Tools into Your Realtime API Voice Bot**
+
+We will modify the existing Voice Bot to include a search functionality that interacts with the [Exa API](https://exa.ai/api). This involves creating a new tool, updating the bot's setup, and handling the search results.
+
+- The full code is available [here.](https://github.com/outspeed-ai/outspeed/blob/main/examples/function_calling/voice_bot_with_online_search.py)
+
+<Steps>
+  <Step title="Creating Pydantic Models">
+    To handle structured data within your tool, we utilize **Pydantic** models. These models provide type validation and ensure consistency across your application.
+
+    ### **Define the Models**
+
+    First, define the models for queries and search results.
+
+    ```python
+    from pydantic import BaseModel
+
+    class Query(BaseModel):
+        query: str
+
+    class SearchResult(BaseModel):
+        result: str
+    ```
+  </Step>
+
+  <Step title="Integrate the Search Tool">
+    <Warning>
+      Ensure you're adding this to `voice_bot_rt.py` created in [Get Started with Realtime API](/examples/openai_realtime/quickstart) guide.
+    </Warning>
+
+    ### **Create the Search Tool**
+
+    Create a new tool that interacts with the Exa API to perform searches.
+
+    ```python
+    import outspeed as sp
+
+    class SearchTool(sp.Tool):
+        name = "search"
+        description = "Search the web for information"
+        parameters_type = Query
+        response_type = SearchResult
+
+        async def run(self, query: Query) -> SearchResult:
+            url = "https://api.exa.ai/search"
+            headers = {
+                "accept": "application/json",
+                "content-type": "application/json",
+                "x-api-key": os.getenv("EXA_API_KEY"),  # Ensure EXA_API_KEY is set in your environment
+            }
+            payload = {
+                "query": query.query,
+                "type": "neural",
+                "useAutoprompt": True,
+                "numResults": 1,
+                "contents": {"text": True},
+            }
+
+            async with aiohttp.ClientSession() as session:
+                try:
+                    async with session.post(url, headers=headers, json=payload) as response:
+                        response.raise_for_status()  # Raise an exception for HTTP errors
+                        data = await response.json()
+                        # Process the response data as needed
+                        return SearchResult(result=str(data.get("results", [{}])[0].get("text", "")))
+                except aiohttp.ClientError as e:
+                    logging.error(f"HTTP request failed: {e}")
+                    return SearchResult(result="An error occurred while processing the search request.")
+    ```
+  </Step>
+
+  <Step title="Update the VoiceBot Setup">
+
+    Modify the `setup` method to include the newly created `SearchTool`.
+
+    ```python
+    @sp.App()
+    class VoiceBot:
+        async def setup(self) -> None:
+            # Initialize the AI services
+            self.deepgram_node = sp.DeepgramSTT()
+            self.llm_node = sp.GroqLLM(
+                tool_choice="required",
+                tools=[
+                    SearchTool(),
+                ],
+                model="llama-3.2-90b-vision-preview",
+            )
+            self.token_aggregator_node = sp.TokenAggregator()
+            self.tts_node = sp.CartesiaTTS(
+                voice_id="95856005-0332-41b0-935f-352e296aa0df",
+            )
+            self.vad_node = sp.SileroVAD(min_volume=0)
+    ```
+  </Step>
+
+  <Step title="Setup API Keys (if running locally)">
+    You will need the following environment variables:
+
+    1. `EXA_API_KEY` - Sign up and navigate to [Exa API](https://exa.ai/) to get the API key.
+    2. `DEEPGRAM_API_KEY` - Sign up and navigate to [Deepgram](https://console.deepgram.com/) to get the API key.
+    3. `CARTESIA_API_KEY` - Sign up and navigate to [Cartesia](https://play.cartesia.ai/keys) to get the API key.
+    4. `OPENAI_API_KEY` - Sign up and navigate to [OpenAI](https://platform.openai.com/keys) to get the API key.
+
+    Once you have your keys, create a `.env` file in the same directory as `voice_bot_with_online_search.py` and add the following:
+
+    ```bash
+    EXA_API_KEY=<your_exa_api_key>
+    DEEPGRAM_API_KEY=<your_deepgram_api_key>
+    CARTESIA_API_KEY=<your_groq_api_key>
+    OPENAI_API_KEY=<your_openai_api_key>
+    ```
+
+    Now you can run the following command to start the server:
+
+    ```bash
+    python voice_bot_with_online_search.py
+    ```
+  </Step>
+</Steps>
+
+## **Understanding the Integration**
+
+### **SearchTool Class**
+
+The `SearchTool` class extends `sp.Tool` and is responsible for interacting with the Exa API to perform web searches based on user queries.
+
+- **run Method**: This asynchronous method takes a `Query` object, sends a POST request to the Exa API with the query parameters, and returns a `SearchResult` object containing the search outcome.
+
+### **VoiceBot Setup**
+
+In the `setup` method of the `VoiceBot` class, we initialize the `llm_node` with the `SearchTool`. This setup allows the bot to utilize the search functionality alongside other AI services.
+
+
+## Support
+
+For any assistance or questions, feel free to join our [Discord community](https://discord.gg/cmfFw6SYvp). We're excited to see what you build!

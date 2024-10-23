@@ -1,0 +1,91 @@
+---
+title: sp.Tool
+---
+
+## Overview
+
+The `Tool` class in the Outspeed package is designed to facilitate the creation of tools that can be used within Outspeed applications. These tools are typically used to perform specific tasks, such as querying an API or processing data, and are integrated into the application workflow.
+
+## Creating a Tool
+
+To create a tool, define a class that inherits from `sp.Tool` and implement the required methods. Here's a minimal example:
+
+```python
+import outspeed as sp
+from pydantic import BaseModel
+
+class Query(BaseModel):
+    query: str
+
+class SearchResult(BaseModel):
+    result: str
+
+class SearchTool(sp.Tool):
+    name = "search"
+    description = "Search the web for information"
+    parameters_type = Query
+    response_type = SearchResult
+
+    async def run(self, query: Query) -> SearchResult:
+        # Implement the tool's logic here
+        return SearchResult(result="Example result")
+```
+
+<Info>
+  A Tool must define `name`, `description`, `parameters_type`, and `response_type` attributes, and implement the `run` method.
+</Info>
+
+- The `name` attribute is a string that identifies the tool.
+- The `description` attribute provides a brief explanation of what the tool does.
+- The `parameters_type` and `response_type` attributes are [Pydantic](https://docs.pydantic.dev/) models that define the input and output data structures, respectively.
+- The `run` method contains the main logic of the tool and must be implemented by the subclass.
+
+
+### Integrating the Tool into an Application
+
+Once defined, the tool can be integrated into an Outspeed application. Here's how the `SearchTool` is utilized within the [VoiceBot](https://github.com/outspeed-ai/outspeed/blob/main/examples/function_calling/voice_bot_with_online_search.py):
+
+```python
+import outspeed as sp
+
+@sp.App()
+class VoiceBot:
+    async def setup(self) -> None:
+        # ... existing code ...
+
+        self.llm_node = sp.GroqLLM(
+            tool_choice="required",
+            tools=[
+                SearchTool(),
+            ],
+            model="llama-3.2-90b-vision-preview",
+        )
+
+        # ... existing code ...
+```
+
+## Tool Lifecycle
+
+The `Tool` class manages the tool lifecycle:
+
+1. It validates the input parameters using the `parameters_type` model.
+2. It executes the `run` method asynchronously.
+3. It validates the response using the `response_type` model.
+
+## Best Practices
+
+- Use Pydantic models for `parameters_type` and `response_type` to ensure data validation.
+- Implement error handling within the `run` method to manage exceptions gracefully.
+- Test your tool thoroughly to ensure it behaves as expected within the application.
+
+## Error Handling
+
+The `Tool` class includes basic error handling:
+
+- If an exception occurs during the `run` method execution, it should be logged and handled appropriately.
+- Ensure that the tool's input and output types match the defined Pydantic models to avoid runtime errors.
+
+
+On more information on how to use Pydantic models with Open AI tools, see:
+1. [OpenAI Tools](https://platform.openai.com/docs/guides/gpt/function-calling) documentation.
+2. [OpenAI Pydantic](https://github.com/openai/openai-python/blob/main/helpers.md#structured-outputs-parsing-helpers) documentation.

@@ -85,6 +85,14 @@
       ]
     },
     {
+      "group": "Function Calling and Tools",
+      "pages": [
+        "examples/function_calling/overview",
+        "examples/function_calling/rag",
+        "examples/function_calling/online_search"
+      ]
+    },
+    {
       "group": "General",
       "pages": [
         "examples/commentator",
@@ -108,6 +116,7 @@
       "pages": [
         "outspeed_sdk/sdk/app",
         "outspeed_sdk/sdk/streaming_endpoint",
+        "outspeed_sdk/sdk/tool",
         {
           "group": "Plugins",
           "pages": [
