@@ -90,7 +90,7 @@ We will modify the existing Voice Bot to include a search functionality that int
         async def setup(self) -> None:
             # Initialize the AI services
             self.deepgram_node = sp.DeepgramSTT()
-            self.llm_node = sp.GroqLLM(
+            self.llm_node = sp.OpenAILLM(
                 tool_choice="required",
                 tools=[
                     SearchTool(),
@@ -111,7 +111,7 @@ We will modify the existing Voice Bot to include a search functionality that int
     1. `EXA_API_KEY` - Sign up and navigate to [Exa API](https://exa.ai/) to get the API key.
     2. `DEEPGRAM_API_KEY` - Sign up and navigate to [Deepgram](https://console.deepgram.com/) to get the API key.
     3. `CARTESIA_API_KEY` - Sign up and navigate to [Cartesia](https://play.cartesia.ai/keys) to get the API key.
-    4. `GROQ_API_KEY` - Sign up and navigate to [Groq](https://console.groq.com/keys) to get the API key.
+    4. `OPENAI_API_KEY` - Sign up and navigate to [OpenAI](https://platform.openai.com/keys) to get the API key.
 
     Once you have your keys, create a `.env` file in the same directory as `voice_bot_with_online_search.py` and add the following:
 
@@ -119,7 +119,7 @@ We will modify the existing Voice Bot to include a search functionality that int
     EXA_API_KEY=<your_exa_api_key>
     DEEPGRAM_API_KEY=<your_deepgram_api_key>
     CARTESIA_API_KEY=<your_cartesia_api_key>
-    GROQ_API_KEY=<your_groq_api_key>
+    OPENAI_API_KEY=<your_openai_api_key>
     ```
 
     Now you can run the following command to start the server:
