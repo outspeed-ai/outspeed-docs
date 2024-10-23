@@ -134,29 +134,6 @@ In the `setup` method of the `VoiceBot` class, we perform the following actions:
 
 The `run` method is decorated with `@sp.streaming_endpoint()` and is responsible for handling incoming audio and text streams. It sets up the AI service pipeline by running the `llm_node` with the provided input streams and returns the output streams.
 
-### **Version Checking**
-
-Before initializing the Voice Bot, the script checks if the installed `outspeed` package meets the required version (`0.1.149`). This ensures compatibility and access to the necessary features.
-
-```python
-def check_outspeed_version():
-    import importlib.metadata
-
-    from packaging import version
-
-    required_version = "0.1.149"
-
-    try:
-        current_version = importlib.metadata.version("outspeed")
-        if version.parse(current_version) < version.parse(required_version):
-            raise ValueError(f"Outspeed version {current_version} is not greater than {required_version}.")
-        else:
-            print(f"Outspeed version {current_version} meets the requirement.")
-    except importlib.metadata.PackageNotFoundError:
-        raise ValueError("Outspeed package is not installed.")
-
-check_outspeed_version()
-```
 
 ## **Support**
 
