@@ -36,7 +36,7 @@ We will modify the existing Voice Bot to include a search functionality that int
 
   <Step title="Integrate the Search Tool">
     <Warning>
-      Ensure you're adding this to `voice_bot_rt.py` created in [Get Started with Realtime API](/examples/openai_realtime/quickstart) guide.
+      Ensure you're adding this to `voice_bot.py` created in [Get Started](/examples/get_started/quickstart) guide.
     </Warning>
 
     ### **Create the Search Tool**
@@ -111,15 +111,15 @@ We will modify the existing Voice Bot to include a search functionality that int
     1. `EXA_API_KEY` - Sign up and navigate to [Exa API](https://exa.ai/) to get the API key.
     2. `DEEPGRAM_API_KEY` - Sign up and navigate to [Deepgram](https://console.deepgram.com/) to get the API key.
     3. `CARTESIA_API_KEY` - Sign up and navigate to [Cartesia](https://play.cartesia.ai/keys) to get the API key.
-    4. `OPENAI_API_KEY` - Sign up and navigate to [OpenAI](https://platform.openai.com/keys) to get the API key.
+    4. `GROQ_API_KEY` - Sign up and navigate to [Groq](https://console.groq.com/keys) to get the API key.
 
     Once you have your keys, create a `.env` file in the same directory as `voice_bot_with_online_search.py` and add the following:
 
     ```bash
     EXA_API_KEY=<your_exa_api_key>
     DEEPGRAM_API_KEY=<your_deepgram_api_key>
-    CARTESIA_API_KEY=<your_groq_api_key>
-    OPENAI_API_KEY=<your_openai_api_key>
+    CARTESIA_API_KEY=<your_cartesia_api_key>
+    GROQ_API_KEY=<your_groq_api_key>
     ```
 
     Now you can run the following command to start the server:
