@@ -135,23 +135,23 @@
     {
       "group": "@outspeed/react",
       "pages": [
-        "javascript/usage",
-        "javascript/installation",
-        "javascript/connect-webrtc",
-        "javascript/connect-websocket",
+        "javascript/react/usage",
+        "javascript/react/installation",
+        "javascript/react/connect-webrtc",
+        "javascript/react/connect-websocket",
         {
           "group": "API",
           "pages": [
-            "javascript/createConfig",
-            "javascript/useWebRTC",
-            "javascript/useWebSocket",
-            "javascript/useAvailableMediaDevices",
-            "javascript/useCreateConfig",
-            "javascript/Form",
-            "javascript/RealtimeAudio",
-            "javascript/RealtimeAudioVisualizer",
-            "javascript/RealtimeVideo",
-            "javascript/RealtimeChat"
+            "javascript/react/createConfig",
+            "javascript/react/useWebRTC",
+            "javascript/react/useWebSocket",
+            "javascript/react/useAvailableMediaDevices",
+            "javascript/react/useCreateConfig",
+            "javascript/react/Form",
+            "javascript/react/RealtimeAudio",
+            "javascript/react/RealtimeAudioVisualizer",
+            "javascript/react/RealtimeVideo",
+            "javascript/react/RealtimeChat"
           ]
         }
       ]
@@ -159,18 +159,22 @@
     {
       "group": "@outspeed/react-native",
       "pages": [
-        "javascript/react-native-usage",
-        "javascript/react-native-installation",
-        "javascript/react-native-connect-webrtc",
+        "javascript/react-native/react-native-usage",
+        "javascript/react-native/react-native-installation",
+        "javascript/react-native/react-native-connect-webrtc",
         {
           "group": "API",
           "pages": [
-            "javascript/react-native-useWebRTC",
-            "javascript/react-native-create-config",
-            "javascript/react-native-RealtimePlayer"
+            "javascript/react-native/react-native-useWebRTC",
+            "javascript/react-native/react-native-create-config",
+            "javascript/react-native/react-native-RealtimePlayer"
           ]
         }
       ]
+    },
+    {
+      "group": "Next.js / Vercel",
+      "pages": ["javascript/next-js/voice-bot"]
     }
   ],
   "feedback": {
