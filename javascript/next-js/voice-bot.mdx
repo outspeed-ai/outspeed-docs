@@ -17,7 +17,7 @@ If you haven't already set up a Next.js app, you can follow the
 
 - The full code is available [here.](https://github.com/outspeed-ai/outspeed-examples/tree/main/outspeed-nextjs-example)
 
-- A pre-built version of the app on Vercel is available [here.](https://outspeed-nextjs-example.vercel.app/)
+- A pre-built version of the app on Vercel is available [here.](https://outspeed-examples.vercel.app/)
 
 <Steps>
 <Step title="Install the necessary dependencies">
@@ -156,7 +156,7 @@ import { DataChannel } from "@outspeed/react";
 import React from "react";
 import { RealtimeAudio } from "@outspeed/react";
 
-export type TMeetingLayoutProps = {
+export type TVoiceBotComponentProps = {
   remoteTrack: Track | null;
   localTrack: Track | null;
   remoteAudioTrack: Track | null;
@@ -166,7 +166,7 @@ export type TMeetingLayoutProps = {
   title: string;
 };
 
-export function MeetingLayout(props: TMeetingLayoutProps) {
+export function VoiceBotComponent(props: TVoiceBotComponentProps) {
   const {
     localAudioTrack,
     remoteAudioTrack,
@@ -332,7 +332,7 @@ import React, { Suspense } from "react";
 import { useWebRTC } from "@outspeed/react";
 import { ConsoleLogger, createConfig } from "@outspeed/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { MeetingLayout } from "../_components/VoiceBotComponent";
+import { VoiceBotComponent } from "../_components/VoiceBotComponent";
 import { ERealtimeConnectionStatus } from "@outspeed/react";
 
 export default function WebRTCApp() {
@@ -361,6 +361,7 @@ function WebRTCContent() {
     config: createConfig({
       functionURL: searchparams.get("functionURL") || "",
       audioDeviceId: searchparams.get("audioDeviceId") || undefined,
+      audioCodec: "opus/48000/2", // Needed for high quality audio
       logger: ConsoleLogger.getLogger(),
     }),
   });
@@ -413,7 +414,7 @@ function WebRTCContent() {
   return (
     <div className="h-full flex flex-1">
       <div className="flex-1 flex">
-        <MeetingLayout
+        <VoiceBotComponent
           title="WebRTC Example"
           onCallEndClick={handleDisconnect}
           localTrack={localVideoTrack}
@@ -438,7 +439,7 @@ Run the app using the following command:
 npm run dev
 ```
 
-Or you can use the pre-built version of the app on Vercel: [Outspeed Next.js Example](https://outspeed-nextjs-example.vercel.app/)
+Or you can use the pre-built version of the app on Vercel: [Outspeed Next.js Example](https://outspeed-examples.vercel.app/)
 
 1. Update the functionURL with the URL of your deployed WebRTC backend.
 2. Select the proper audio device.
