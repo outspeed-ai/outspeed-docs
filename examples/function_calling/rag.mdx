@@ -1,10 +1,11 @@
 ---
 title: "RAG (LLamaIndex)"
-description: "A guide on integrating Retrieval-Augmented Generation (RAG) into your realtime Voice Bot using the OpenAI Realtime API."
+description: "A guide on integrating Retrieval-Augmented Generation (RAG) into your realtime Voice Bot."
 ---
 
 <Warning>
-    This example currently only works on your local machine. It doesn't work with Outspeed Cloud.
+  This example currently only works on your local machine. It doesn't work with
+  Outspeed Cloud.
 </Warning>
 
 In this guide, we will extend the basic Voice Bot by integrating **Retrieval-Augmented Generation (RAG)**. This enhancement allows your bot to provide more informed and contextually accurate responses by retrieving relevant information from a structured knowledge base in real-time.
@@ -45,6 +46,7 @@ We will modify the existing Voice Bot to include RAG functionality, leveraging t
     vector_index = VectorStoreIndex(nodes)
     self.query_engine = vector_index.as_query_engine(similarity_top_k=2)
     ```
+
   </Step>
 
   <Step title="Defining the Search Tool">
@@ -83,6 +85,7 @@ We will modify the existing Voice Bot to include RAG functionality, leveraging t
             logging.info(f"RAG Response: {response}")
             return RAGResult(result=str(response))
     ```
+
   </Step>
 
   <Step title="Integrating RAG into the VoiceBot">
@@ -106,6 +109,7 @@ We will modify the existing Voice Bot to include RAG functionality, leveraging t
             )
             self.vad_node = sp.SileroVAD(min_volume=0)
     ```
+
   </Step>
 
   <Step title="Setting Up the Streaming Endpoint">
@@ -138,6 +142,7 @@ We will modify the existing Voice Bot to include RAG functionality, leveraging t
 
         return tts_stream, chat_history_stream
     ```
+
   </Step>
 </Steps>
 
@@ -148,7 +153,6 @@ We will modify the existing Voice Bot to include RAG functionality, leveraging t
 The `RAGTool` class extends `sp.Tool` and is responsible for interacting with the query engine to perform searches based on user inputs.
 
 - **Constructor (`__init__` Method)**: Initializes the tool by loading documents, parsing them into nodes, and creating a vector store index for efficient querying.
-  
 - **`run` Method**: This asynchronous method takes a `Query` object, uses the query engine to retrieve relevant information, and returns a `RAGResult` object containing the search outcome.
 
 ### **VoiceBot Setup**
@@ -172,8 +176,6 @@ The `run` method sets up the AI service pipeline by:
 5. Aggregating tokens and converting the response to speech.
 6. Setting up interrupt streams for a more responsive experience.
 
-
 ## **Support**
 
 For any assistance or questions, feel free to join our [Discord community](https://discord.gg/cmfFw6SYvp). We're excited to see what you build!
-
