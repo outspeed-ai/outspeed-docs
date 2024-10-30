@@ -94,14 +94,7 @@
     },
     {
       "group": "General",
-      "pages": [
-        "examples/commentator",
-        "examples/cooking",
-        "examples/3d_chatbot",
-        "examples/cartesia",
-        "examples/elevenlabs",
-        "examples/deepreel"
-      ]
+      "pages": ["examples/cartesia", "examples/elevenlabs", "examples/deepreel"]
     },
     {
       "group": "General",
