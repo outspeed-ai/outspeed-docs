@@ -109,16 +109,7 @@
       "pages": [
         "outspeed_sdk/sdk/app",
         "outspeed_sdk/sdk/streaming_endpoint",
-        "outspeed_sdk/sdk/tool",
-        {
-          "group": "Plugins",
-          "pages": [
-            "outspeed_sdk/sdk/plugins/openai",
-            "outspeed_sdk/sdk/plugins/elevenlabs",
-            "outspeed_sdk/sdk/plugins/fireworksai",
-            "outspeed_sdk/sdk/plugins/deepgram"
-          ]
-        }
+        "outspeed_sdk/sdk/tool"
       ]
     },
     {
