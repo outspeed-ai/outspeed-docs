@@ -94,7 +94,12 @@
     },
     {
       "group": "General",
-      "pages": ["examples/cartesia", "examples/elevenlabs", "examples/deepreel"]
+      "pages": [
+        "examples/cartesia",
+        "examples/elevenlabs",
+        "examples/deepreel",
+        "examples/custom_llm"
+      ]
     },
     {
       "group": "General",
@@ -109,7 +114,8 @@
       "pages": [
         "outspeed_sdk/sdk/app",
         "outspeed_sdk/sdk/streaming_endpoint",
-        "outspeed_sdk/sdk/tool"
+        "outspeed_sdk/sdk/tool",
+        "outspeed_sdk/sdk/custom_llm_node"
       ]
     },
     {

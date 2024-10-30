@@ -1,0 +1,69 @@
+---
+title: sp.CustomLLMNode
+---
+
+## Overview
+
+The `CustomLLMNode` class in the Outspeed package is designed to handle custom language model (LLM) processing within Outspeed applications.
+
+It extends the base `Node` class to provide specialized functionality for processing input streams, managing asynchronous tasks, and handling interruptions based on voice activity detection (VAD).
+
+## Creating a CustomLLMNode
+
+To create a custom LLM node, define a class that inherits from `CustomLLMNode` and implement the required methods.
+
+Here's an example based on the provided `nodes.py`:
+
+```python
+import outspeed as sp
+
+class MyCustomLLMNode(sp.CustomLLMNode):
+
+    def __init__(self):
+        super().__init__()
+        # Initialize any additional attributes here
+
+    async def process(self, input_data):
+        # Implement the LLM processing logic here
+
+```
+
+<Info>
+  A `CustomLLMNode` must implement the `process` method to define how input data
+  is handled and transformed by the language model.
+</Info>
+
+- The `process` method receives `input_data` from the input stream and should return the processed output.
+- The node manages input and output streams asynchronously, ensuring efficient data handling.
+- Interrupt streams can be set to handle tasks like voice activity detection, allowing the node to respond to specific events.
+
+### Integrating the CustomLLMNode into an Application
+
+Once defined, the `CustomLLMNode` can be integrated into an Outspeed application as follows:
+
+```python
+import outspeed as sp
+
+@sp.App()
+class VoiceBot:
+    async def setup(self) -> None:
+        # ... additional setup ...
+        self.llm_node = MyCustomLLMNode()
+        # ... additional setup ...
+
+    @sp.streaming_endpoint()
+    async def run(self, text_input_stream: sp.TextStream) -> sp.TextStream:
+        # ... additional logic ...
+        text_output_stream = self.llm_node.run(text_input_stream)
+        # ... additional logic ...
+
+```
+
+## Tool Lifecycle
+
+The `CustomLLMNode` manages its lifecycle through several asynchronous tasks:
+
+1. **Initialization**: Sets up input and output streams.
+2. **Processing**: Continuously processes incoming data from the input stream.
+3. **Interruption Handling**: Monitors the interrupt stream (e.g., VAD) to handle events like speech detection.
+4. **Closure**: Gracefully shuts down processing tasks when the node is closed.
