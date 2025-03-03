@@ -26,24 +26,12 @@
     "url": "https://github.com/outspeed-ai/outspeed-docs/issues"
   },
   "primaryTab": {
-    "name": "Examples"
+    "name": "Realtime"
   },
   "tabs": [
     {
-      "name": "Examples",
-      "url": "examples"
-    },
-    {
-      "name": "Outspeed Python SDK",
-      "url": "outspeed_sdk"
-    },
-    {
-      "name": "Outspeed JS SDK",
-      "url": "javascript"
-    },
-    {
-      "name": "Outspeed React  SDK",
-      "url": "javascript"
+      "name": "Realtime",
+      "url": "realtime"
     }
   ],
   "anchors": [
@@ -62,109 +50,23 @@
     {
       "group": "Get Started",
       "pages": [
-        "examples/get_started/quickstart",
-        "examples/get_started/updating_prompts",
-        "examples/get_started/switching_voices"
+        "guide/overview",
+        "guide/local_development"
       ]
     },
     {
-      "group": "Multilingual Voice Bot",
+      "group": "API",
       "pages": [
-        "examples/multilingual/quickstart",
-        "examples/multilingual/switching_voices",
-        "examples/multilingual/updating_prompts",
-        "examples/multilingual/updating_languages"
+        "api/overview",
+        "api/client",
+        "api/server"
       ]
     },
     {
-      "group": "OpenAI Realtime API - Python",
+      "group": "Examples",
       "pages": [
-        "examples/openai_realtime/quickstart",
-        "examples/openai_realtime/tool_use",
-        "examples/openai_realtime/rag"
+        "overview"
       ]
-    },
-    {
-      "group": "Function Calling and Tools",
-      "pages": [
-        "examples/function_calling/overview",
-        "examples/function_calling/rag",
-        "examples/function_calling/online_search"
-      ]
-    },
-    {
-      "group": "General",
-      "pages": [
-        "examples/cartesia",
-        "examples/elevenlabs",
-        "examples/deepreel",
-        "examples/custom_llm"
-      ]
-    },
-    {
-      "group": "General",
-      "pages": ["outspeed_sdk/installation"]
-    },
-    {
-      "group": "CLI",
-      "pages": ["outspeed_sdk/cli/deploy"]
-    },
-    {
-      "group": "Python API",
-      "pages": [
-        "outspeed_sdk/sdk/app",
-        "outspeed_sdk/sdk/streaming_endpoint",
-        "outspeed_sdk/sdk/tool",
-        "outspeed_sdk/sdk/custom_llm_node"
-      ]
-    },
-    {
-      "group": "Getting Started",
-      "pages": ["javascript/introduction"]
-    },
-    {
-      "group": "@outspeed/react",
-      "pages": [
-        "javascript/react/usage",
-        "javascript/react/installation",
-        "javascript/react/connect-webrtc",
-        "javascript/react/connect-websocket",
-        {
-          "group": "API",
-          "pages": [
-            "javascript/react/createConfig",
-            "javascript/react/useWebRTC",
-            "javascript/react/useWebSocket",
-            "javascript/react/useAvailableMediaDevices",
-            "javascript/react/useCreateConfig",
-            "javascript/react/Form",
-            "javascript/react/RealtimeAudio",
-            "javascript/react/RealtimeAudioVisualizer",
-            "javascript/react/RealtimeVideo",
-            "javascript/react/RealtimeChat"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "@outspeed/react-native",
-      "pages": [
-        "javascript/react-native/react-native-usage",
-        "javascript/react-native/react-native-installation",
-        "javascript/react-native/react-native-connect-webrtc",
-        {
-          "group": "API",
-          "pages": [
-            "javascript/react-native/react-native-useWebRTC",
-            "javascript/react-native/react-native-create-config",
-            "javascript/react-native/react-native-RealtimePlayer"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Next.js / Vercel",
-      "pages": ["javascript/next-js/voice-bot"]
     }
   ],
   "feedback": {
