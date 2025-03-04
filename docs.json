@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "maple",
   "name": "Outspeed Docs",
   "colors": {
     "primary": "#0D9373",
@@ -9,12 +9,17 @@
   },
   "favicon": "/logo/1.svg",
   "navigation": {
-    "pages": [
-      "overview",
-      "guide/local_development",
-      "api/client",
-      "api/server",
-      "examples"
+    "groups": [
+      {
+        "group": "Guide",
+        "pages": [
+          "overview",
+          "local_development",
+          "api/client",
+          "api/server",
+          "examples"
+        ]
+      }
     ],
     "global": {
       "anchors": [

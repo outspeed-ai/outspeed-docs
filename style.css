@@ -203,7 +203,7 @@ html:not(.dark) .whitespace-nowrap.font-medium.text-gray-600 {
 
 .prose.prose-gray.dark\:prose-invert {
   color: white !important;
-  font-weight: 300;
+  font-weight: 400;
 }
 html:not(.dark) .prose.prose-gray.dark\:prose-invert {
   color: black !important;
