@@ -1,0 +1,48 @@
+---
+title: "Speech Console"
+description: "Test out different speech-to-speech models with STS Console"
+---
+
+<Note>
+  STS Console is based on OpenAI's [realtime console](https://github.com/openai/openai-realtime-console).
+</Note>
+
+The STS Console gives ability to test a prompt with different speech to speech models. Supported models are:
+  1. [OpenAI Realtime API](https://platform.openai.com/docs/guides/realtime)
+  2. [MiniCPM-o](https://github.com/OpenBMB/MiniCPM-o) hosted by Outspeed
+  3. [Gemini Multimodal Live](https://ai.google.dev/gemini-api/docs/multimodal-live) `coming soon`
+  4. [Moshi](https://moshi.chat/) `coming soon`
+
+## Usage
+
+The STS Console provides a simple interface to test and interact with various speech-to-speech models:
+
+1. Select your preferred model from the supported options
+2. Configure model settings like voice, temperature, and response length
+3. Use your microphone to speak directly to the model
+4. Receive real-time audio responses from the model
+5. View conversation transcripts and debug information in the logging panel
+
+## Capabilities
+
+The STS Console offers several key features:
+
+- **Multi-model Support**: Test and compare different speech-to-speech models in one interface
+- **Real-time Processing**: Experience low-latency voice conversations with automatic speech detection
+- **Voice Customization**: Choose from available voices for model responses
+- **Debug Tools**: Access detailed logs of events and model interactions
+- **Audio Controls**: Configure input/output audio formats and settings
+- **Function Calling**: Test model capabilities with tool integration (where supported)
+- **Session Management**: Maintain conversation context within testing sessions
+
+## Get Started
+
+<CardGroup cols={2}>
+  <Card
+    title="Develop using STS Console locally"
+    icon="github"
+    href="https://github.com/outspeed-ai/realtime-console"
+  >
+    GitHub repository for STS Console with example prompts to try out different speech-to-speech models.
+  </Card>
+</CardGroup>

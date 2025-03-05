@@ -422,3 +422,11 @@ html:not(.dark) .ml-4.flex.text-sm.leading-6.whitespace-nowrap.min-w-0.space-x-3
   color: #000;
   font-weight: 600;
 }
+
+#content-area h2 code {
+  color: #19d8d8;
+}
+
+html:not(.dark) #content-area h2 code {
+  color: #00b5cb;
+}

@@ -13,10 +13,11 @@
       {
         "group": "Guide",
         "pages": [
+          "sts_console",
           "overview",
           "local_development",
-          "api/client",
-          "api/server",
+          "client",
+          "server",
           "examples"
         ]
       }
