@@ -11,14 +11,19 @@
   "navigation": {
     "groups": [
       {
-        "group": "Guide",
+        "group": "Get Started",
         "pages": [
-          "sts_console",
-          "overview",
-          "local_development",
-          "client",
-          "server",
-          "examples"
+          "get_started/overview",
+          "get_started/speech_console",
+          "get_started/examples"
+        ]
+      },
+      {
+        "group": "API",
+        "pages": [
+          "api/live_api",
+          "api/client",
+          "api/server"
         ]
       }
     ],
