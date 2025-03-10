@@ -1,0 +1,57 @@
+---
+title: "Local Development"
+description: "Develop and test your realtime AI applications locally"
+---
+
+<Note>
+  This API is currently in Alpha
+</Note>
+
+# Outspeed Live Console
+
+This is an example application showing how to use the [Outspeed Live API](/docs/overview) with [WebRTC](/docs/guides/live-webrtc) for low-latency, multi-modal conversational experiences.
+
+## Installation and usage
+
+Before you begin, you'll need an Outspeed API key. Create a `.env` file from the example file and set your API key in there:
+
+```bash
+cp .env.example .env
+```
+
+Running this application locally requires [Node.js](https://nodejs.org/) to be installed. Install dependencies for the application with:
+
+```bash
+npm install
+```
+
+Start the application server with:
+
+```bash
+npm run dev
+```
+
+This should start the console application on [http://localhost:3000](http://localhost:3000).
+
+This application is a minimal template that uses [express](https://expressjs.com/) to serve the React frontend contained in the [`/client`](./client) folder. The server is configured to use [vite](https://vitejs.dev/) to build the React frontend.
+
+## Features
+
+This application demonstrates how to:
+
+- Send and receive Live API events over the WebRTC data channel
+- Configure client-side function calling
+- View JSON payloads for client and server events using the logging panel in the UI
+- Connect to both OpenAI models and Outspeed's hosted MiniCPM-o models
+- Utilize real-time text and audio interactions
+
+## Example Applications
+
+For more examples of the Outspeed Live API in action, check out:
+
+- [Outspeed Live Console](https://github.com/outspeed-ai/outspeed-live-console) - Watch events flow back and forth, examine their contents, and learn to implement custom logic using function calling
+- [Client-side tool calling](https://github.com/outspeed-ai/outspeed-live-tools) - Explore client-side tool calling features with both OpenAI and MiniCPM-o models
+
+## License
+
+MIT

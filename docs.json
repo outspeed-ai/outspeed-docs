@@ -1,0 +1,63 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "name": "Outspeed Docs",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#07C983",
+    "dark": "#0D9373"
+  },
+  "favicon": "/logo/1.svg",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Guide",
+        "pages": [
+          "sts_console",
+          "overview",
+          "local_development",
+          "client",
+          "server",
+          "examples"
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Join Discord Community",
+          "href": "https://discord.gg/cmfFw6SYvp",
+          "icon": "discord"
+        },
+        {
+          "anchor": "Book a Demo",
+          "href": "https://cal.com/janakag/outspeed-intro",
+          "icon": "phone"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/2.svg",
+    "dark": "/logo/3.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "https://discord.gg/cmfFw6SYvp"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Raise an Issue",
+      "href": "https://github.com/outspeed-ai/outspeed-docs/issues"
+    }
+  },
+  "footer": {
+    "socials": {
+      "discord": "https://discord.gg/cmfFw6SYvp",
+      "github": "https://github.com/outspeed-ai/outspeed-docs"
+    }
+  }
+}

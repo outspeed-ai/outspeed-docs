@@ -203,7 +203,7 @@ html:not(.dark) .whitespace-nowrap.font-medium.text-gray-600 {
 
 .prose.prose-gray.dark\:prose-invert {
   color: white !important;
-  font-weight: 300;
+  font-weight: 400;
 }
 html:not(.dark) .prose.prose-gray.dark\:prose-invert {
   color: black !important;
@@ -421,4 +421,12 @@ html:not(.dark) .mt-12 li div{
 html:not(.dark) .ml-4.flex.text-sm.leading-6.whitespace-nowrap.min-w-0.space-x-3 div span{
   color: #000;
   font-weight: 600;
+}
+
+#content-area h2 code {
+  color: #19d8d8;
+}
+
+html:not(.dark) #content-area h2 code {
+  color: #00b5cb;
 }

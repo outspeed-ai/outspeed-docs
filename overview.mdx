@@ -1,0 +1,76 @@
+---
+title: "Outspeed Live API"
+description: "Build and deploy low-latency voice experiences with the Outspeed Live API"
+---
+
+<Note>
+  This API is currently in Alpha
+</Note>
+
+The Outspeed Live API lets you create low-latency, multi-modal conversational experiences by connecting to both OpenAI models and Outspeed's hosted MiniCPM-o models. These models enable realtime text and audio interactions, voice activation detection, function calling, and many other capabilities.
+
+## Key Capabilities
+
+- **Multi-modal Interactions**: Support for text, audio, and visual inputs and outputs
+- **Real-time Processing**: Low-latency responses for natural conversations
+- **Contextual Memory**: Maintains conversation history within sessions
+- **Voice Activity Detection**: Automatically detects speech start/end for fluid interactions
+- **Function Calling**: Integrate external tools and services seamlessly
+
+## Supported Models
+
+### OpenAI Models
+- `gpt-4o-realtime-preview-2024-12-17`
+- `gpt-4o-mini-realtime-preview-2024-12-17`
+
+### Outspeed Hosted Models
+- `MiniCPM-o 2.6`
+
+You can find dated model snapshot IDs and additional details on the [models page here](/docs/models#live-models).
+
+## Get Started with the Live API
+
+<CardGroup cols={2}>
+  <Card
+    title="Connect to the Live API using WebRTC"
+    icon="plug"
+    href="/docs/guides/live-webrtc"
+  >
+    For web browsers and client-side applications, we use WebRTC to ensure the best performance. Learn how in this guide!
+  </Card>
+  <Card
+    title="Live model capabilities"
+    icon="bolt"
+    href="/docs/guides/live-model-capabilities"
+  >
+    Discover how to use the Live API's event-driven interface to create applications with Live models. Learn about managing Live sessions, incorporating audio in model conversations, sending text generation requests, and implementing function calls.
+  </Card>
+  <Card
+    title="Full API reference"
+    icon="book"
+    href="/docs/api-reference/live"
+  >
+    Browse the complete API reference for all available interfaces.
+  </Card>
+</CardGroup>
+
+## Example Applications
+
+Take a look at these example applications to see the Live API in action.
+
+<CardGroup cols={2}>
+  <Card
+    title="Live Console"
+    icon="terminal"
+    href="https://github.com/outspeed-ai/outspeed-live-console"
+  >
+    Get up and running quickly with our Live console demo. Watch events flow back and forth, examine their contents, and learn to implement custom logic using function calling.
+  </Card>
+  <Card
+    title="Client-side tool calling"
+    icon="wrench"
+    href="https://github.com/outspeed-ai/outspeed-live-tools"
+  >
+    Explore our example application built with modern web technologies that demonstrates client-side tool calling features with both OpenAI and MiniCPM-o models.
+  </Card>
+</CardGroup>
