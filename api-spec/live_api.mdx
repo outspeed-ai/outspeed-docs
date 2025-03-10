@@ -1,0 +1,44 @@
+---
+title: "Outspeed Live API"
+description: "Build and deploy low-latency voice experiences with the Outspeed Live API"
+---
+
+<Note>
+  This API is currently in Alpha
+</Note>
+
+The Outspeed Live API lets you create low-latency, multi-modal conversational experiences by connecting to
+open-source speech-to-speech models hosted in Outspeed's infrastructure.
+These models enable realtime text and audio interactions, voice activation detection, function calling, and many other capabilities.
+
+## Key Capabilities
+
+- **Text and Audio Interactions**: Support for text and audio inputs and outputs
+- **Real-time Processing**: Low-latency responses for natural conversations
+- **Contextual Memory**: Maintains conversation history within sessions
+- **Voice Activity Detection**: Automatically detects speech start/end for fluid interactions
+- **Function Calling**: Integrate external tools and services seamlessly `(coming soon)`
+
+## Supported Models
+
+- `MiniCPM-o 2.6`
+- `StepFun/Step-Audio-Chat (coming soon)`
+
+## API Events
+
+<CardGroup>
+  <Card
+    title="Client Events"
+    icon="arrow-up-right-from-square"
+    href="/api/client"
+  >
+    Learn about the events that Realtime servers accept from clients.
+  </Card>
+  <Card
+    title="Server Events"
+    icon="arrow-down-left-from-square"
+    href="/api/server"
+  >
+    Understand the events emitted from Realtime servers to clients.
+  </Card>
+</CardGroup>
