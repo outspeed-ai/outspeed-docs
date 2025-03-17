@@ -1,13 +1,21 @@
 ---
-title: "Speech Console"
-description: "Test out different speech-to-speech models with STS Console"
+title: "Voice DevTools"
+description: "Test out different speech-to-speech models with Voice DevTools"
 ---
+<Card
+  title="Voice DevTools"
+  icon="github"
+  href="https://github.com/outspeed-ai/voice-devtools"
+>
+  Test and compare different speech-to-speech models with our interactive Voice DevTools.
+  Click to access the repo.
+</Card>
 
 <Note>
-  STS Console is based on OpenAI's [realtime console](https://github.com/openai/openai-realtime-console).
+  Voice DevTools is based on OpenAI's realtime console.
 </Note>
 
-The STS Console gives ability to test a prompt with different speech to speech models. Supported models are:
+The Voice DevTools gives ability to test a prompt with different speech to speech models. Supported models are:
   1. [OpenAI Realtime API](https://platform.openai.com/docs/guides/realtime)
   2. [MiniCPM-o](https://github.com/OpenBMB/MiniCPM-o) hosted by Outspeed
   3. [Gemini Multimodal Live](https://ai.google.dev/gemini-api/docs/multimodal-live) `coming soon`
@@ -15,7 +23,7 @@ The STS Console gives ability to test a prompt with different speech to speech m
 
 ## Usage
 
-The STS Console provides a simple interface to test and interact with various speech-to-speech models:
+The Voice DevTools provides a simple interface to test and interact with various speech-to-speech models:
 
 1. Select your preferred model from the supported options
 2. Configure model settings like voice, temperature, and response length
@@ -25,7 +33,7 @@ The STS Console provides a simple interface to test and interact with various sp
 
 ## Capabilities
 
-The STS Console offers several key features:
+The Voice DevTools offers several key features:
 
 - **Multi-model Support**: Test and compare different speech-to-speech models in one interface
 - **Real-time Processing**: Experience low-latency voice conversations with automatic speech detection
@@ -34,15 +42,3 @@ The STS Console offers several key features:
 - **Audio Controls**: Configure input/output audio formats and settings
 - **Function Calling**: Test model capabilities with tool integration (where supported)
 - **Session Management**: Maintain conversation context within testing sessions
-
-## Get Started
-
-<CardGroup cols={2}>
-  <Card
-    title="Develop using STS Console locally"
-    icon="github"
-    href="https://github.com/outspeed-ai/realtime-console"
-  >
-    GitHub repository for STS Console with example prompts to try out different speech-to-speech models.
-  </Card>
-</CardGroup>
