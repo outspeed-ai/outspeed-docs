@@ -14,7 +14,7 @@
         "group": "Get Started",
         "pages": [
           "get-started/overview",
-          "get-started/speech-console",
+          "get-started/voice-devtools",
           "get-started/examples"
         ]
       },
