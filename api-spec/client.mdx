@@ -71,82 +71,6 @@ When the server receives a `session.update`, it will respond with a `session.upd
 ```
 </CodeBlock>
 
-## `input_audio_buffer.append`
-
-Send this event to append audio bytes to the input audio buffer. The audio buffer is temporary storage you can write to and later commit. In Server VAD mode, the audio buffer is used to detect speech and the server will decide when to commit. When Server VAD is disabled, you must commit the audio buffer manually.
-
-The client may choose how much audio to place in each event up to a maximum of 15 MiB. Unlike many other client events, the server will not send a confirmation response to this event.
-
-### Properties
-
-<ResponseField name="event_id" type="string" optional>
-  Client-generated ID used to identify this event.
-</ResponseField>
-
-<ResponseField name="type" type="string" required>
-  The event type, must be `input_audio_buffer.append`.
-</ResponseField>
-
-<ResponseField name="audio" type="string" required>
-  Base64-encoded audio bytes. This must be in the format specified by the input_audio_format field in the session configuration.
-</ResponseField>
-
-<CodeBlock title="input_audio_buffer.append Example">
-```json
-{
-    "event_id": "event_456",
-    "type": "input_audio_buffer.append",
-    "audio": "Base64EncodedAudioData"
-}
-```
-</CodeBlock>
-
-## `input_audio_buffer.commit`
-
-Send this event to commit the user input audio buffer, which will create a new user message item in the conversation. This event will produce an error if the input audio buffer is empty. When in Server VAD mode, the client does not need to send this event, as the server will commit the audio buffer automatically.
-
-### Properties
-
-<ResponseField name="event_id" type="string" optional>
-  Client-generated ID used to identify this event.
-</ResponseField>
-
-<ResponseField name="type" type="string" required>
-  The event type, must be `input_audio_buffer.commit`.
-</ResponseField>
-
-<CodeBlock title="input_audio_buffer.commit Example">
-```json
-{
-    "event_id": "event_789",
-    "type": "input_audio_buffer.commit"
-}
-```
-</CodeBlock>
-
-## `input_audio_buffer.clear`
-
-Send this event to clear the audio bytes in the buffer. The server will respond with an `input_audio_buffer.cleared` event.
-
-### Properties
-
-<ResponseField name="event_id" type="string" optional>
-  Client-generated ID used to identify this event.
-</ResponseField>
-
-<ResponseField name="type" type="string" required>
-  The event type, must be `input_audio_buffer.clear`.
-</ResponseField>
-
-<CodeBlock title="input_audio_buffer.clear Example">
-```json
-{
-    "event_id": "event_012",
-    "type": "input_audio_buffer.clear"
-}
-```
-</CodeBlock>
-
 ## `conversation.item.create`
 
 Add a new Item to the Conversation's context, including messages, function calls, and function call responses. This event can be used both to populate a "history" of the conversation and to add new items mid-stream, but has the current limitation that it cannot populate assistant audio messages.
@@ -186,72 +110,6 @@ Add a new Item to the Conversation's context, including messages, function calls
             }
         ]
     }
-}
-```
-</CodeBlock>
-
-## `conversation.item.truncate`
-
-Send this event to truncate a previous assistant message's audio. The server will produce audio faster than realtime, so this event is useful when the user interrupts to truncate audio that has already been sent to the client but not yet played.
-
-### Properties
-
-<ResponseField name="event_id" type="string" optional>
-  Client-generated ID used to identify this event.
-</ResponseField>
-
-<ResponseField name="type" type="string" required>
-  The event type, must be `conversation.item.truncate`.
-</ResponseField>
-
-<ResponseField name="item_id" type="string" required>
-  The ID of the assistant message item to truncate.
-</ResponseField>
-
-<ResponseField name="content_index" type="integer" required>
-  The index of the content part to truncate. Set this to 0.
-</ResponseField>
-
-<ResponseField name="audio_end_ms" type="integer" required>
-  Inclusive duration up to which audio is truncated, in milliseconds.
-</ResponseField>
-
-<CodeBlock title="conversation.item.truncate Example">
-```json
-{
-    "event_id": "event_678",
-    "type": "conversation.item.truncate",
-    "item_id": "msg_002",
-    "content_index": 0,
-    "audio_end_ms": 1500
-}
-```
-</CodeBlock>
-
-## `conversation.item.delete`
-
-Send this event when you want to remove any item from the conversation history. The server will respond with a `conversation.item.deleted` event.
-
-### Properties
-
-<ResponseField name="event_id" type="string" optional>
-  Client-generated ID used to identify this event.
-</ResponseField>
-
-<ResponseField name="type" type="string" required>
-  The event type, must be `conversation.item.delete`.
-</ResponseField>
-
-<ResponseField name="item_id" type="string" required>
-  The ID of the item to delete.
-</ResponseField>
-
-<CodeBlock title="conversation.item.delete Example">
-```json
-{
-    "event_id": "event_901",
-    "type": "conversation.item.delete",
-    "item_id": "msg_003"
 }
 ```
 </CodeBlock>
@@ -303,33 +161,6 @@ This event instructs the server to create a Response, which means triggering mod
         "temperature": 0.8,
         "max_output_tokens": 1024
     }
-}
-```
-</CodeBlock>
-
-## `response.cancel`
-
-Send this event to cancel an in-progress response. The server will respond with a `response.cancelled` event or an error if there is no response to cancel.
-
-### Properties
-
-<ResponseField name="event_id" type="string" optional>
-  Client-generated ID used to identify this event.
-</ResponseField>
-
-<ResponseField name="type" type="string" required>
-  The event type, must be `response.cancel`.
-</ResponseField>
-
-<ResponseField name="response_id" type="string" optional>
-  A specific response ID to cancel - if not provided, will cancel an in-progress response in the default conversation.
-</ResponseField>
-
-<CodeBlock title="response.cancel Example">
-```json
-{
-    "event_id": "event_567",
-    "type": "response.cancel"
 }
 ```
 </CodeBlock>
