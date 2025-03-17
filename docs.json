@@ -13,17 +13,26 @@
       {
         "group": "Get Started",
         "pages": [
-          "get_started/overview",
-          "get_started/speech_console",
-          "get_started/examples"
+          "get-started/overview",
+          "get-started/speech-console",
+          "get-started/examples"
         ]
       },
       {
         "group": "API",
         "pages": [
-          "api-spec/live_api",
+          "api-spec/live-api",
           "api-spec/client",
           "api-spec/server"
+        ]
+      },
+      {
+        "group": "Models",
+        "pages": [
+          "models/minicpmo",
+          "models/openai-realtime",
+          "models/moshi",
+          "models/gemini-multimodal"
         ]
       }
     ],
