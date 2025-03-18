@@ -195,6 +195,40 @@ Returned in server_vad mode when the server detects the end of speech in the aud
 }
 ```
 
+## `output_audio_buffer.started`
+
+Returned when the server begins playing audio output to the client. This event is sent at the start of audio playback for a response, allowing clients to synchronize their UI with the audio stream.
+
+### Properties
+- **event_id**: `string` - The unique ID of the server event.
+- **type**: `string` - The event type, must be `output_audio_buffer.started`.
+- **response_id**: `string` - The ID of the response that triggered this audio output to start
+
+```json
+{
+    "event_id": "event_1718",
+    "type": "output_audio_buffer.started",
+    "response_id": "resp_3876604f-7a35-4c95-ad80-e553ddb9a166"
+}
+```
+
+## `output_audio_buffer.stopped`
+
+Returned when the output audio buffer stops playing audio. This event is sent by the server when the audio output for a response has been fully generated and transmitted.
+
+### Properties
+- **event_id**: `string` - The unique ID of the server event.
+- **type**: `string` - The event type, must be `output_audio_buffer.stopped`.
+- **response_id**: `string` - The ID of the response that triggered this audio output.
+
+```json
+{
+    "event_id": "event_1920",
+    "type": "output_audio_buffer.stopped",
+    "response_id": "resp_3876604f-7a35-4c95-ad80-e553ddb9a166"
+}
+```
+
 ## `response.done`
 
 Returned when a Response is done streaming. Always emitted, no matter the final state. The Response object included in the response.done event will include all output Items in the Response but will omit the raw audio data.
