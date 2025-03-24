@@ -29,7 +29,7 @@
       {
         "group": "Models",
         "pages": [
-          "models/minicpmo",
+          "models/fast-minicpmo",
           "models/openai-realtime",
           "models/moshi",
           "models/gemini-multimodal"
