@@ -15,6 +15,7 @@
         "pages": [
           "get-started/overview",
           "get-started/voice-devtools",
+          "get-started/openai-compatibility",
           "get-started/examples"
         ]
       },
@@ -29,9 +30,8 @@
       {
         "group": "Models",
         "pages": [
-          "models/fast-minicpmo",
+          "models/outspeed",
           "models/openai-realtime",
-          "models/moshi",
           "models/gemini-multimodal"
         ]
       }
