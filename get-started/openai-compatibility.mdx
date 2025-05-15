@@ -1,0 +1,68 @@
+---
+title: "OpenAI Compatibility"
+description: "Leverage OpenAI Compatibility with Outspeed Live API"
+---
+
+Outspeed Live API offers a seamless integration experience by being compatible with OpenAI's Realtime API. This means you can often use similar integration patterns and even reuse existing code.
+
+You can connect to Outspeed Live API in your applications using [WebRTC](https://webrtc.org/). The process mirrors the one described in [OpenAI's Realtime API WebRTC Guide](https://platform.openai.com/docs/guides/realtime#connect-with-webrtc).
+
+The key difference is the API endpoint:
+-   **Outspeed Live API:** `api.outspeed.com`
+-   **OpenAI API:** `api.openai.com`
+
+Here's a summary of the integration steps:
+
+### 1. Obtain an Ephemeral Key
+
+First, your backend needs to obtain an ephemeral key from Outspeed. This process is similar to OpenAI's. You'll make a POST request to the Outspeed sessions endpoint.
+
+**Example: Creating a session and obtaining a key**
+```javascript
+const outspeedApiHost = "api.outspeed.com"; // Or your model provider's URL
+const apiKey = "YOUR_OUTSPEED_API_KEY"; // Replace with your actual API key
+
+async function createRealtimeSession(sessionRequestBody) {
+  const url = `https://${outspeedApiHost}/v1/realtime/sessions`;
+  console.log(`👉 Creating session using: ${url}`);
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sessionRequestBody),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Session creation failed:", response.status, errorText);
+      // Handle error appropriately in your application
+      throw new Error(`Failed to create session: ${errorText}`);
+    }
+
+    const sessionData = await response.json();
+    console.log("🎉 Session created successfully!", sessionData);
+    return sessionData; // This contains the ephemeral_key
+  } catch (error) {
+    console.error("Error during session creation:", error);
+    throw error;
+  }
+}
+
+```
+*Remember to replace `YOUR_OUTSPEED_API_KEY` with your actual Outspeed API key.*
+
+### 2. Establish WebRTC Connection on Frontend
+
+Once you have the ephemeral key, use it on your application's frontend to establish a WebRTC connection with Outspeed Live API.
+
+You can find a client-side code snippet demonstrating this in our [Voice Devtools repository on GitHub](https://github.com/outspeed-ai/voice-devtools/blob/main/src/client/helpers/webrtc.ts#L30).
+
+### 3. Reuse OpenAI Event Handlers
+
+A significant advantage of Outspeed's OpenAI compatibility is that the Live API emits the same events as OpenAI's Realtime API. This allows you to retain your existing event handling logic if you are migrating from or familiar with OpenAI's API.
+
+For more details on the specific events and API specifications, please refer to the [Outspeed Live API documentation](./api-spec/live-api).
