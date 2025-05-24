@@ -22,8 +22,8 @@
       {
         "group": "iOS",
         "pages": [
-          "ios/outspeed-swift-getting-started",
-          "ios/outspeed-swift-elevenlabs"
+          "iOS/outspeed-swift-getting-started",
+          "iOS/outspeed-swift-elevenlabs"
         ]
       },
       {
