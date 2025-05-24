@@ -20,6 +20,13 @@
         ]
       },
       {
+        "group": "iOS",
+        "pages": [
+          "iOS/outspeed-swift-getting-started",
+          "iOS/outspeed-swift-elevenlabs"
+        ]
+      },
+      {
         "group": "API",
         "pages": [
           "api-spec/live-api",
