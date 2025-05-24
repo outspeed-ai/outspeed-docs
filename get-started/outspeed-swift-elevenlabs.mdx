@@ -1,0 +1,51 @@
+---
+title: "Swift SDK: ElevenLabs Compatibility"
+description: "How to migrate from ElevenLabs Swift SDK to Outspeed Swift SDK."
+---
+
+# ElevenLabs Swift Compatibility
+
+OutspeedSDK is fully compatible with Elevenlabs Swift SDK specifications (some features might not be fully supported yet.)
+
+If you are migrating from ElevenLabsSDK, follow these steps:
+
+## 1. Replace Imports and Configs
+
+Replace all occurrences of `ElevenLabsSDK` with `OutspeedSDK`. For example:
+
+```swift
+import ElevenLabsSDK
+
+let config = ElevenLabsSDK.SessionConfig( agentId : "testagent")
+```
+
+becomes
+
+```swift
+import OutspeedSDK
+
+let config = OutspeedSDK.SessionConfig( agentId : "testagent")
+```
+
+## 2. Add Your Outspeed API Key
+
+Update your `startSession` call to include your Outspeed API key:
+
+```swift
+let conversation = try await ElevenLabsSDK.Conversation.startSession(
+    config: config,
+    callbacks: callbacks
+)
+```
+
+becomes
+
+```swift
+let conversation = try await OutspeedSDK.Conversation.startSession(
+    config: config,
+    callbacks: callbacks
+    apiKey: "<YOUR_OUTSPEED_API_KEY>"
+)
+```
+
+For more details and examples, see the [Outspeed Swift Examples](https://github.com/outspeed-ai/outspeed-swift-examples). 
