@@ -30,7 +30,7 @@ const getEphemeralKeyFromServer = async (config: SessionConfig) => {
 const sessionConfig: SessionConfig = {
   model: 'outspeed-v1',
   instructions: 'You are a helpful but witty assistant.',
-  voice: 'David',
+  voice: 'david',  // Voice names must be lowercase. Find more voices at dashboard.outspeed.com
   turn_detection: {
     type: 'semantic_vad',
   },
