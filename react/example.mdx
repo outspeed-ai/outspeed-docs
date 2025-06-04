@@ -9,7 +9,7 @@ Here's a complete example of a React component that creates a voice conversation
 
 ```tsx
 import React, { useState } from 'react';
-import { providers, type SessionConfig } from '@outspeed/client';
+import { type SessionConfig } from '@outspeed/client';
 import { useConversation } from '@outspeed/react';
 
 const getEphemeralKeyFromServer = async (config: SessionConfig) => {
@@ -42,7 +42,6 @@ export default function VoiceChat() {
   const [isConnecting, setIsConnecting] = useState(false);
 
   const conversation = useConversation({
-    provider: providers.Outspeed,
     sessionConfig: sessionConfig,
   });
 
@@ -182,7 +181,6 @@ Always implement proper error handling for a robust user experience:
 const [error, setError] = useState<string | null>(null);
 
 const conversation = useConversation({
-  provider: providers.Outspeed,
   sessionConfig: sessionConfig,
   onError: (err) => {
     console.error('Conversation error:', err);
