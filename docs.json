@@ -20,6 +20,13 @@
         ]
       },
       {
+        "group": "Web",
+        "pages": [
+          "react/setup",
+          "react/example"
+        ]
+      },
+      {
         "group": "iOS",
         "pages": [
           "iOS/outspeed-swift-getting-started",

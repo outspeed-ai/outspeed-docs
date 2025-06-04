@@ -1,0 +1,211 @@
+---
+title: 'React SDK Example'
+description: 'Build your first voice AI application with the Outspeed React SDK'
+---
+
+## Basic Voice Chat Component
+
+Here's a complete example of a React component that creates a voice conversation using the `useConversation` hook:
+
+```tsx
+import React, { useState } from 'react';
+import { providers, type SessionConfig } from '@outspeed/client';
+import { useConversation } from '@outspeed/react';
+
+const getEphemeralKeyFromServer = async (config: SessionConfig) => {
+  const tokenResponse = await fetch('/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(config),
+  });
+
+  const data = await tokenResponse.json();
+  if (!tokenResponse.ok) {
+    throw new Error('Failed to get ephemeral key');
+  }
+
+  return data.client_secret.value;
+};
+
+const sessionConfig: SessionConfig = {
+  model: 'outspeed-v1',
+  instructions: 'You are a helpful but witty assistant.',
+  voice: 'David',
+  turn_detection: {
+    type: 'semantic_vad',
+  },
+  first_message: 'Hello, how can I assist you with Outspeed today?',
+};
+
+export default function VoiceChat() {
+  const [sessionCreated, setSessionCreated] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
+
+  const conversation = useConversation({
+    provider: providers.Outspeed,
+    sessionConfig: sessionConfig,
+  });
+
+  const startSession = async () => {
+    try {
+      setIsConnecting(true);
+      const ephemeralKey = await getEphemeralKeyFromServer(sessionConfig);
+      await conversation.startSession(ephemeralKey);
+
+      // Listen for session creation event
+      conversation.on('session.created', (event) => {
+        console.log('Session created:', event);
+        setSessionCreated(true);
+        setIsConnecting(false);
+      });
+
+    } catch (error) {
+      console.error('Error starting session:', error);
+      setIsConnecting(false);
+    }
+  };
+
+  const endSession = async () => {
+    try {
+      await conversation.endSession();
+      setSessionCreated(false);
+    } catch (error) {
+      console.error('Error ending session:', error);
+    }
+  };
+
+  if (isConnecting) {
+    return (
+      <div className="voice-chat">
+        <h2>Connecting...</h2>
+        <p>Please wait while we establish the connection.</p>
+      </div>
+    );
+  }
+
+  if (sessionCreated) {
+    return (
+      <div className="voice-chat">
+        <h2>🎙️ Voice Chat Active</h2>
+        <p>You can now speak with the AI assistant!</p>
+        <button onClick={endSession} className="end-button">
+          End Session
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="voice-chat">
+      <h2>Voice AI Assistant</h2>
+      <p>Click the button below to start a voice conversation.</p>
+      <button onClick={startSession} className="start-button">
+        Start Voice Chat
+      </button>
+    </div>
+  );
+}
+```
+
+## Advanced Features
+
+### Event Handling
+
+You can listen to various events during the conversation:
+
+```tsx
+// Listen for speech detection
+conversation.on('input_audio_buffer.speech_started', () => {
+  console.log('User started speaking');
+});
+
+conversation.on('input_audio_buffer.speech_stopped', () => {
+  console.log('User stopped speaking');
+});
+
+// Listen for AI responses
+conversation.on('response.text.delta', (event) => {
+  console.log('AI response text:', event.delta);
+});
+
+conversation.on('response.audio_transcript.delta', (event) => {
+  console.log('AI speech transcript:', event.delta);
+});
+```
+
+### Text Input
+
+You can also send text messages programmatically:
+
+```tsx
+const sendTextMessage = () => {
+  conversation.sendText('Tell me about the weather today');
+};
+
+return (
+  <div>
+    {/* ... other components */}
+    <button onClick={sendTextMessage}>
+      Send Text Message
+    </button>
+  </div>
+);
+```
+
+### Mute Control
+
+Toggle the microphone on and off:
+
+```tsx
+const [isMuted, setIsMuted] = useState(false);
+
+const toggleMute = () => {
+  conversation.toggleMute();
+  setIsMuted(!isMuted);
+};
+
+return (
+  <div>
+    {/* ... other components */}
+    <button onClick={toggleMute}>
+      {isMuted ? '🔇 Unmute' : '🎤 Mute'}
+    </button>
+  </div>
+);
+```
+
+## Error Handling
+
+Always implement proper error handling for a robust user experience:
+
+```tsx
+const [error, setError] = useState<string | null>(null);
+
+const conversation = useConversation({
+  provider: providers.Outspeed,
+  sessionConfig: sessionConfig,
+  onError: (err) => {
+    console.error('Conversation error:', err);
+    setError(err.message);
+    setSessionCreated(false);
+    setIsConnecting(false);
+  },
+});
+
+// Display error to user
+if (error) {
+  return (
+    <div className="error-state">
+      <h2>❌ Error</h2>
+      <p>{error}</p>
+      <button onClick={() => setError(null)}>Try Again</button>
+    </div>
+  );
+}
+```
+
+## Next Steps
+
+- [API Reference](/api-spec/client) - Explore all available methods and events
+- [Voice Devtools](/get-started/voice-devtools) - Debug your voice applications
+- [Advanced Examples](/get-started/examples) - See more complex implementations

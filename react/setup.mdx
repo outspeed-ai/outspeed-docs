@@ -1,0 +1,176 @@
+---
+title: 'React SDK Setup'
+description: 'Get started with the Outspeed React SDK for real-time voice AI applications'
+---
+
+## Installation
+
+Install the React SDK using your preferred package manager:
+
+<CodeGroup>
+
+```bash npm
+npm install @outspeed/react
+```
+
+```bash pnpm
+pnpm add @outspeed/react
+```
+
+```bash yarn
+yarn add @outspeed/react
+```
+
+</CodeGroup>
+
+## Prerequisites
+
+Before using the React SDK, you'll need:
+
+1. **Outspeed API Key**: Get your API key from the [Outspeed Dashboard](https://dashboard.outspeed.com)
+2. **Backend Token Endpoint**: A server endpoint to generate ephemeral keys for client authentication
+
+## Backend Setup
+
+The React SDK requires a backend endpoint to generate ephemeral tokens for secure client authentication. Create a `/token` endpoint on your server:
+
+<CodeGroup>
+
+```javascript Express.js
+app.post('/token', async (req, res) => {
+  try {
+    const { model } = req.body;
+    
+    // Validate the model
+    if (model !== 'outspeed-v1') {
+      return res.status(400).json({ 
+        error: 'Invalid model. Only outspeed-v1 is supported.' 
+      });
+    }
+
+    // Create session with Outspeed API
+    const response = await fetch('https://api.outspeed.com/v1/realtime/sessions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.OUTSPEED_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(req.body),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error('Token generation error:', error);
+      return res.status(response.status).json({ 
+        error: 'Failed to generate token' 
+      });
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('Token generation error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+```
+
+```python FastAPI
+from fastapi import FastAPI, HTTPException
+import httpx
+import os
+from pydantic import BaseModel
+
+app = FastAPI()
+
+class TokenRequest(BaseModel):
+    model: str
+
+@app.post("/token")
+async def create_token(request: TokenRequest):
+    # Validate the model
+    if request.model != 'outspeed-v1':
+        raise HTTPException(
+            status_code=400, 
+            detail="Invalid model. Only outspeed-v1 is supported."
+        )
+    
+    try:
+        # Create session with Outspeed API
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                'https://api.outspeed.com/v1/realtime/sessions',
+                headers={
+                    'Authorization': f'Bearer {os.getenv("OUTSPEED_API_KEY")}',
+                    'Content-Type': 'application/json',
+                },
+                json=request.dict(),
+            )
+            
+            if not response.is_success:
+                error_text = response.text
+                print(f"Token generation error: {error_text}")
+                raise HTTPException(
+                    status_code=response.status_code,
+                    detail="Failed to generate token"
+                )
+            
+            return response.json()
+            
+    except Exception as e:
+        print(f"Token generation error: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+```
+
+</CodeGroup>
+
+## Environment Variables
+
+Add your Outspeed API key to your server's environment variables:
+
+```bash
+OUTSPEED_API_KEY=your_outspeed_api_key_here
+```
+
+<Warning>
+Never expose your Outspeed API key in client-side code. Always generate ephemeral tokens on your backend server.
+</Warning>
+
+## Session Configuration
+
+The React SDK uses a `SessionConfig` object to configure voice sessions:
+
+```typescript
+import { type SessionConfig } from '@outspeed/client';
+
+const sessionConfig: SessionConfig = {
+  model: 'outspeed-v1',
+  instructions: 'You are a helpful assistant.',
+  voice: 'David', // Find more voices at dashboard.outspeed.com
+  turn_detection: {
+    type: 'semantic_vad',
+  },
+  first_message: 'Hello! How can I help you today?', // Optional welcome message
+};
+```
+
+### Configuration Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `model` | `string` | Must be `"outspeed-v1"` |
+| `instructions` | `string` | System prompt for the AI assistant |
+| `voice` | `string` | Voice ID to use for speech synthesis |
+| `turn_detection` | `object` | Voice activity detection settings |
+| `first_message` | `string` | Optional initial message from assistant |
+
+<Info>
+You can find available voices for `outspeed-v1` at [dashboard.outspeed.com](https://dashboard.outspeed.com)
+</Info>
+
+## Next Steps
+
+Now that you have the SDK installed and configured, you can start building voice AI applications:
+
+- [Basic Example](/react/example) - Learn how to create a simple voice conversation
+- [API Reference](/api-spec/client) - Explore all available methods and events
