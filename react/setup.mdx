@@ -37,6 +37,9 @@ The React SDK requires a backend endpoint to generate ephemeral tokens for secur
 <CodeGroup>
 
 ```javascript Express.js
+// Add JSON middleware to parse request body
+app.use(express.json());
+
 app.post('/token', async (req, res) => {
   try {
     const { model } = req.body;
@@ -146,7 +149,7 @@ import { type SessionConfig } from '@outspeed/client';
 const sessionConfig: SessionConfig = {
   model: 'outspeed-v1',
   instructions: 'You are a helpful assistant.',
-  voice: 'David', // Find more voices at dashboard.outspeed.com
+  voice: 'david', // Voice names must be lowercase. Find more voices at dashboard.outspeed.com
   turn_detection: {
     type: 'semantic_vad',
   },
