@@ -14,7 +14,6 @@
         "group": "Get Started",
         "pages": [
           "get-started/overview",
-          "get-started/voice-devtools",
           "get-started/openai-compatibility",
           "get-started/examples"
         ]
@@ -39,14 +38,6 @@
           "api-spec/live-api",
           "api-spec/client",
           "api-spec/server"
-        ]
-      },
-      {
-        "group": "Models",
-        "pages": [
-          "models/outspeed",
-          "models/openai-realtime",
-          "models/gemini-multimodal"
         ]
       }
     ],
