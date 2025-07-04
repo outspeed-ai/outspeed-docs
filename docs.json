@@ -1,43 +1,45 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "maple",
+  "theme": "mint",
   "name": "Outspeed Docs",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373"
+    "primary": "#009689",
+    "light": "#00BBA7",
+    "dark": "#009689"
   },
-  "favicon": "/logo/1.svg",
+  "favicon": "/logo/outspeed-flat-inverse-favicon.svg",
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": "Get Started",
-        "pages": [
-          "get-started/overview",
-          "get-started/openai-compatibility",
-          "get-started/examples"
-        ]
+        "tab": "Welcome",
+        "pages": ["get-started/overview"]
       },
       {
-        "group": "Web",
-        "pages": [
-          "react/setup",
-          "react/example"
-        ]
-      },
-      {
-        "group": "iOS",
-        "pages": [
-          "iOS/outspeed-swift-getting-started",
-          "iOS/outspeed-swift-elevenlabs"
-        ]
-      },
-      {
-        "group": "API",
-        "pages": [
-          "api-spec/live-api",
-          "api-spec/client",
-          "api-spec/server"
+        "tab": "Developer Guide",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "get-started/quickstart",
+              "get-started/openai-compatibility",
+              "get-started/examples"
+            ]
+          },
+          {
+            "group": "Web",
+            "pages": ["react/setup", "react/example"]
+          },
+          {
+            "group": "iOS",
+            "pages": [
+              "iOS/outspeed-swift-getting-started",
+              "iOS/outspeed-swift-elevenlabs"
+            ]
+          },
+          {
+            "group": "API",
+            "pages": ["api-spec/live-api", "api-spec/client", "api-spec/server"]
+          }
         ]
       }
     ],
@@ -50,7 +52,7 @@
         },
         {
           "anchor": "Book a Demo",
-          "href": "https://cal.com/janakag/outspeed-intro",
+          "href": "https://cal.com/outspeed/early-access",
           "icon": "phone"
         }
       ]
