@@ -47,3 +47,7 @@ main > div {
 #sidebar-content {
     padding-right: 1rem;
 }
+
+.docimage {
+    width: 300px;
+}
