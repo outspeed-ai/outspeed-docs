@@ -1,8 +1,3 @@
-:root {
-  --background-dark: rgb(30, 30, 30);
-  --background-light: rgb(255, 255, 255);
-}
-
 main > div {
   background: var(--background-light);
 }
@@ -13,4 +8,42 @@ main > div {
 
 .prose h1 {
   margin-bottom: 4px;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+    margin-top: 2rem;
+}
+
+#content-area h1,
+#content-area h2,
+#content-area h3,
+#content-area h4,
+#content-area h5,
+#content-area h6 {
+  margin-bottom: 0.1em;
+}
+
+#content-area p:not(.callout *) {
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+#content-area ul,
+#content-area ol {
+  line-height: 1.3;
+}
+
+#content-area ul li,
+#content-area ol li {
+  margin-bottom: 0.25rem;
+}
+
+#content-area > .flex {
+    display: none;
+}
+
+#sidebar-content {
+    padding-right: 1rem;
 }

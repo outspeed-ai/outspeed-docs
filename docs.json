@@ -7,6 +7,11 @@
     "light": "#00BBA7",
     "dark": "#009689"
   },
+  "fonts": {
+    "heading": {
+      "family": "Montserrat"
+    }
+  },
   "favicon": "/logo/outspeed-flat-inverse-favicon.svg",
   "navigation": {
     "tabs": [
@@ -46,7 +51,7 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Join Discord Community",
+          "anchor": "Discord Community",
           "href": "https://discord.gg/cmfFw6SYvp",
           "icon": "discord"
         },
