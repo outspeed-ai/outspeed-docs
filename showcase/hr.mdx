@@ -1,0 +1,171 @@
+---
+title: "HR Agent"
+description: "Voice agent for HR interviews and onboarding"
+icon: "user-tie"
+---
+
+# HR Agent
+
+A comprehensive voice agent designed for HR interviews, employee onboarding, and recruitment processes.
+
+## Overview
+
+The HR Agent helps streamline human resources operations by conducting:
+- Initial candidate screenings
+- Structured interviews
+- Employee onboarding sessions
+- Exit interviews
+- Performance review discussions
+
+## Key Features
+
+### Intelligent Interviewing
+- Structured question flow based on job requirements
+- Dynamic follow-up questions based on responses
+- Candidate evaluation and scoring
+- Real-time sentiment analysis
+
+### Onboarding Support
+- Welcome new employees with personalized greetings
+- Guide through company policies and procedures
+- Answer common onboarding questions
+- Schedule follow-up sessions
+
+### Data Collection
+- Automatic interview transcription
+- Candidate response analysis
+- Performance metrics tracking
+- Integration with HR systems
+
+## Use Cases
+
+### Recruitment Screening
+```javascript
+const hrAgent = await outspeedClient.createAgent({
+  persona: "professional HR interviewer",
+  skills: ["questioning", "evaluation", "empathy"],
+  context: {
+    jobRole: "Software Engineer",
+    requirements: ["React", "Node.js", "3+ years experience"],
+    interviewStage: "technical_screening"
+  }
+});
+```
+
+### Employee Onboarding
+```javascript
+const onboardingAgent = await outspeedClient.createAgent({
+  persona: "friendly HR representative",
+  skills: ["guidance", "information_sharing", "support"],
+  context: {
+    newEmployee: {
+      name: "John Doe",
+      department: "Engineering",
+      startDate: "2024-01-15"
+    }
+  }
+});
+```
+
+## Sample Conversations
+
+### Interview Flow
+```
+Agent: "Hello! I'm excited to speak with you today about the Software Engineer position. Could you start by telling me about your experience with React?"
+
+Candidate: "I've been working with React for about 4 years..."
+
+Agent: "That's great! Can you walk me through a challenging project where you used React? What obstacles did you face and how did you overcome them?"
+```
+
+### Onboarding Flow
+```
+Agent: "Welcome to the team, Sarah! I'm here to help you get settled in. Let's start with your employee handbook. Do you have any immediate questions about your benefits package?"
+
+Employee: "Yes, I'm wondering about the health insurance options..."
+
+Agent: "Perfect! We offer three health plans. Let me walk you through each option and help you choose what works best for you."
+```
+
+## Benefits
+
+### For Organizations
+- **Consistent Process**: Standardized interview and onboarding experience
+- **Time Savings**: 24/7 availability for initial screenings
+- **Data Insights**: Comprehensive analytics on candidate interactions
+- **Cost Effective**: Reduced need for initial human interviewer time
+
+### For Candidates/Employees
+- **Comfortable Environment**: Less intimidating than traditional interviews
+- **Flexible Scheduling**: Available anytime for practice or onboarding
+- **Immediate Feedback**: Real-time responses to questions
+- **Personalized Experience**: Tailored to individual needs and pace
+
+## Integration Options
+
+### ATS Integration
+```javascript
+// Connect with Applicant Tracking Systems
+const atsIntegration = {
+  system: "greenhouse", // or "workday", "lever", etc.
+  syncCandidateData: true,
+  updateInterviewStatus: true,
+  exportTranscripts: true
+};
+```
+
+### HRIS Integration
+```javascript
+// Connect with HR Information Systems
+const hrisIntegration = {
+  system: "bamboohr", // or "successfactors", "adp", etc.
+  employeeDataSync: true,
+  onboardingWorkflows: true,
+  performanceTracking: true
+};
+```
+
+## Customization
+
+### Industry-Specific Templates
+- **Technology**: Focus on technical skills and problem-solving
+- **Healthcare**: Emphasize compliance and patient care
+- **Finance**: Stress attention to detail and regulatory knowledge
+- **Sales**: Evaluate communication and persuasion skills
+
+### Role-Based Questioning
+- **Entry Level**: Basic competency and cultural fit assessment
+- **Senior Roles**: Leadership experience and strategic thinking
+- **Management**: Team building and decision-making scenarios
+
+## Analytics & Reporting
+
+### Interview Metrics
+- Average interview duration
+- Question response quality scores
+- Candidate engagement levels
+- Pass/fail ratios by question type
+
+### Onboarding Effectiveness
+- Time to complete onboarding modules
+- Question frequency and topics
+- Employee satisfaction scores
+- Follow-up session requirements
+
+## Best Practices
+
+1. **Customize for Your Culture**: Adapt the agent's personality to match company values
+2. **Regular Updates**: Keep job requirements and company information current
+3. **Human Handoff**: Know when to transfer to human HR representatives
+4. **Privacy Compliance**: Ensure GDPR/privacy law adherence
+5. **Bias Mitigation**: Regular review of questioning patterns for fairness
+
+## Getting Started
+
+1. **Define Requirements**: Specify job roles and evaluation criteria
+2. **Customize Agent**: Set personality, knowledge base, and conversation flows
+3. **Test Thoroughly**: Run practice sessions with internal team
+4. **Launch Gradually**: Start with low-stakes interviews or onboarding
+5. **Monitor & Improve**: Use analytics to refine the experience
+
+Ready to transform your HR processes with voice AI? Start building your HR agent today!

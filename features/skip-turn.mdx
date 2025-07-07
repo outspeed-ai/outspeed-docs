@@ -1,0 +1,247 @@
+---
+title: "Skip Turn"
+description: "Allow agents to skip their turn in conversation flow"
+---
+
+# Skip Turn
+
+Skip Turn enables AI agents to deliberately skip their speaking turn, allowing for more natural conversation flow and better handling of interruptions or pauses.
+
+## Overview
+
+The Skip Turn feature allows agents to:
+- Skip speaking when appropriate
+- Handle interruptions gracefully
+- Manage conversation flow
+- Respond to user cues
+- Create natural pauses in dialogue
+
+## Basic Usage
+
+### Manual Skip Turn
+
+```javascript
+// Skip the current turn
+await outspeedClient.skipTurn();
+```
+
+### Skip Turn with Reason
+
+```javascript
+// Skip turn with specific reason
+await outspeedClient.skipTurn({
+  reason: "user_interruption",
+  message: "I'll let you continue"
+});
+```
+
+## Configuration Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `reason` | string | Optional reason for skipping turn |
+| `message` | string | Optional brief message before skipping |
+| `duration` | number | How long to wait before resuming (ms) |
+
+## Common Use Cases
+
+### Handling Interruptions
+
+```javascript
+outspeedClient.on('userInterruption', async () => {
+  await outspeedClient.skipTurn({
+    reason: "user_interruption",
+    message: "Go ahead"
+  });
+});
+```
+
+### Waiting for User Input
+
+```javascript
+// When agent needs user to provide information
+if (waitingForUserInput) {
+  await outspeedClient.skipTurn({
+    reason: "awaiting_input",
+    duration: 3000 // Wait 3 seconds
+  });
+}
+```
+
+### Natural Conversation Flow
+
+```javascript
+// Skip turn to allow natural conversation rhythm
+if (conversationContext.shouldPause) {
+  await outspeedClient.skipTurn({
+    reason: "natural_pause",
+    duration: 1500
+  });
+}
+```
+
+## Advanced Configuration
+
+### Conditional Skip Turn
+
+```javascript
+const shouldSkipTurn = (context) => {
+  return context.userIsSpeaking || 
+         context.lastResponseWasQuestion || 
+         context.waitingForUserAction;
+};
+
+if (shouldSkipTurn(conversationContext)) {
+  await outspeedClient.skipTurn();
+}
+```
+
+### Auto-Skip Settings
+
+```javascript
+const skipTurnConfig = {
+  autoSkipOnInterruption: true,
+  autoSkipOnUserSpeaking: true,
+  skipDuration: 2000,
+  maxConsecutiveSkips: 3
+};
+
+await outspeedClient.configure({
+  skipTurn: skipTurnConfig
+});
+```
+
+## Turn Management
+
+### Skip Turn Strategies
+
+```javascript
+const skipStrategies = {
+  // Skip when user is actively speaking
+  userSpeaking: {
+    enabled: true,
+    duration: 1000
+  },
+  
+  // Skip when user interrupts
+  interruption: {
+    enabled: true,
+    message: "Please continue",
+    duration: 2000
+  },
+  
+  // Skip for dramatic effect
+  dramatic: {
+    enabled: false,
+    duration: 3000
+  }
+};
+```
+
+### Turn Recovery
+
+```javascript
+// Resume speaking after skip
+outspeedClient.on('skipTurnComplete', () => {
+  console.log('Turn skip completed, ready to resume');
+  // Agent can now speak again
+});
+```
+
+## Events
+
+Listen for skip turn events:
+
+```javascript
+outspeedClient.on('turnSkipped', (event) => {
+  console.log('Turn skipped:', event.reason);
+  console.log('Duration:', event.duration);
+});
+
+outspeedClient.on('turnResumed', (event) => {
+  console.log('Turn resumed after skip');
+});
+```
+
+## Best Practices
+
+1. **Use Sparingly**: Don't skip turns unnecessarily
+2. **Provide Context**: Always include a reason when skipping
+3. **Set Appropriate Duration**: Match skip duration to context
+4. **Handle Interruptions**: Skip when user interrupts naturally
+5. **Monitor Skip Frequency**: Avoid consecutive skips
+6. **User Feedback**: Provide brief acknowledgment when skipping
+
+## Integration Examples
+
+### React Component
+
+```javascript
+const VoiceAgent = () => {
+  const [isSkippingTurn, setIsSkippingTurn] = useState(false);
+  
+  const handleSkipTurn = async () => {
+    setIsSkippingTurn(true);
+    await outspeedClient.skipTurn({
+      reason: "user_requested",
+      message: "I'll pause for a moment"
+    });
+    setIsSkippingTurn(false);
+  };
+  
+  return (
+    <button onClick={handleSkipTurn} disabled={isSkippingTurn}>
+      Skip Turn
+    </button>
+  );
+};
+```
+
+### Voice Activity Detection
+
+```javascript
+// Skip turn when user starts speaking
+outspeedClient.on('userVoiceActivity', (activity) => {
+  if (activity.isSpeaking && !activity.isAgent) {
+    outspeedClient.skipTurn({
+      reason: "user_voice_detected",
+      duration: 1000
+    });
+  }
+});
+```
+
+## Error Handling
+
+```javascript
+try {
+  await outspeedClient.skipTurn();
+} catch (error) {
+  console.error('Failed to skip turn:', error);
+  // Handle error appropriately
+}
+```
+
+## Configuration Schema
+
+```javascript
+{
+  skipTurn: {
+    autoSkipOnInterruption: boolean,
+    autoSkipOnUserSpeaking: boolean,
+    defaultDuration: number,
+    maxConsecutiveSkips: number,
+    strategies: {
+      userSpeaking: {
+        enabled: boolean,
+        duration: number
+      },
+      interruption: {
+        enabled: boolean,
+        message: string,
+        duration: number
+      }
+    }
+  }
+}
+```

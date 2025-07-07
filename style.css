@@ -1,3 +1,7 @@
+#content-area > table {
+    margin-top: 1rem;
+}
+
 main > div {
   background: var(--background-light);
 }
@@ -42,6 +46,10 @@ main > div {
 
 #content-area > .flex {
     display: none;
+}
+
+div:has(> #content-container) {
+  width: 100%;
 }
 
 #sidebar-content {

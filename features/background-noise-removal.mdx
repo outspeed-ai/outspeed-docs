@@ -1,0 +1,321 @@
+---
+title: "Background Noise Removal"
+description: "Remove unwanted background noise from audio streams"
+---
+
+# Background Noise Removal
+
+Background Noise Removal automatically filters out unwanted ambient sounds, ensuring crystal-clear voice communication in any environment.
+
+## Overview
+
+The Background Noise Removal feature:
+- Eliminates ambient noise
+- Preserves voice clarity
+- Works in real-time
+- Adapts to different environments
+- Supports multiple noise types
+
+## Supported Noise Types
+
+- **Environmental**: Air conditioning, fans, traffic
+- **Electronic**: Computer fans, electrical hum
+- **Human**: Keyboard typing, paper rustling
+- **Ambient**: Crowd chatter, background music
+- **Mechanical**: Construction, machinery sounds
+
+## Basic Configuration
+
+### Enable Noise Removal
+
+```javascript
+const agent = await outspeedClient.createAgent({
+  audioProcessing: {
+    noiseRemoval: {
+      enabled: true,
+      intensity: "medium" // low, medium, high
+    }
+  }
+});
+```
+
+### Real-time Control
+
+```javascript
+// Enable noise removal during call
+await outspeedClient.enableNoiseRemoval();
+
+// Disable noise removal
+await outspeedClient.disableNoiseRemoval();
+
+// Adjust intensity
+await outspeedClient.setNoiseRemovalIntensity("high");
+```
+
+## Advanced Configuration
+
+### Noise Removal Settings
+
+```javascript
+const noiseRemovalConfig = {
+  enabled: true,
+  intensity: "medium",
+  adaptiveMode: true,
+  noiseGate: {
+    enabled: true,
+    threshold: -30 // dB
+  },
+  spectralSubtraction: {
+    enabled: true,
+    aggressiveness: 0.5
+  },
+  wienerFilter: {
+    enabled: true,
+    smoothingFactor: 0.8
+  }
+};
+```
+
+### Environment-Specific Presets
+
+```javascript
+const environmentPresets = {
+  office: {
+    intensity: "medium",
+    noiseGate: { threshold: -25 },
+    optimizedFor: ["keyboard", "air_conditioning", "voices"]
+  },
+  
+  home: {
+    intensity: "low",
+    noiseGate: { threshold: -35 },
+    optimizedFor: ["tv", "appliances", "traffic"]
+  },
+  
+  outdoor: {
+    intensity: "high",
+    noiseGate: { threshold: -20 },
+    optimizedFor: ["wind", "traffic", "crowds"]
+  },
+  
+  car: {
+    intensity: "high",
+    noiseGate: { threshold: -18 },
+    optimizedFor: ["engine", "road", "wind"]
+  }
+};
+
+// Apply preset
+await outspeedClient.applyNoiseRemovalPreset("office");
+```
+
+## Real-time Monitoring
+
+### Noise Level Detection
+
+```javascript
+outspeedClient.on('noiseLevel', (event) => {
+  console.log('Noise level:', event.level); // 0-100
+  console.log('Noise type:', event.type);
+  console.log('Reduction applied:', event.reduction);
+});
+```
+
+### Audio Quality Metrics
+
+```javascript
+outspeedClient.on('audioQuality', (metrics) => {
+  console.log('SNR:', metrics.signalToNoiseRatio);
+  console.log('Clarity:', metrics.clarity);
+  console.log('Noise reduced:', metrics.noiseReduced);
+});
+```
+
+## Adaptive Mode
+
+### Automatic Adjustment
+
+```javascript
+const adaptiveConfig = {
+  enabled: true,
+  learningRate: 0.1,
+  adaptationTime: 5000, // 5 seconds
+  minIntensity: "low",
+  maxIntensity: "high"
+};
+
+await outspeedClient.configure({
+  audioProcessing: {
+    noiseRemoval: {
+      adaptive: adaptiveConfig
+    }
+  }
+});
+```
+
+### Manual Environment Detection
+
+```javascript
+// Detect current environment
+const environment = await outspeedClient.detectEnvironment();
+console.log('Detected environment:', environment.type);
+
+// Apply appropriate settings
+await outspeedClient.applyNoiseRemovalPreset(environment.type);
+```
+
+## Integration Examples
+
+### React Component
+
+```javascript
+const NoiseRemovalControl = () => {
+  const [enabled, setEnabled] = useState(true);
+  const [intensity, setIntensity] = useState("medium");
+  const [noiseLevel, setNoiseLevel] = useState(0);
+  
+  useEffect(() => {
+    outspeedClient.on('noiseLevel', (event) => {
+      setNoiseLevel(event.level);
+    });
+  }, []);
+  
+  const toggleNoiseRemoval = async () => {
+    if (enabled) {
+      await outspeedClient.disableNoiseRemoval();
+    } else {
+      await outspeedClient.enableNoiseRemoval();
+    }
+    setEnabled(!enabled);
+  };
+  
+  return (
+    <div>
+      <button onClick={toggleNoiseRemoval}>
+        {enabled ? 'Disable' : 'Enable'} Noise Removal
+      </button>
+      <select 
+        value={intensity} 
+        onChange={(e) => setIntensity(e.target.value)}
+      >
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+      <div>Noise Level: {noiseLevel}%</div>
+    </div>
+  );
+};
+```
+
+### Environment Detection
+
+```javascript
+// Auto-detect and apply optimal settings
+const optimizeForEnvironment = async () => {
+  const environment = await outspeedClient.detectEnvironment();
+  const preset = environmentPresets[environment.type];
+  
+  if (preset) {
+    await outspeedClient.configure({
+      audioProcessing: {
+        noiseRemoval: preset
+      }
+    });
+  }
+};
+```
+
+## Performance Considerations
+
+### CPU Usage
+
+```javascript
+// Monitor processing load
+outspeedClient.on('processingLoad', (load) => {
+  console.log('CPU usage:', load.cpu);
+  console.log('Memory usage:', load.memory);
+  
+  // Reduce intensity if system is under load
+  if (load.cpu > 80) {
+    outspeedClient.setNoiseRemovalIntensity("low");
+  }
+});
+```
+
+### Quality vs Performance
+
+```javascript
+const performanceConfig = {
+  prioritizeQuality: false, // Set to true for better quality
+  lowLatencyMode: true,
+  adaptiveProcessing: true,
+  frameSize: 128 // Smaller for lower latency
+};
+```
+
+## Best Practices
+
+1. **Start with Medium Intensity**: Balance between quality and performance
+2. **Use Adaptive Mode**: Let the system adjust automatically
+3. **Monitor Performance**: Watch CPU usage on lower-end devices
+4. **Environment-Specific**: Use presets for known environments
+5. **Test Different Settings**: Find optimal configuration for your use case
+6. **User Control**: Allow users to adjust settings if needed
+
+## Troubleshooting
+
+### Common Issues
+
+```javascript
+// Voice distortion
+if (audioQuality.clarity < 0.7) {
+  await outspeedClient.setNoiseRemovalIntensity("low");
+}
+
+// Noise still present
+if (noiseLevel > 50) {
+  await outspeedClient.setNoiseRemovalIntensity("high");
+  await outspeedClient.configure({
+    audioProcessing: {
+      noiseRemoval: {
+        noiseGate: { threshold: -25 }
+      }
+    }
+  });
+}
+```
+
+### Debug Mode
+
+```javascript
+// Enable debug logging
+await outspeedClient.configure({
+  audioProcessing: {
+    noiseRemoval: {
+      debug: true
+    }
+  }
+});
+```
+
+## API Reference
+
+### Methods
+
+| Method | Description |
+|--------|-------------|
+| `enableNoiseRemoval()` | Enable noise removal |
+| `disableNoiseRemoval()` | Disable noise removal |
+| `setNoiseRemovalIntensity(level)` | Set intensity (low/medium/high) |
+| `applyNoiseRemovalPreset(preset)` | Apply environment preset |
+| `detectEnvironment()` | Detect current environment |
+
+### Events
+
+| Event | Description |
+|-------|-------------|
+| `noiseLevel` | Current noise level detected |
+| `audioQuality` | Audio quality metrics |
+| `processingLoad` | System processing load |
+| `environmentDetected` | Environment type detected |

@@ -26,10 +26,23 @@
             "group": "Get Started",
             "pages": [
               "get-started/quickstart",
-              "get-started/openai-compatibility",
-              "get-started/examples"
+              "get-started/templates"
             ]
           },
+          {
+            "group": "Controls",
+            "pages": [
+              "features/end-session",
+              "features/tool-use",
+              "features/skip-turn",
+              "features/context-updates"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "SDKs",
+        "groups": [
           {
             "group": "Web",
             "pages": ["react/setup", "react/example"]
@@ -40,10 +53,19 @@
               "iOS/outspeed-swift-getting-started",
               "iOS/outspeed-swift-elevenlabs"
             ]
+          }
+        ]
+      },
+      {
+        "tab": "API",
+        "groups": [
+          {
+            "group": "API Reference",
+            "pages": ["api-spec/live-api", "api-spec/client", "api-spec/server"]
           },
           {
-            "group": "API",
-            "pages": ["api-spec/live-api", "api-spec/client", "api-spec/server"]
+            "group": "Compatibility",
+            "pages": ["get-started/openai-compatibility"]
           }
         ]
       }

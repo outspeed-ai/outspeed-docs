@@ -1,0 +1,109 @@
+---
+title: "End Session"
+description: "Gracefully terminate voice conversations"
+---
+
+# End Session
+
+The End Session feature allows you to programmatically terminate voice conversations with proper cleanup and state management.
+
+## Overview
+
+When a voice conversation needs to end, whether initiated by the user, agent, or system conditions, the End Session feature ensures:
+- Proper session cleanup
+- Resource deallocation
+- State synchronization
+- Graceful disconnection
+
+## Usage
+
+### Basic End Session
+
+```javascript
+// End the current session
+await outspeedClient.endSession();
+```
+
+### End Session with Reason
+
+```javascript
+// End session with specific reason
+await outspeedClient.endSession({
+  reason: "user_requested",
+  message: "Thank you for using our service"
+});
+```
+
+## Configuration Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `reason` | string | Optional reason for ending the session |
+| `message` | string | Optional final message to play before ending |
+| `cleanup` | boolean | Whether to perform cleanup (default: true) |
+
+## Common Use Cases
+
+### User-Initiated End Session
+```javascript
+// When user clicks end session button
+document.getElementById('endSessionButton').addEventListener('click', async () => {
+  await outspeedClient.endSession({
+    reason: "user_ended",
+    message: "Goodbye! Have a great day."
+  });
+});
+```
+
+### Timeout-Based End Session
+```javascript
+// End session after timeout
+setTimeout(async () => {
+  await outspeedClient.endSession({
+    reason: "timeout",
+    message: "This session has timed out."
+  });
+}, 300000); // 5 minutes
+```
+
+### Agent-Initiated End Session
+```javascript
+// Agent decides to end the session
+if (conversationComplete) {
+  await outspeedClient.endSession({
+    reason: "conversation_complete",
+    message: "I've helped you with everything you needed. Take care!"
+  });
+}
+```
+
+## Events
+
+Listen for end session events:
+
+```javascript
+outspeedClient.on('sessionEnded', (event) => {
+  console.log('Session ended:', event.reason);
+  // Handle post-session cleanup
+  updateUI();
+});
+```
+
+## Best Practices
+
+1. **Always provide a reason** when ending sessions programmatically
+2. **Play a final message** to inform the user the session is ending
+3. **Handle cleanup** in your application state after session ends
+4. **Listen for end session events** to update your UI appropriately
+5. **Implement timeout handling** for long-running conversations
+
+## Error Handling
+
+```javascript
+try {
+  await outspeedClient.endSession();
+} catch (error) {
+  console.error('Failed to end session:', error);
+  // Handle error appropriately
+}
+```
