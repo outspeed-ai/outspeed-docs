@@ -1,11 +1,8 @@
 ---
 title: "Skip Turn"
-description: "System tool that allows AI agents to intelligently skip their turn when users aren't directly addressing them"
+description: "Skip Turn is a system tool that enables AI agents to intelligently decide when to skip their speaking turn based on conversation context. The agent uses this tool when users are not directly addressing them or when no response is needed."
 ---
 
-# Skip Turn
-
-Skip Turn is a system tool that enables AI agents to intelligently decide when to skip their speaking turn based on conversation context. The agent uses this tool when users are not directly addressing them or when no response is needed.
 
 ## Overview
 
@@ -85,7 +82,7 @@ The agent automatically calls this tool when it detects:
 // Agent would call: skip_turn({ reason: "not addressing bot" })
 ```
 
-## Implementation Example
+## Default Implementation
 
 Here's how the Skip Turn tool is defined on our server:
 
