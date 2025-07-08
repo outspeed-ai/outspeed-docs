@@ -5,7 +5,7 @@ description: "Manage conversation context during voice interactions"
 
 ## Overview
 
-Context management allows you to create, retrieve, and delete items in the conversation's context during voice interactions. This gives you full control over what information the AI agent has access to.
+Context updates allow you to dynamically add information to the conversation's context during voice interactions. This helps provide the AI agent with additional context about the user, conversation state, or UI state.
 
 ## Automatic Context Updates
 
@@ -17,6 +17,8 @@ During voice conversations, several types of items are automatically added to th
 - **Function outputs**: Tool results are automatically added by the SDK when tools complete
 
 ## Manual Context Updates
+
+<Note>Adding context doesn't trigger an agent response.</Note>
 
 You can manually add items to the conversation context using the `conversation.item.create` event:
 

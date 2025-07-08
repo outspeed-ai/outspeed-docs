@@ -33,7 +33,8 @@
               "features/client-tools",
               "features/system-tools",
               "features/skip-turn",
-              "features/end-session"
+              "features/end-session",
+              "features/speak-first"
             ]
           },
           {
