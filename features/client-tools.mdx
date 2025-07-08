@@ -5,15 +5,7 @@ description: "Create custom tools that extend AI agents with your own functions 
 
 ## Overview
 
-Client tools are custom functions you define and implement in your application. When the AI agent determines it needs to use a tool, it sends a request to your client with the tool name and parameters. Your client executes the function and returns the result to the agent.
-
-## How Client Tools Work
-
-1. **Define Tool Schema**: Describe the tool's purpose and parameters for the AI
-2. **Implement Function**: Write the actual function that performs the action
-3. **Map Tools**: Connect tool names to their implementations
-4. **Configure Session**: Include tools in your session configuration
-5. **Handle Calls**: Use `useConversation` to execute tools when called
+Client tools are custom functions that the voice agent can use during the conversation. They are defined and implemented on the client side.
 
 ## Simple Example
 
@@ -35,6 +27,8 @@ const getTimeSchema = {
 ```
 
 ### Step 2: Implement the Function
+
+Implement the function associated with the tool
 
 ```typescript
 function getTime() {
@@ -65,7 +59,6 @@ That's it! When the user asks "What time is it?", the agent will:
 2. Receive the return value (e.g., "2:30:45 PM")
 3. Use that information to respond to the user
 
-````
 
 ## Tool Schema Format
 
