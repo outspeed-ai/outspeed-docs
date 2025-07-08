@@ -1,247 +1,119 @@
 ---
 title: "Skip Turn"
-description: "Allow agents to skip their turn in conversation flow"
+description: "System tool that allows AI agents to intelligently skip their turn when users aren't directly addressing them"
 ---
 
 # Skip Turn
 
-Skip Turn enables AI agents to deliberately skip their speaking turn, allowing for more natural conversation flow and better handling of interruptions or pauses.
+Skip Turn is a system tool that enables AI agents to intelligently decide when to skip their speaking turn based on conversation context. The agent uses this tool when users are not directly addressing them or when no response is needed.
 
 ## Overview
 
-The Skip Turn feature allows agents to:
-- Skip speaking when appropriate
-- Handle interruptions gracefully
-- Manage conversation flow
-- Respond to user cues
-- Create natural pauses in dialogue
+The Skip Turn system tool helps agents handle situations where users are:
+- Singing songs
+- Talking to someone else
+- Having background conversations
+- Talking to themselves
+- Saying something unrelated to the conversation
 
-## Basic Usage
+The agent uses conversation context to make intelligent decisions about when to skip turns, creating more natural interaction patterns.
 
-### Manual Skip Turn
+## Configuration
 
-```javascript
-// Skip the current turn
-await outspeedClient.skipTurn();
-```
-
-### Skip Turn with Reason
+Enable Skip Turn in your session configuration:
 
 ```javascript
-// Skip turn with specific reason
-await outspeedClient.skipTurn({
-  reason: "user_interruption",
-  message: "I'll let you continue"
-});
-```
-
-## Configuration Options
-
-| Option | Type | Description |
-|--------|------|-------------|
-| `reason` | string | Optional reason for skipping turn |
-| `message` | string | Optional brief message before skipping |
-| `duration` | number | How long to wait before resuming (ms) |
-
-## Common Use Cases
-
-### Handling Interruptions
-
-```javascript
-outspeedClient.on('userInterruption', async () => {
-  await outspeedClient.skipTurn({
-    reason: "user_interruption",
-    message: "Go ahead"
-  });
-});
-```
-
-### Waiting for User Input
-
-```javascript
-// When agent needs user to provide information
-if (waitingForUserInput) {
-  await outspeedClient.skipTurn({
-    reason: "awaiting_input",
-    duration: 3000 // Wait 3 seconds
-  });
-}
-```
-
-### Natural Conversation Flow
-
-```javascript
-// Skip turn to allow natural conversation rhythm
-if (conversationContext.shouldPause) {
-  await outspeedClient.skipTurn({
-    reason: "natural_pause",
-    duration: 1500
-  });
-}
-```
-
-## Advanced Configuration
-
-### Conditional Skip Turn
-
-```javascript
-const shouldSkipTurn = (context) => {
-  return context.userIsSpeaking || 
-         context.lastResponseWasQuestion || 
-         context.waitingForUserAction;
-};
-
-if (shouldSkipTurn(conversationContext)) {
-  await outspeedClient.skipTurn();
-}
-```
-
-### Auto-Skip Settings
-
-```javascript
-const skipTurnConfig = {
-  autoSkipOnInterruption: true,
-  autoSkipOnUserSpeaking: true,
-  skipDuration: 2000,
-  maxConsecutiveSkips: 3
-};
-
-await outspeedClient.configure({
-  skipTurn: skipTurnConfig
-});
-```
-
-## Turn Management
-
-### Skip Turn Strategies
-
-```javascript
-const skipStrategies = {
-  // Skip when user is actively speaking
-  userSpeaking: {
-    enabled: true,
-    duration: 1000
-  },
-  
-  // Skip when user interrupts
-  interruption: {
-    enabled: true,
-    message: "Please continue",
-    duration: 2000
-  },
-  
-  // Skip for dramatic effect
-  dramatic: {
-    enabled: false,
-    duration: 3000
-  }
+const sessionConfig = {
+  // rest of config...
+  system_tools: [
+    { name: "skip_turn", enabled: true }
+  ],
 };
 ```
 
-### Turn Recovery
+## Tool Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `reason` | string | Yes | Brief explanation for why the turn is being skipped |
+
+
+## Override tool descriptions
+
+You can override the default tool description and parameter descriptions to customize the agent's behavior:
 
 ```javascript
-// Resume speaking after skip
-outspeedClient.on('skipTurnComplete', () => {
-  console.log('Turn skip completed, ready to resume');
-  // Agent can now speak again
-});
-```
-
-## Events
-
-Listen for skip turn events:
-
-```javascript
-outspeedClient.on('turnSkipped', (event) => {
-  console.log('Turn skipped:', event.reason);
-  console.log('Duration:', event.duration);
-});
-
-outspeedClient.on('turnResumed', (event) => {
-  console.log('Turn resumed after skip');
-});
-```
-
-## Best Practices
-
-1. **Use Sparingly**: Don't skip turns unnecessarily
-2. **Provide Context**: Always include a reason when skipping
-3. **Set Appropriate Duration**: Match skip duration to context
-4. **Handle Interruptions**: Skip when user interrupts naturally
-5. **Monitor Skip Frequency**: Avoid consecutive skips
-6. **User Feedback**: Provide brief acknowledgment when skipping
-
-## Integration Examples
-
-### React Component
-
-```javascript
-const VoiceAgent = () => {
-  const [isSkippingTurn, setIsSkippingTurn] = useState(false);
-  
-  const handleSkipTurn = async () => {
-    setIsSkippingTurn(true);
-    await outspeedClient.skipTurn({
-      reason: "user_requested",
-      message: "I'll pause for a moment"
-    });
-    setIsSkippingTurn(false);
-  };
-  
-  return (
-    <button onClick={handleSkipTurn} disabled={isSkippingTurn}>
-      Skip Turn
-    </button>
-  );
-};
-```
-
-### Voice Activity Detection
-
-```javascript
-// Skip turn when user starts speaking
-outspeedClient.on('userVoiceActivity', (activity) => {
-  if (activity.isSpeaking && !activity.isAgent) {
-    outspeedClient.skipTurn({
-      reason: "user_voice_detected",
-      duration: 1000
-    });
-  }
-});
-```
-
-## Error Handling
-
-```javascript
-try {
-  await outspeedClient.skipTurn();
-} catch (error) {
-  console.error('Failed to skip turn:', error);
-  // Handle error appropriately
-}
-```
-
-## Configuration Schema
-
-```javascript
-{
-  skipTurn: {
-    autoSkipOnInterruption: boolean,
-    autoSkipOnUserSpeaking: boolean,
-    defaultDuration: number,
-    maxConsecutiveSkips: number,
-    strategies: {
-      userSpeaking: {
-        enabled: boolean,
-        duration: number
+const sessionConfig = {
+  // rest of config...
+  system_tools: [
+    {
+      name: "skip_turn",
+      description: "<override default description of skip_turn tool>",
+      parameter_descriptions: {
+        reason: "<override default description of reason parameter of skip_turn tool>",
       },
-      interruption: {
-        enabled: boolean,
-        message: string,
-        duration: number
-      }
     }
-  }
-}
+  ],
+};
 ```
+
+
+## When Skip Turn is Used
+
+The agent automatically calls this tool when it detects:
+
+### Direct Scenarios
+- **Singing**: User is singing a song
+- **Third-party conversation**: User is talking to someone else in the room
+- **Background chatter**: Casual conversation not directed at the agent
+- **Self-talk**: User talking to themselves
+- **Unrelated content**: User saying something unrelated to the current conversation
+
+### Example Situations
+
+```
+// User singing
+// Agent would call: skip_turn({ reason: "singing song" })
+
+// User talking to someone else
+// Agent would call: skip_turn({ reason: "talking to someone else" })
+
+// Background conversation
+// Agent would call: skip_turn({ reason: "background conversation" })
+
+// User talking to themselves
+// Agent would call: skip_turn({ reason: "not addressing bot" })
+```
+
+## Implementation Example
+
+Here's how the Skip Turn tool is defined on our server:
+
+```python
+tool_def = FunctionDefinition(
+    name="skip_turn",
+    description="Call this when the user is not directly addressing you or when no response is needed. Skip if the user is: singing, talking to someone else, having background conversation, talking to themselves, or saying something unrelated to our conversation. Use conversation context to decide. If genuinely unsure whether they're addressing you, ask for clarification instead of skipping.",
+    parameters=FunctionParameters(
+        type="object",
+        properties={
+            "reason": FunctionProperty(
+                type="string",
+                description="Brief reason for skipping this turn (e.g., 'singing song', 'talking to someone else', 'background conversation', 'not addressing bot')",
+            ),
+        },
+        required=["reason"],
+    ),
+)
+```
+
+
+## Troubleshooting
+
+If you notice the agent skipping turns when it shouldn't:
+
+1. **Review Context**: Check if the conversation context is clear enough
+2. **Adjust Instructions**: Refine your system prompt to provide better guidance
+3. **Override description**: You can override the tool description as per your need
+
+
+
