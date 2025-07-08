@@ -38,7 +38,7 @@
           },
           {
             "group": "Controls",
-            "pages": ["features/context-updates"]
+            "pages": ["features/context-management"]
           }
         ]
       },

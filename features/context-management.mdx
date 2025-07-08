@@ -1,11 +1,11 @@
 ---
-title: "Context Updates"
-description: "Dynamically update conversation context during voice interactions"
+title: "Context Management"
+description: "Manage conversation context during voice interactions"
 ---
 
 ## Overview
 
-Context updates allow you to dynamically add information to the conversation's context during voice interactions. This helps provide the AI agent with additional context about the user, conversation state, or relevant information.
+Context management allows you to create, retrieve, and delete items in the conversation's context during voice interactions. This gives you full control over what information the AI agent has access to.
 
 ## Automatic Context Updates
 
@@ -51,13 +51,62 @@ export default function MyComponent() {
 
 ## Event Notifications
 
-Whenever an item is added to the context (automatically or manually), the server sends a `conversation.item.created` event with the added item. You can listen for these events:
+The server sends events for all context operations:
 
 ```typescript
+// Item added (automatic or manual)
 conversation.on("conversation.item.created", (event) => {
-  console.log("Item added to context:", event.item);
+  console.log("Item added:", event.item);
+});
+
+// Item retrieved
+conversation.on("conversation.item.retrieved", (event) => {
+  console.log("Item retrieved:", event.item);
+});
+
+// Item deleted
+conversation.on("conversation.item.deleted", (event) => {
+  console.log("Item deleted:", event.item_id);
 });
 ```
+
+## Retrieving Context Items
+
+You can retrieve a specific item from the conversation context by its ID:
+
+```typescript
+const retrieveEvent = {
+  type: "conversation.item.retrieve",
+  item_id: "item_12345",
+};
+
+await conversation.send(JSON.stringify(retrieveEvent));
+
+// Listen for the response
+conversation.on("conversation.item.retrieved", (event) => {
+  console.log("Retrieved item:", event.item);
+});
+```
+
+## Deleting Context Items
+
+You can remove items from the conversation context:
+
+```typescript
+const deleteEvent = {
+  type: "conversation.item.delete",
+  item_id: "item_12345",
+};
+
+await conversation.send(JSON.stringify(deleteEvent));
+
+// Listen for confirmation
+conversation.on("conversation.item.deleted", (event) => {
+  console.log("Deleted item ID:", event.item_id);
+});
+```
+
+
 
 ## Item Structure
 
@@ -66,7 +115,7 @@ Context items follow this structure:
 | Field     | Type              | Description                                                   |
 | --------- | ----------------- | ------------------------------------------------------------- |
 | `type`    | string            | Item type: "message", "function_call", "function_call_output" |
-| `role`    | string            | Message role: "user", "assistant", "system"                   |
+| `role`    | string            | Message role: "user\***\*", "\*\***assistant", "system"       |
 | `content` | array             | Message content with type and text                            |
 | `status`  | string (optional) | Item status: "in_progress", "completed"                       |
 
