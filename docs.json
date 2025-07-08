@@ -33,13 +33,12 @@
               "features/client-tools",
               "features/system-tools",
               "features/skip-turn",
-              "features/end-session",
-              "features/speak-first"
+              "features/end-session"
             ]
           },
           {
             "group": "Controls",
-            "pages": ["features/context-management"]
+            "pages": ["features/speak-first", "features/context-management"]
           }
         ]
       },

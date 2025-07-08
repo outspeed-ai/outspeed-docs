@@ -3,399 +3,55 @@ title: "Speak First"
 description: "Control whether the agent initiates conversation or waits for user input"
 ---
 
-# Speak First
-
-The Speak First feature allows you to control whether your AI agent initiates conversation immediately upon connection or waits for the user to speak first.
-
 ## Overview
 
-Speak First provides:
-- Control over conversation initiation
-- Customizable opening messages
-- Context-aware greetings
-- User experience optimization
-- Flexible conversation flow management
+The `first_message` field allows your AI agent to start the conversation automatically with a predefined greeting, instead of waiting for the user to speak first.
 
 ## Basic Usage
 
-### Enable Speak First
+Add `first_message` to your session configuration:
 
 ```javascript
-// Agent speaks immediately upon connection
-const agent = await outspeedClient.createAgent({
-  speakFirst: true,
-  openingMessage: "Hello! How can I help you today?"
-});
-```
-
-### Disable Speak First
-
-```javascript
-// Agent waits for user to speak first
-const agent = await outspeedClient.createAgent({
-  speakFirst: false
-});
-```
-
-### Dynamic Control
-
-```javascript
-// Enable speak first during session
-await outspeedClient.enableSpeakFirst({
-  message: "Hi there! I'm ready to chat whenever you are."
-});
-
-// Disable speak first
-await outspeedClient.disableSpeakFirst();
-```
-
-## Configuration Options
-
-### Basic Configuration
-
-```javascript
-const speakFirstConfig = {
-  enabled: true,
-  message: "Welcome! I'm here to assist you.",
-  delay: 1000, // Wait 1 second before speaking
-  context: "greeting"
+const sessionConfig = {
+  // rest of config...
+  first_message: "Hello! How can I help you today?",
 };
 ```
 
-### Advanced Configuration
+When the session starts, the agent will immediately speak this message to greet the user.
+
+## Examples
+
+### Professional Assistant
 
 ```javascript
-const advancedConfig = {
-  enabled: true,
-  messages: {
-    default: "Hello! How can I help you today?",
-    returning_user: "Welcome back! How are things going?",
-    new_user: "Hi! I'm excited to meet you. What brings you here today?",
-    specific_context: "I see you're here about ${context}. Let's get started!"
-  },
-  conditions: {
-    time_based: true, // Different greetings by time of day
-    user_history: true, // Personalized based on past interactions
-    session_context: true // Contextual based on entry point
-  }
-};
+first_message: "Good morning! I'm your AI assistant. What can I help you with today?"
 ```
 
-## Contextual Greetings
-
-### Time-Based Greetings
+### Customer Support
 
 ```javascript
-const timeBasedGreetings = {
-  morning: "Good morning! Ready to start the day?",
-  afternoon: "Good afternoon! How's your day going so far?",
-  evening: "Good evening! How can I help you tonight?",
-  late_night: "Hello! I'm here if you need anything."
-};
-
-await outspeedClient.configure({
-  speakFirst: {
-    enabled: true,
-    timeBasedGreetings: timeBasedGreetings
-  }
-});
+first_message: "Hi there! Welcome to our support chat. How can I assist you?"
 ```
 
-### User-Specific Greetings
+### Interview Bot
 
 ```javascript
-// Personalized greetings based on user data
-const personalizedGreeting = (user) => {
-  if (user.isReturning) {
-    return `Welcome back, ${user.name}! How did your ${user.lastTopic} project go?`;
-  } else {
-    return `Hi ${user.name}! I'm excited to work with you today.`;
-  }
-};
+first_message: "Hello! I'm excited to conduct your interview today. Shall we get started?"
 ```
 
-### Context-Aware Greetings
+### Casual Companion
 
 ```javascript
-// Different greetings based on entry context
-const contextualGreetings = {
-  support: "Hi! I'm here to help resolve any issues you're experiencing.",
-  sales: "Hello! I'd love to learn about your needs and see how we can help.",
-  onboarding: "Welcome! I'm excited to help you get started with our platform.",
-  general: "Hello! What would you like to talk about today?"
-};
-```
-
-## Use Cases
-
-### Customer Service
-
-```javascript
-const customerServiceAgent = await outspeedClient.createAgent({
-  speakFirst: true,
-  openingMessage: "Hello! Welcome to customer support. I'm here to help resolve any issues you may have. What can I assist you with today?",
-  persona: "helpful_support_representative"
-});
-```
-
-### Sales & Marketing
-
-```javascript
-const salesAgent = await outspeedClient.createAgent({
-  speakFirst: true,
-  openingMessage: "Hi there! Thanks for your interest in our product. I'd love to learn about your needs and show you how we can help. What brings you here today?",
-  persona: "friendly_sales_consultant"
-});
-```
-
-### Educational Assistant
-
-```javascript
-const educationAgent = await outspeedClient.createAgent({
-  speakFirst: true,
-  openingMessage: "Hello, student! I'm here to help you learn and answer any questions you might have. What subject would you like to explore today?",
-  persona: "encouraging_teacher"
-});
-```
-
-### Therapy & Wellness
-
-```javascript
-const therapyAgent = await outspeedClient.createAgent({
-  speakFirst: false, // Let user initiate for comfort
-  fallbackMessage: "I'm here when you're ready to talk. Take your time.",
-  persona: "empathetic_counselor"
-});
-```
-
-## Advanced Features
-
-### Conditional Speak First
-
-```javascript
-// Speak first based on conditions
-const conditionalSpeakFirst = {
-  enabled: true,
-  conditions: {
-    newUser: {
-      speakFirst: true,
-      message: "Welcome! Let me introduce myself and show you around."
-    },
-    returningUser: {
-      speakFirst: false, // Let them initiate
-      fallbackDelay: 5000, // Speak if no input after 5 seconds
-      fallbackMessage: "Welcome back! Need any help getting started?"
-    },
-    urgentContext: {
-      speakFirst: true,
-      message: "I see this is urgent. Let me help you right away.",
-      priority: "immediate"
-    }
-  }
-};
-```
-
-### Progressive Engagement
-
-```javascript
-// Gradual engagement strategy
-const progressiveEngagement = {
-  initialSilence: 3000, // Wait 3 seconds
-  softPrompt: {
-    delay: 8000, // After 8 seconds total
-    message: "I'm here if you'd like to chat..."
-  },
-  directPrompt: {
-    delay: 15000, // After 15 seconds total
-    message: "Hello! Is there anything I can help you with today?"
-  }
-};
-```
-
-## Integration Examples
-
-### React Component
-
-```javascript
-const SpeakFirstControl = () => {
-  const [speakFirstEnabled, setSpeakFirstEnabled] = useState(true);
-  const [openingMessage, setOpeningMessage] = useState("Hello! How can I help?");
-  
-  const updateSpeakFirst = async () => {
-    await outspeedClient.configure({
-      speakFirst: {
-        enabled: speakFirstEnabled,
-        message: openingMessage
-      }
-    });
-  };
-  
-  return (
-    <div>
-      <label>
-        <input 
-          type="checkbox" 
-          checked={speakFirstEnabled}
-          onChange={(e) => setSpeakFirstEnabled(e.target.checked)}
-        />
-        Enable Speak First
-      </label>
-      
-      <textarea 
-        value={openingMessage}
-        onChange={(e) => setOpeningMessage(e.target.value)}
-        placeholder="Opening message..."
-      />
-      
-      <button onClick={updateSpeakFirst}>
-        Update Settings
-      </button>
-    </div>
-  );
-};
-```
-
-### A/B Testing
-
-```javascript
-// Test different speak first strategies
-const abTestingSpeakFirst = {
-  variants: [
-    {
-      id: "immediate_greeting",
-      speakFirst: true,
-      message: "Hello! How can I help you today?",
-      delay: 0
-    },
-    {
-      id: "delayed_greeting", 
-      speakFirst: true,
-      message: "Hi there! I'm here when you're ready.",
-      delay: 2000
-    },
-    {
-      id: "wait_for_user",
-      speakFirst: false,
-      fallbackDelay: 10000,
-      fallbackMessage: "Hello! Feel free to start whenever you're ready."
-    }
-  ]
-};
+first_message: "Hey! Great to see you. What's on your mind?"
 ```
 
 ## Best Practices
 
-### When to Use Speak First
+- **Keep it brief**: Short, welcoming messages work best
+- **Match your brand**: Use language that fits your application's tone
+- **Stay consistent**: Use similar greetings across sessions
 
-1. **New Users**: Help them understand how to interact
-2. **Clear Purpose**: When the agent's role is immediately obvious
-3. **Proactive Support**: Customer service and assistance scenarios
-4. **Guided Experiences**: Onboarding and tutorials
-5. **Marketing/Sales**: Engage prospects immediately
+## Optional Field
 
-### When to Wait for User
-
-1. **Sensitive Topics**: Therapy, personal counseling
-2. **User-Driven**: When users have specific questions or needs
-3. **Returning Users**: Familiar users who know how to engage
-4. **Contemplative Use**: When users might need time to think
-5. **Privacy Concerns**: Situations requiring user consent to proceed
-
-### Message Guidelines
-
-1. **Be Clear**: Explain what the agent can do
-2. **Stay Concise**: Don't overwhelm with long introductions
-3. **Show Personality**: Match the agent's intended persona
-4. **Provide Direction**: Give users a sense of next steps
-5. **Be Welcoming**: Create a positive first impression
-
-## Events and Monitoring
-
-### Speak First Events
-
-```javascript
-outspeedClient.on('speakFirstTriggered', (event) => {
-  console.log('Agent spoke first:', event.message);
-  console.log('Context:', event.context);
-});
-
-outspeedClient.on('userRespondedToGreeting', (event) => {
-  console.log('User responded to greeting');
-  console.log('Response time:', event.responseTime);
-});
-
-outspeedClient.on('greetingIgnored', (event) => {
-  console.log('User did not respond to greeting');
-  console.log('Next action:', event.nextAction);
-});
-```
-
-### Analytics
-
-```javascript
-// Track speak first effectiveness
-const speakFirstAnalytics = {
-  greetingResponseRate: "percentage_of_users_who_respond",
-  averageResponseTime: "time_to_first_user_message",
-  conversationLength: "impact_on_session_duration",
-  userSatisfaction: "correlation_with_experience_rating"
-};
-```
-
-## Error Handling
-
-```javascript
-try {
-  await outspeedClient.enableSpeakFirst({
-    message: "Hello! How can I help you today?"
-  });
-} catch (error) {
-  console.error('Failed to enable speak first:', error);
-  // Fallback to waiting for user input
-}
-```
-
-## Configuration Schema
-
-```javascript
-{
-  speakFirst: {
-    enabled: boolean,
-    message: string,
-    delay: number, // milliseconds
-    conditions: {
-      timeBasedGreetings: object,
-      userSpecificGreetings: object,
-      contextualGreetings: object
-    },
-    fallback: {
-      enabled: boolean,
-      delay: number,
-      message: string
-    }
-  }
-}
-```
-
-## API Reference
-
-### Methods
-
-| Method | Description |
-|--------|-------------|
-| `enableSpeakFirst(options)` | Enable speak first with configuration |
-| `disableSpeakFirst()` | Disable speak first behavior |
-| `setSpeakFirstMessage(message)` | Update the opening message |
-| `getSpeakFirstConfig()` | Get current speak first settings |
-
-### Configuration Options
-
-| Option | Type | Description |
-|--------|------|-------------|
-| `enabled` | boolean | Whether speak first is active |
-| `message` | string | The opening message to speak |
-| `delay` | number | Delay before speaking (milliseconds) |
-| `context` | string | Context for the greeting |
-| `conditions` | object | Conditional greeting rules |
-
-The Speak First feature helps create engaging, welcoming experiences while giving you full control over how conversations begin. Use it strategically to match your specific use case and user expectations.
+The `first_message` field is optional. If you don't include it, the session will start in listening mode, waiting for the user to speak first.
