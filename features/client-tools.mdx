@@ -1,0 +1,153 @@
+---
+title: "Client Tools"
+description: "Create custom tools that extend AI agents with your own functions and APIs"
+---
+
+## Overview
+
+Client tools are custom functions that the voice agent can use during the conversation. They are defined and implemented on the client side.
+
+## Simple Example
+
+Here's a complete example with one tool:
+
+### Step 1: Define the Tool
+
+```typescript
+const getTimeSchema = {
+  name: "get_time",
+  type: "function",
+  description: "Get the current time",
+  parameters: {
+    type: "object",
+    properties: {},
+    required: [],
+  },
+};
+```
+
+### Step 2: Implement the Function
+
+Implement the function associated with the tool
+
+```typescript
+function getTime() {
+  return new Date().toLocaleTimeString();
+}
+```
+
+**Important**: The return value from your function is sent directly to the AI model, which uses it to generate its response to the user.
+
+### Step 3: Configure Session
+
+```typescript
+const sessionConfig = {
+  // rest of config...
+  tools: [getTimeSchema],
+};
+
+const conversation = useConversation({
+  clientTools: {
+    get_time: getTime,
+  },
+});
+```
+
+That's it! When the user asks "What time is it?", the agent will:
+
+1. Call your `getTime()` function
+2. Receive the return value (e.g., "2:30:45 PM")
+3. Use that information to respond to the user
+
+
+## Tool Schema Format
+
+Each tool schema must follow this structure:
+
+```typescript
+{
+  name: string,           // Unique tool identifier
+  type: "function",       // Always "function" for client tools
+  description: string,    // Clear description for the AI
+  parameters: {
+    type: "object",
+    properties: {
+      [paramName]: {
+        type: string,       // "string", "number", "boolean", "array", "object"
+        description: string // Parameter description
+      }
+    },
+    required: string[]      // Required parameter names
+  }
+}
+````
+
+## Best Practices
+
+### Tool Design
+
+- **Clear descriptions**: Help the AI understand when and how to use each tool
+- **Specific parameters**: Define precise parameter types and descriptions
+- **Single purpose**: Each tool should do one thing well
+- **Predictable naming**: Use descriptive, consistent naming conventions
+
+### Implementation
+
+- **Error handling**: Always wrap tool functions in try-catch blocks
+- **Return useful data**: Provide meaningful responses the AI can work with
+- **Handle async operations**: Use async/await for API calls
+- **Validate inputs**: Check parameters before processing
+
+### Performance
+
+- **Cache results**: Cache API responses when appropriate
+- **Timeout handling**: Set reasonable timeouts for external calls
+- **Rate limiting**: Respect API rate limits
+- **Graceful degradation**: Provide fallbacks when tools fail
+
+## Error Handling
+
+```typescript
+export async function robustToolFunction({ param }: { param: string }) {
+  try {
+    // Validate input
+    if (!param || param.trim() === "") {
+      return "Parameter is required";
+    }
+
+    // Perform operation
+    const result = await someApiCall(param);
+
+    // Validate result
+    if (!result) {
+      return "No data available";
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Tool error:", error);
+
+    // Return user-friendly error message
+    if (error instanceof Error) {
+      return `Error: ${error.message}`;
+    }
+
+    return "An unexpected error occurred";
+  }
+}
+```
+
+## Combining with System Tools
+
+You can use client tools alongside system tools:
+
+```typescript
+const sessionConfig = {
+  // rest of config...
+  tools: [getTimeSchema],
+  system_tools: [
+    { name: "end_call", enabled: true },
+    { name: "skip_turn", enabled: true },
+  ],
+};
+```

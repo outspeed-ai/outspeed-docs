@@ -1,0 +1,132 @@
+---
+title: "System Tools"
+description: "Pre-built tools that run on Outspeed's servers for conversation management"
+---
+
+
+
+## Overview
+
+System tools are pre-built tools that run on Outspeed's servers. They handle common conversation management tasks and require no implementation on your part - simply enable them in your session configuration.
+
+System tools help agents manage conversation flow intelligently:
+
+- **Server-side execution**: No client-side implementation needed
+- **Automatic decisions**: Agents call tools based on conversation context
+- **Override capabilities**: Customize tool behavior with custom descriptions
+- **Zero maintenance**: Tools are maintained and updated by Outspeed
+
+## Available System Tools
+
+### Skip Turn
+Allows agents to intelligently skip their speaking turn when users aren't directly addressing them.
+
+**Use Cases:**
+- User is singing or humming
+- Background conversations
+- User talking to someone else
+- Self-talk or thinking aloud
+
+👉 **[Learn about Skip Turn →](skip-turn)**
+
+### End Session
+Enables agents to gracefully terminate conversations when users explicitly say goodbye.
+
+**Use Cases:**
+- User says "goodbye", "bye", "farewell"
+- Clear conversation conclusion
+- Explicit requests to end the call
+
+👉 **[Learn about End Session →](end-session)**
+
+## Basic Configuration
+
+Enable system tools in your session configuration:
+
+```javascript
+const sessionConfig = {
+  // rest of config...
+  system_tools: [
+    { name: "skip_turn", enabled: true },
+    { name: "end_call", enabled: true }
+  ],
+};
+```
+
+## Override Tool Descriptions
+
+You can customize how system tools behave by overriding their descriptions:
+
+```javascript
+const sessionConfig = {
+  // rest of config...
+  system_tools: [
+    {
+      name: "skip_turn",
+      enabled: true,
+      description: "Skip turns more conservatively - only when user is clearly singing or talking to others",
+      parameter_descriptions: {
+        reason: "Specific reason for skipping (singing or talking to others only)",
+      },
+    },
+    {
+      name: "end_call", 
+      enabled: true,
+      description: "End calls only on very explicit goodbye phrases like 'goodbye' or 'bye'",
+      parameter_descriptions: {
+        farewell_message: "Brief, professional farewell message",
+        reason: "Specific goodbye phrase that triggered the end",
+      },
+    }
+  ],
+};
+```
+
+
+## Best Practices
+
+### When to Enable
+- **Skip Turn**: Recommended for most applications to handle natural conversation flow
+- **End Session**: Essential for applications where users initiate call termination
+
+### Override Examples
+
+**More Restrictive Skip Turn:**
+```javascript
+{
+  name: "skip_turn",
+  description: "Only skip when absolutely certain user is not addressing the agent",
+  parameter_descriptions: {
+    reason: "Very specific reason with high confidence",
+  },
+}
+```
+
+**More Permissive End Session:**
+```javascript
+{
+  name: "end_call",
+  description: "End calls when users show any sign of wanting to conclude",
+  parameter_descriptions: {
+    farewell_message: "Warm, understanding farewell",
+    reason: "Any indication user wants to end conversation",
+  },
+}
+```
+
+## Troubleshooting
+
+### Tools Not Working
+1. **Check configuration**: Ensure tools are properly enabled
+2. **Verify session**: Confirm tools are included in session config
+3. **Review logs**: Check for error messages in session events
+
+### Unexpected Behavior
+1. **Monitor context**: Review conversation context when tools trigger
+2. **Adjust descriptions**: Override tool descriptions to fine-tune behavior
+3. **System prompt**: Ensure your system prompt doesn't conflict with tool usage
+
+### Performance Impact
+- System tools have minimal performance impact
+- No client-side processing required
+- Server-side execution is optimized and fast

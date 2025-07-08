@@ -6,6 +6,7 @@ description: "End Call is a system tool that enables AI agents to gracefully ter
 ## Overview
 
 The End Call system tool helps agents handle situations where users are:
+
 - Saying goodbye or farewell
 - Clearly indicating they want to end the call
 - Using phrases like "bye", "goodbye", "talk to you later", "I'm hanging up"
@@ -20,19 +21,16 @@ Enable `end_call` system tool in your session configuration:
 ```javascript
 const sessionConfig = {
   // rest of config...
-  system_tools: [
-    { name: "end_call", enabled: true }
-  ],
+  system_tools: [{ name: "end_call", enabled: true }],
 };
 ```
 
 ## Tool Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `farewell_message` | string | Yes | Final message to say before ending the call |
-| `reason` | string | Yes | Why the call is ending (e.g., 'user said goodbye', 'conversation concluded') |
-
+| Parameter          | Type   | Required | Description                                                                  |
+| ------------------ | ------ | -------- | ---------------------------------------------------------------------------- |
+| `farewell_message` | string | Yes      | Final message to say before ending the call                                  |
+| `reason`           | string | Yes      | Why the call is ending (e.g., 'user said goodbye', 'conversation concluded') |
 
 ## Override tool descriptions
 
@@ -49,23 +47,24 @@ const sessionConfig = {
         farewell_message: "<override default description of farewell_message parameter>",
         reason: "<override default description of reason parameter>",
       },
-    }
+    },
   ],
 };
 ```
-
 
 ## When End Call is Used
 
 The agent automatically calls this tool when it detects:
 
 ### Clear Goodbye Scenarios
+
 - **Direct goodbye**: User says "goodbye", "bye", "farewell"
 - **Conversation conclusion**: User says "talk to you later", "see you soon"
 - **Explicit end request**: User says "I'm hanging up", "I need to go"
 - **Formal conclusion**: User indicates the conversation is finished
 
 ### When NOT to end the session
+
 - **Brief responses**: "thanks", "okay", "got it", "sure"
 - **Simple acknowledgments**: "alright", "sounds good", "I understand"
 - **Pauses in conversation**: User taking time to think
@@ -75,24 +74,24 @@ The agent automatically calls this tool when it detects:
 
 ```
 // User says goodbye
-// Agent would call: end_call({ 
-//   farewell_message: "Goodbye! Have a great day!", 
-//   reason: "user said goodbye" 
+// Agent would call: end_call({
+//   farewell_message: "Goodbye! Have a great day!",
+//   reason: "user said goodbye"
 // })
 
 // User says "I need to go"
-// Agent would call: end_call({ 
-//   farewell_message: "Of course! Take care!", 
-//   reason: "user requested to end" 
+// Agent would call: end_call({
+//   farewell_message: "Of course! Take care!",
+//   reason: "user requested to end"
 // })
 
 // User says "thanks" (should NOT end call)
 // Agent continues conversation instead of ending
 
 // User says "talk to you later"
-// Agent would call: end_call({ 
-//   farewell_message: "Talk to you later! Goodbye!", 
-//   reason: "conversation concluded" 
+// Agent would call: end_call({
+//   farewell_message: "Talk to you later! Goodbye!",
+//   reason: "conversation concluded"
 // })
 ```
 
@@ -120,7 +119,6 @@ tool_def = FunctionDefinition(
     ),
 )
 ```
-
 
 ## Troubleshooting
 
