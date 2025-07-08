@@ -97,8 +97,8 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Raise an Issue",
-      "href": "https://github.com/outspeed-ai/outspeed-docs/issues"
+      "label": "Get API Key",
+      "href": "https://cal.com/outspeed/early-access"
     }
   },
   "footer": {
