@@ -3,408 +3,85 @@ title: "Context Updates"
 description: "Dynamically update conversation context during voice interactions"
 ---
 
-# Context Updates
-
-Context Updates allow you to dynamically modify the conversation context, system instructions, and agent behavior during ongoing voice interactions.
-
 ## Overview
 
-Context Updates enable:
-- Real-time context modification
-- Dynamic system instruction changes
-- Conversation state updates
-- User preference adjustments
-- Adaptive agent behavior
+Context updates allow you to dynamically add information to the conversation's context during voice interactions. This helps provide the AI agent with additional context about the user, conversation state, or relevant information.
 
-## Basic Usage
+## Automatic Context Updates
 
-### Update System Context
+During voice conversations, several types of items are automatically added to the context:
 
-```javascript
-// Update system instructions
-await outspeedClient.updateContext({
-  systemInstructions: "You are now a helpful cooking assistant. Focus on providing recipe guidance and cooking tips."
-});
-```
+- **User speech**: Everything the user says is automatically transcribed and added as message items
+- **Agent responses**: All agent responses are added to maintain conversation flow
+- **Function calls**: When agents call tools, the function call details are automatically added
+- **Function outputs**: Tool results are automatically added by the SDK when tools complete
 
-### Update User Context
+## Manual Context Updates
 
-```javascript
-// Update user information
-await outspeedClient.updateContext({
-  userContext: {
-    name: "Alice",
-    preferences: {
-      dietary: "vegetarian",
-      cuisine: "Italian"
-    },
-    previousOrders: ["Margherita Pizza", "Pasta Primavera"]
-  }
-});
-```
+You can manually add items to the conversation context using the `conversation.item.create` event:
 
-### Update Conversation State
+```typescript
+import { useConversation } from "@outspeed/react";
 
-```javascript
-// Update conversation state
-await outspeedClient.updateContext({
-  conversationState: {
-    currentTopic: "recipe_selection",
-    step: 3,
-    ingredients: ["tomatoes", "basil", "mozzarella"]
-  }
-});
-```
+// Inside a React component (useConversation is a React hook)
+export default function MyComponent() {
+  const conversation = useConversation({});
 
-## Advanced Context Updates
+  const addToContext = async (text: string) => {
+    const event = {
+      type: "conversation.item.create",
+      item: {
+        type: "message",
+        role: "user",
+        content: [
+          {
+            type: "input_text",
+            text,
+          },
+        ],
+      },
+    };
 
-### Incremental Updates
-
-```javascript
-// Add to existing context without replacing
-await outspeedClient.updateContext({
-  userContext: {
-    preferences: {
-      spiceLevel: "medium" // Adds to existing preferences
-    }
-  }
-}, { merge: true });
-```
-
-### Conditional Updates
-
-```javascript
-// Update context based on conditions
-if (userOrderHistory.length > 5) {
-  await outspeedClient.updateContext({
-    systemInstructions: "This is a VIP customer. Provide premium service and personalized recommendations."
-  });
-}
-```
-
-### Scheduled Updates
-
-```javascript
-// Schedule context updates
-setTimeout(async () => {
-  await outspeedClient.updateContext({
-    systemInstructions: "Remind the user about their upcoming appointment in 10 minutes."
-  });
-}, 300000); // 5 minutes
-```
-
-## Context Update Types
-
-### System Instructions
-
-```javascript
-const systemUpdates = {
-  role: "customer_service",
-  personality: "friendly and helpful",
-  expertise: "product knowledge",
-  constraints: ["no personal information sharing", "family-friendly responses"]
-};
-
-await outspeedClient.updateContext({
-  systemInstructions: systemUpdates
-});
-```
-
-### User Profile
-
-```javascript
-const userProfile = {
-  demographics: {
-    age: 28,
-    location: "New York",
-    timezone: "EST"
-  },
-  preferences: {
-    language: "English",
-    communication_style: "casual"
-  },
-  history: {
-    previous_interactions: 5,
-    satisfaction_score: 4.5
-  }
-};
-
-await outspeedClient.updateContext({
-  userContext: userProfile
-});
-```
-
-### Session Data
-
-```javascript
-const sessionData = {
-  sessionId: "sess_12345",
-  startTime: new Date().toISOString(),
-  channel: "web",
-  referrer: "google_search",
-  intent: "product_inquiry"
-};
-
-await outspeedClient.updateContext({
-  sessionContext: sessionData
-});
-```
-
-## Event-Driven Updates
-
-### User Action Triggers
-
-```javascript
-// Update context when user performs actions
-outspeedClient.on('userAction', async (action) => {
-  switch (action.type) {
-    case 'product_viewed':
-      await outspeedClient.updateContext({
-        conversationState: {
-          currentProduct: action.productId,
-          interest_level: "high"
-        }
-      });
-      break;
-      
-    case 'cart_updated':
-      await outspeedClient.updateContext({
-        userContext: {
-          cart: action.cartItems,
-          total: action.total
-        }
-      });
-      break;
-  }
-});
-```
-
-### External Data Integration
-
-```javascript
-// Update context with external data
-const updateFromCRM = async (userId) => {
-  const customerData = await crmAPI.getCustomer(userId);
-  
-  await outspeedClient.updateContext({
-    userContext: {
-      tier: customerData.tier,
-      lifetime_value: customerData.ltv,
-      support_tickets: customerData.tickets
-    }
-  });
-};
-```
-
-## Context Management
-
-### Context Validation
-
-```javascript
-const validateContext = (contextUpdate) => {
-  const required = ['systemInstructions', 'userContext'];
-  const missing = required.filter(key => !contextUpdate[key]);
-  
-  if (missing.length > 0) {
-    throw new Error(`Missing required context: ${missing.join(', ')}`);
-  }
-  
-  return true;
-};
-
-// Use validation before updates
-try {
-  validateContext(newContext);
-  await outspeedClient.updateContext(newContext);
-} catch (error) {
-  console.error('Context validation failed:', error);
-}
-```
-
-### Context Rollback
-
-```javascript
-// Save context state for rollback
-const previousContext = await outspeedClient.getContext();
-
-try {
-  await outspeedClient.updateContext(newContext);
-} catch (error) {
-  // Rollback on error
-  await outspeedClient.updateContext(previousContext);
-  console.error('Context update failed, rolled back:', error);
-}
-```
-
-## Real-time Updates
-
-### Streaming Updates
-
-```javascript
-// Stream context updates
-const contextStream = outspeedClient.createContextStream();
-
-contextStream.on('data', async (update) => {
-  await outspeedClient.updateContext(update);
-});
-
-// Push updates to stream
-contextStream.push({
-  userContext: { mood: "happy" }
-});
-```
-
-### Batch Updates
-
-```javascript
-// Batch multiple updates
-const updates = [
-  { userContext: { name: "John" } },
-  { conversationState: { step: 1 } },
-  { systemInstructions: "Be concise" }
-];
-
-await outspeedClient.batchUpdateContext(updates);
-```
-
-## Integration Examples
-
-### React Component
-
-```javascript
-const ContextManager = () => {
-  const [userContext, setUserContext] = useState({});
-  const [systemInstructions, setSystemInstructions] = useState('');
-  
-  const updateUserContext = async (updates) => {
-    const newContext = { ...userContext, ...updates };
-    setUserContext(newContext);
-    
-    await outspeedClient.updateContext({
-      userContext: newContext
-    });
+    await conversation.send(JSON.stringify(event));
   };
-  
-  const updateSystemInstructions = async (instructions) => {
-    setSystemInstructions(instructions);
-    
-    await outspeedClient.updateContext({
-      systemInstructions: instructions
-    });
-  };
-  
-  return (
-    <div>
-      <input 
-        value={systemInstructions}
-        onChange={(e) => updateSystemInstructions(e.target.value)}
-        placeholder="System instructions"
-      />
-      <button onClick={() => updateUserContext({ mood: 'happy' })}>
-        Set Happy Mood
-      </button>
-    </div>
-  );
-};
-```
 
-### Database Integration
-
-```javascript
-// Sync context with database
-const syncContextWithDB = async (userId) => {
-  const userData = await database.users.findById(userId);
-  const preferences = await database.preferences.findByUserId(userId);
-  
-  await outspeedClient.updateContext({
-    userContext: {
-      ...userData,
-      preferences: preferences
-    }
-  });
-};
-```
-
-## Best Practices
-
-1. **Validate Updates**: Always validate context before applying
-2. **Incremental Changes**: Use merge mode for adding to existing context
-3. **Error Handling**: Implement rollback mechanisms for failed updates
-4. **Performance**: Batch updates when possible
-5. **Security**: Sanitize user-provided context data
-6. **Monitoring**: Track context changes for debugging
-
-## Events and Monitoring
-
-### Context Events
-
-```javascript
-outspeedClient.on('contextUpdated', (event) => {
-  console.log('Context updated:', event.changes);
-  console.log('Previous context:', event.previous);
-  console.log('New context:', event.current);
-});
-
-outspeedClient.on('contextError', (error) => {
-  console.error('Context update error:', error);
-});
-```
-
-### Context Monitoring
-
-```javascript
-// Monitor context changes
-const contextMonitor = {
-  changes: [],
-  
-  track: (change) => {
-    contextMonitor.changes.push({
-      timestamp: new Date(),
-      change: change
-    });
-  },
-  
-  getHistory: () => contextMonitor.changes
-};
-```
-
-## API Reference
-
-### Methods
-
-| Method | Description |
-|--------|-------------|
-| `updateContext(updates, options?)` | Update conversation context |
-| `getContext()` | Get current context |
-| `batchUpdateContext(updates)` | Update multiple context parts |
-| `resetContext()` | Reset context to default |
-
-### Context Structure
-
-```javascript
-{
-  systemInstructions: string | object,
-  userContext: {
-    profile: object,
-    preferences: object,
-    history: object
-  },
-  conversationState: {
-    currentTopic: string,
-    step: number,
-    data: object
-  },
-  sessionContext: {
-    sessionId: string,
-    metadata: object
-  }
+  // rest of component...
 }
 ```
 
-### Options
+## Event Notifications
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `merge` | boolean | Merge with existing context |
-| `validate` | boolean | Validate context before update |
-| `persist` | boolean | Persist context across sessions |
+Whenever an item is added to the context (automatically or manually), the server sends a `conversation.item.created` event with the added item. You can listen for these events:
+
+```typescript
+conversation.on("conversation.item.created", (event) => {
+  console.log("Item added to context:", event.item);
+});
+```
+
+## Item Structure
+
+Context items follow this structure:
+
+| Field     | Type              | Description                                                   |
+| --------- | ----------------- | ------------------------------------------------------------- |
+| `type`    | string            | Item type: "message", "function_call", "function_call_output" |
+| `role`    | string            | Message role: "user", "assistant", "system"                   |
+| `content` | array             | Message content with type and text                            |
+| `status`  | string (optional) | Item status: "in_progress", "completed"                       |
+
+## Context Item Types
+
+### Message Items
+
+Standard conversation messages from users, assistants, or system
+
+### Function Call Items
+
+Tool invocations with parameters (automatically managed)
+
+### Function Output Items
+
+Results from tool executions (automatically managed)
+
+The context helps the AI agent maintain awareness of the conversation history and make more informed responses based on the full context of the interaction.
