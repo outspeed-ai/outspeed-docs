@@ -24,19 +24,21 @@
         "groups": [
           {
             "group": "Get Started",
+            "pages": ["get-started/quickstart", "get-started/templates"]
+          },
+          {
+            "group": "Tools",
             "pages": [
-              "get-started/quickstart",
-              "get-started/templates"
+              "features/tool-use",
+              "features/client-tools",
+              "features/system-tools",
+              "features/skip-turn",
+              "features/end-session"
             ]
           },
           {
             "group": "Controls",
-            "pages": [
-              "features/end-session",
-              "features/tool-use",
-              "features/skip-turn",
-              "features/context-updates"
-            ]
+            "pages": ["features/context-updates"]
           }
         ]
       },
@@ -49,10 +51,7 @@
           },
           {
             "group": "iOS",
-            "pages": [
-              "iOS/outspeed-swift-getting-started",
-              "iOS/outspeed-swift-elevenlabs"
-            ]
+            "pages": ["iOS/outspeed-swift-getting-started", "iOS/outspeed-swift-elevenlabs"]
           }
         ]
       },
