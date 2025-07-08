@@ -3,10 +3,10 @@ title: "Skip Turn"
 description: "Skip Turn is a system tool that enables AI agents to intelligently decide when to skip their speaking turn based on conversation context. The agent uses this tool when users are not directly addressing them or when no response is needed."
 ---
 
-
 ## Overview
 
 The Skip Turn system tool helps agents handle situations where users are:
+
 - Singing songs
 - Talking to someone else
 - Having background conversations
@@ -22,18 +22,15 @@ Enable Skip Turn in your session configuration:
 ```javascript
 const sessionConfig = {
   // rest of config...
-  system_tools: [
-    { name: "skip_turn", enabled: true }
-  ],
+  system_tools: [{ name: "skip_turn", enabled: true }],
 };
 ```
 
 ## Tool Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `reason` | string | Yes | Brief explanation for why the turn is being skipped |
-
+| Parameter | Type   | Required | Description                                         |
+| --------- | ------ | -------- | --------------------------------------------------- |
+| `reason`  | string | Yes      | Brief explanation for why the turn is being skipped |
 
 ## Override tool descriptions
 
@@ -49,17 +46,17 @@ const sessionConfig = {
       parameter_descriptions: {
         reason: "<override default description of reason parameter of skip_turn tool>",
       },
-    }
+    },
   ],
 };
 ```
-
 
 ## When Skip Turn is Used
 
 The agent automatically calls this tool when it detects:
 
 ### Direct Scenarios
+
 - **Singing**: User is singing a song
 - **Third-party conversation**: User is talking to someone else in the room
 - **Background chatter**: Casual conversation not directed at the agent
@@ -103,7 +100,6 @@ tool_def = FunctionDefinition(
 )
 ```
 
-
 ## Troubleshooting
 
 If you notice the agent skipping turns when it shouldn't:
@@ -111,6 +107,3 @@ If you notice the agent skipping turns when it shouldn't:
 1. **Review Context**: Check if the conversation context is clear enough
 2. **Adjust Instructions**: Refine your system prompt to provide better guidance
 3. **Override description**: You can override the tool description as per your need
-
-
-
