@@ -38,7 +38,7 @@
           },
           {
             "group": "Controls",
-            "pages": ["features/speak-first", "features/context-management"]
+            "pages": ["features/speak-first", "features/context-management", "features/voices"]
           }
         ]
       },

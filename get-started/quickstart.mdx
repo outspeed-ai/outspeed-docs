@@ -75,7 +75,7 @@ const getEphemeralKeyFromServer = async (config: SessionConfig) => {
 const sessionConfig: SessionConfig = {
   model: "outspeed-v1",
   instructions: "You are a helpful assistant.",
-  voice: "sophie", // Find more voices at https://dashboard.outspeed.com
+  voice: "sophie", // see the voices page for all available voices
   temperature: 0.5,
   turn_detection: {
     type: "semantic_vad",
@@ -136,6 +136,8 @@ export default function App() {
   );
 }
 ```
+
+<Note>Want to use a different voice? See all [available voices](/features/voices) you can choose from.</Note>
 
 ## That's it!
 

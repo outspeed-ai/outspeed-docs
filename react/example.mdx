@@ -29,8 +29,8 @@ const getEphemeralKeyFromServer = async (config: SessionConfig) => {
 
 const sessionConfig: SessionConfig = {
   model: "outspeed-v1",
-  instructions: "You are a helpful but witty assistant.",
-  voice: "david", // Voice names must be lowercase. Find more voices at dashboard.outspeed.com
+  instructions: "You are a helpful but witty assistant named Alfred.",
+  voice: "david", // see the voices page for all available voices
   turn_detection: {
     type: "semantic_vad",
   },
@@ -104,6 +104,8 @@ export default function VoiceChat() {
   );
 }
 ```
+
+<Note>Want to use a different voice? See all [available voices](/features/voices) you can choose from.</Note>
 
 ## Advanced Features
 

@@ -62,13 +62,17 @@ import { type SessionConfig } from "@outspeed/client";
 const sessionConfig: SessionConfig = {
   model: "outspeed-v1",
   instructions: "You are a helpful assistant.",
-  voice: "david", // Voice names must be lowercase. Find more voices at dashboard.outspeed.com
+  voice: "david", // see the voices page for all available voices
   turn_detection: {
     type: "semantic_vad",
   },
   first_message: "Hello! How can I help you today?", // Optional welcome message
 };
 ```
+
+<Note>
+  Want to use a different voice? See all [available voices](/features/voices) you can choose from.
+</Note>
 
 ### Configuration Options
 
@@ -80,7 +84,7 @@ const sessionConfig: SessionConfig = {
 | `turn_detection` | `object` | Voice activity detection settings       |
 | `first_message`  | `string` | Optional initial message from assistant |
 
-<Info>You can find available voices for `outspeed-v1` at [dashboard.outspeed.com](https://dashboard.outspeed.com)</Info>
+<Info>You can find available voices [here](/features/voices)</Info>
 
 ## Next Steps
 
