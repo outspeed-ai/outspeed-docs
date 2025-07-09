@@ -1,0 +1,31 @@
+```python FastAPI
+import os
+
+import httpx
+from fastapi import FastAPI, HTTPException, Request
+
+OUTSPEED_API_KEY = os.getenv("OUTSPEED_API_KEY")
+app = FastAPI()
+
+
+@app.post("/token")
+async def create_token(request: Request):
+    try:
+        session_config = await request.json()
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "https://api.outspeed.com/v1/realtime/sessions",
+                headers={
+                    "Authorization": f"Bearer {OUTSPEED_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json=session_config,
+            )
+            if not response.is_success:
+                print("error generating ephemeral key:", response.text)
+                raise HTTPException(status_code=response.status_code, detail=response.text)
+            return response.json()
+    except Exception as e:
+        print("error generating ephemeral key:", e)
+        raise HTTPException(status_code=500, detail="Internal server error")
+```
