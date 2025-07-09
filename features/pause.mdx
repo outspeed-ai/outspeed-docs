@@ -1,0 +1,396 @@
+---
+title: "Pause"
+description: "Temporarily pause and resume voice conversations"
+---
+
+# Pause
+
+The Pause feature allows you to temporarily halt voice conversations while maintaining the connection and session state, enabling seamless resumption when ready.
+
+## Overview
+
+The Pause feature provides:
+- Temporary conversation suspension
+- Session state preservation
+- Seamless resume capability
+- Audio stream management
+- User-friendly pause indicators
+
+## Basic Usage
+
+### Pause Conversation
+
+```javascript
+// Pause the current conversation
+await outspeedClient.pause();
+```
+
+### Resume Conversation
+
+```javascript
+// Resume the paused conversation
+await outspeedClient.resume();
+```
+
+### Check Pause Status
+
+```javascript
+// Check if conversation is paused
+const isPaused = await outspeedClient.isPaused();
+console.log('Conversation paused:', isPaused);
+```
+
+## Configuration Options
+
+### Pause Settings
+
+```javascript
+const pauseConfig = {
+  pauseMessage: "Conversation paused. Click resume to continue.",
+  maxPauseDuration: 300000, // 5 minutes
+  autoResumeOnActivity: true,
+  preserveContext: true
+};
+
+await outspeedClient.configure({
+  pause: pauseConfig
+});
+```
+
+### Advanced Pause Options
+
+```javascript
+await outspeedClient.pause({
+  reason: "user_requested",
+  message: "I'll pause while you take that call",
+  duration: 60000, // Auto-resume after 1 minute
+  preserveAudio: true
+});
+```
+
+## Pause Types
+
+### User-Initiated Pause
+
+```javascript
+// User clicks pause button
+document.getElementById('pauseButton').addEventListener('click', async () => {
+  await outspeedClient.pause({
+    reason: "user_pause",
+    message: "Pausing conversation..."
+  });
+});
+```
+
+### System-Initiated Pause
+
+```javascript
+// Pause due to system conditions
+if (systemLoad > 0.8) {
+  await outspeedClient.pause({
+    reason: "system_load",
+    message: "Pausing due to high system load",
+    duration: 30000
+  });
+}
+```
+
+### Activity-Based Pause
+
+```javascript
+// Pause when user is inactive
+let inactivityTimer;
+
+outspeedClient.on('userActivity', () => {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(async () => {
+    await outspeedClient.pause({
+      reason: "inactivity",
+      message: "Pausing due to inactivity"
+    });
+  }, 120000); // 2 minutes
+});
+```
+
+## Pause Management
+
+### Pause State Tracking
+
+```javascript
+let pauseState = {
+  isPaused: false,
+  pauseTime: null,
+  pauseReason: null,
+  resumeTime: null
+};
+
+outspeedClient.on('paused', (event) => {
+  pauseState = {
+    isPaused: true,
+    pauseTime: new Date(),
+    pauseReason: event.reason,
+    resumeTime: null
+  };
+});
+
+outspeedClient.on('resumed', (event) => {
+  pauseState = {
+    ...pauseState,
+    isPaused: false,
+    resumeTime: new Date()
+  };
+});
+```
+
+### Auto-Resume Timer
+
+```javascript
+const pauseWithTimer = async (duration) => {
+  await outspeedClient.pause({
+    reason: "timed_pause",
+    message: `Pausing for ${duration / 1000} seconds`
+  });
+  
+  setTimeout(async () => {
+    if (await outspeedClient.isPaused()) {
+      await outspeedClient.resume();
+    }
+  }, duration);
+};
+```
+
+## Integration Examples
+
+### React Component
+
+```javascript
+const PauseControl = () => {
+  const [isPaused, setIsPaused] = useState(false);
+  const [pauseReason, setPauseReason] = useState('');
+  
+  useEffect(() => {
+    outspeedClient.on('paused', (event) => {
+      setIsPaused(true);
+      setPauseReason(event.reason);
+    });
+    
+    outspeedClient.on('resumed', () => {
+      setIsPaused(false);
+      setPauseReason('');
+    });
+  }, []);
+  
+  const togglePause = async () => {
+    if (isPaused) {
+      await outspeedClient.resume();
+    } else {
+      await outspeedClient.pause({
+        reason: "user_control",
+        message: "Conversation paused by user"
+      });
+    }
+  };
+  
+  return (
+    <div>
+      <button onClick={togglePause}>
+        {isPaused ? 'Resume' : 'Pause'}
+      </button>
+      {isPaused && (
+        <div className="pause-indicator">
+          Paused: {pauseReason}
+        </div>
+      )}
+    </div>
+  );
+};
+```
+
+### Voice Activity Pause
+
+```javascript
+// Pause when no voice activity detected
+let voiceActivityTimer;
+
+outspeedClient.on('voiceActivity', (activity) => {
+  clearTimeout(voiceActivityTimer);
+  
+  if (!activity.detected) {
+    voiceActivityTimer = setTimeout(async () => {
+      await outspeedClient.pause({
+        reason: "no_voice_activity",
+        message: "Pausing due to silence"
+      });
+    }, 30000); // 30 seconds of silence
+  }
+});
+```
+
+## Pause Indicators
+
+### Visual Indicators
+
+```javascript
+// Show pause overlay
+const showPauseOverlay = () => {
+  const overlay = document.getElementById('pauseOverlay');
+  overlay.style.display = 'block';
+  overlay.innerHTML = `
+    <div class="pause-content">
+      <h3>Conversation Paused</h3>
+      <p>Click resume to continue</p>
+      <button onclick="resumeConversation()">Resume</button>
+    </div>
+  `;
+};
+
+// Hide pause overlay
+const hidePauseOverlay = () => {
+  document.getElementById('pauseOverlay').style.display = 'none';
+};
+```
+
+### Audio Indicators
+
+```javascript
+// Play pause sound
+const playPauseSound = () => {
+  const audio = new Audio('/sounds/pause.mp3');
+  audio.play();
+};
+
+// Play resume sound
+const playResumeSound = () => {
+  const audio = new Audio('/sounds/resume.mp3');
+  audio.play();
+};
+```
+
+## Events
+
+### Pause Events
+
+```javascript
+outspeedClient.on('paused', (event) => {
+  console.log('Conversation paused:', event.reason);
+  console.log('Pause message:', event.message);
+  showPauseOverlay();
+  playPauseSound();
+});
+
+outspeedClient.on('resumed', (event) => {
+  console.log('Conversation resumed');
+  hidePauseOverlay();
+  playResumeSound();
+});
+
+outspeedClient.on('pauseTimeout', (event) => {
+  console.log('Pause timeout reached');
+  // Handle pause timeout
+});
+```
+
+## Best Practices
+
+1. **Provide Clear Feedback**: Always show visual/audio indicators when paused
+2. **Set Reasonable Timeouts**: Don't pause indefinitely
+3. **Preserve Context**: Maintain conversation state during pause
+4. **Handle Edge Cases**: Manage pause during active speech
+5. **User Control**: Allow users to easily resume
+6. **Resource Management**: Clean up resources during long pauses
+
+## Common Use Cases
+
+### Call Interruption
+
+```javascript
+// Pause when user gets a phone call
+navigator.mediaDevices.addEventListener('devicechange', async () => {
+  const devices = await navigator.mediaDevices.enumerateDevices();
+  const audioInputs = devices.filter(device => device.kind === 'audioinput');
+  
+  if (audioInputs.length === 0) {
+    await outspeedClient.pause({
+      reason: "audio_device_unavailable",
+      message: "Audio device disconnected"
+    });
+  }
+});
+```
+
+### Background Tab
+
+```javascript
+// Pause when tab goes to background
+document.addEventListener('visibilitychange', async () => {
+  if (document.hidden) {
+    await outspeedClient.pause({
+      reason: "tab_hidden",
+      message: "Pausing while tab is in background"
+    });
+  } else {
+    await outspeedClient.resume();
+  }
+});
+```
+
+### Network Issues
+
+```javascript
+// Pause during network issues
+outspeedClient.on('connectionIssue', async (event) => {
+  if (event.severity === 'high') {
+    await outspeedClient.pause({
+      reason: "network_issue",
+      message: "Pausing due to connection problems"
+    });
+  }
+});
+```
+
+## Error Handling
+
+```javascript
+try {
+  await outspeedClient.pause();
+} catch (error) {
+  console.error('Failed to pause:', error);
+  // Handle pause failure
+}
+
+try {
+  await outspeedClient.resume();
+} catch (error) {
+  console.error('Failed to resume:', error);
+  // Handle resume failure
+}
+```
+
+## API Reference
+
+### Methods
+
+| Method | Description |
+|--------|-------------|
+| `pause(options?)` | Pause the conversation |
+| `resume()` | Resume the paused conversation |
+| `isPaused()` | Check if conversation is paused |
+| `getPauseState()` | Get detailed pause state |
+
+### Configuration
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `pauseMessage` | string | Message to display when paused |
+| `maxPauseDuration` | number | Maximum pause duration (ms) |
+| `autoResumeOnActivity` | boolean | Resume on user activity |
+| `preserveContext` | boolean | Maintain conversation context |
+
+### Events
+
+| Event | Description |
+|-------|-------------|
+| `paused` | Conversation was paused |
+| `resumed` | Conversation was resumed |
+| `pauseTimeout` | Pause duration exceeded |
+| `pauseError` | Error during pause operation |

@@ -1,72 +1,48 @@
 ---
 title: "Swift SDK: Getting Started"
-description: "How to install and use the Outspeed Swift SDK for realtime voice conversations."
+description: "Add real-time voice conversations to your iOS app with the Outspeed Swift SDK"
 ---
-
-# Getting Started with Outspeed Swift SDK
-
-A Swift SDK for the Outspeed API that enables realtime voice conversations using WebRTC technology.
-
-<Note>
-  The Outspeed Swift SDK is fully compatible with the ElevenLabs Swift SDK. Migrating your code is easy—see our <a href="./outspeed-swift-elevenlabs">ElevenLabs Compatibility guide</a> for details.
-</Note>
 
 ## Features
 
-- Realtime voice conversations with AI
+- Real-time voice conversations with AI
 - Support for both Outspeed and OpenAI providers
 - WebRTC-based audio streaming
 - Customizable voice and model selection
-- Device-specific optimizations
-- Comprehensive audio session management
+- ElevenLabs Conversational AI compatibility
+
+<Note>
+  The Outspeed Swift SDK is fully compatible with the ElevenLabs Swift SDK. See our{" "}
+  <a href="./outspeed-swift-elevenlabs">ElevenLabs Compatibility guide</a> for migration details.
+</Note>
 
 ## Installation
 
-### Swift Package Manager
-
-Add the following dependency to your `Package.swift` file:
-
-```swift
-.package(url: "https://github.com/outspeed-ai/OutspeedSwift", from: "0.0.2")
-```
-
-And add `OutspeedSDK` to your target dependencies:
-
-```swift
-.target(
-    name: "YourTarget",
-    dependencies: ["OutspeedSDK"]),
-```
-
-### Xcode
-
 1. Open Your Project in Xcode
-   - Navigate to your project directory and open it in Xcode.
-2. Add Package Dependency
-   - Go to `File` > `Add Packages...`
-3. Enter Repository URL in the Search Bar
-   - Input the following URL: `https://github.com/outspeed-ai/OutspeedSwift`
-4. Select Version
-5. Import the SDK
+2. Go to `File` > `Add Packages...`
+3. Enter Repository URL: `https://github.com/outspeed-ai/OutspeedSwift`
+4. Import the SDK
+
    ```swift
    import OutspeedSDK
    ```
-6. Ensure `NSMicrophoneUsageDescription` is added to your Info.plist to explain microphone access.
+
+<Warning>Ensure `NSMicrophoneUsageDescription` is added to your Info.plist to explain microphone access.</Warning>
 
 ## Requirements
 
-- iOS >=18.0
+- iOS 15.2 or later
 - Swift 6.1+
 
-## Usage
+## Basic Usage
 
-### Basic Setup
+Here's the minimal code to get a voice conversation working:
 
 ```swift
 import OutspeedSDK
 
 // Create a session configuration
-let config = OutspeedSDK.SessionConfig( agentId : "testagent")
+let config = OutspeedSDK.SessionConfig()
 
 // Create callbacks to handle events
 let callbacks = OutspeedSDK.Callbacks()
@@ -87,7 +63,7 @@ Task {
     do {
         let conversation = try await OutspeedSDK.Conversation.startSession(
             config: config,
-            callbacks: callbacks
+            callbacks: callbacks,
             apiKey: "<YOUR_OUTSPEED_API_KEY>"
         )
 
@@ -99,6 +75,31 @@ Task {
 }
 ```
 
-## Examples
+## Customization
 
-You can find examples of the SDK here: [Outspeed Swift Examples](https://github.com/outspeed-ai/outspeed-swift-examples) 
+### System Prompt and First Message
+
+```swift
+let agentConfig = OutspeedSDK.AgentConfig(
+    prompt: "You are a helpful assistant with a witty personality.",
+    firstMessage: "Hey there, how can I help you with Outspeed today?"
+)
+
+let config = OutspeedSDK.SessionConfig(
+    overrides: OutspeedSDK.ConversationConfigOverride(agent: agentConfig)
+)
+```
+
+### Voice Selection
+
+```swift
+let ttsConfig = OutspeedSDK.TTSConfig(voiceId: OutspeedSDK.Voice.david.rawValue)
+
+let config = OutspeedSDK.SessionConfig(
+    overrides: OutspeedSDK.ConversationConfigOverride(tts: ttsConfig)
+)
+```
+
+## Complete Example
+
+See a full iOS voice bot application example at our [Examples Repository](https://github.com/outspeed-ai/outspeed-examples/tree/main/swift-ios-basic).

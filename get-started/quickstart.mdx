@@ -1,0 +1,162 @@
+---
+title: "Quickstart"
+description: "Add a voice agent to your React app in minutes."
+---
+
+import ServerFastAPI from "/snippets/server-fastapi.mdx";
+import ServerExpress from "/snippets/server-express.mdx";
+
+## What you'll learn
+
+In this quickstart you'll learn how to:
+
+1. Install the Outspeed SDK
+2. Set up a backend endpoint to create sessions
+3. Create a simple voice agent that can talk to users
+
+## Step 1: Install Outspeed
+
+Install the React SDK using your preferred package manager:
+
+<CodeGroup>
+
+```bash npm
+npm install @outspeed/client @outspeed/react
+```
+
+```bash pnpm
+pnpm add @outspeed/client @outspeed/react
+```
+
+```bash yarn
+yarn add @outspeed/client @outspeed/react
+```
+
+</CodeGroup>
+
+## Step 2: Set up backend endpoint
+
+<Info>You need a backend endpoint to keep your API key secure and create sessions.</Info>
+
+Create a `/token` endpoint on your backend:
+
+<CodeGroup>
+  <ServerExpress />
+  <ServerFastAPI />
+</CodeGroup>
+
+## Step 3: Create React component
+
+Here's a complete working example:
+
+```tsx
+import { type SessionConfig } from "@outspeed/client";
+import { useConversation } from "@outspeed/react";
+import { useState } from "react";
+
+// Change this to your backend URL
+const SERVER_URL = "http://127.0.0.1:8000";
+
+const getEphemeralKeyFromServer = async (config: SessionConfig) => {
+  const tokenResponse = await fetch(`${SERVER_URL}/token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(config),
+  });
+
+  const data = await tokenResponse.json();
+  if (!tokenResponse.ok) {
+    throw new Error("Failed to get ephemeral key");
+  }
+
+  return data.client_secret.value;
+};
+
+const sessionConfig: SessionConfig = {
+  model: "outspeed-v1",
+  instructions: "You are a helpful assistant.",
+  voice: "sophie", // see the voices page for all available voices
+  temperature: 0.5,
+  turn_detection: {
+    type: "semantic_vad",
+  },
+  first_message: "Hello! How can I help you today?",
+};
+
+export default function App() {
+  const [sessionCreated, setSessionCreated] = useState(false);
+
+  const conversation = useConversation({
+    onDisconnect: () => {
+      console.log("Disconnected! cleaning up...");
+      setSessionCreated(false);
+    },
+  });
+
+  const startSession = async () => {
+    try {
+      const ephemeralKey = await getEphemeralKeyFromServer(sessionConfig);
+
+      conversation.on("session.created", () => {
+        setSessionCreated(true);
+      });
+
+      await conversation.startSession(ephemeralKey);
+    } catch (error) {
+      console.error("Error starting session", error);
+    }
+  };
+
+  const endSession = async () => {
+    try {
+      await conversation.endSession();
+    } catch (error) {
+      console.error("Error ending session", error);
+    } finally {
+      setSessionCreated(false);
+    }
+  };
+
+  if (sessionCreated) {
+    return (
+      <div>
+        <h2>Voice session active!</h2>
+        <p>Start talking to your AI assistant</p>
+        <button onClick={endSession}>End Session</button>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h2>Voice AI Assistant</h2>
+      <p>Click the button to start talking</p>
+      <button onClick={startSession}>Start Session</button>
+    </div>
+  );
+}
+```
+
+<Note>Want to use a different voice? See all [available voices](/features/voices) you can choose from.</Note>
+
+## That's it!
+
+You now have a working voice agent that can:
+
+- Start and end voice sessions
+- Talk to users with AI-powered responses
+- Handle voice activity detection automatically
+
+## More Examples
+
+Want to see complete implementations with different frameworks? Check out our [Examples Repository](https://github.com/outspeed-ai/outspeed-examples) which includes:
+
+- **React + Vite + FastAPI** - Full-featured voice assistant with weather tools
+- **React + Vite + Cloudflare Functions** - Serverless voice assistant
+- **Create React App + FastAPI** - Simple React setup with Python backend
+- **Next.js** - complete Next.js voice assistant (also includes AI-to-AI chat)
+- **Swift iOS** - Native iOS voice bot with SwiftUI
+
+<Info>
+  For more advanced features like tools, context management, and system tools, check out the full documentation.
+</Info>

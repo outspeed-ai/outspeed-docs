@@ -1,0 +1,138 @@
+---
+title: "Context Management"
+description: "Manage conversation context during voice interactions"
+---
+
+## Overview
+
+Context updates allow you to dynamically add information to the conversation's context during voice interactions. This helps provide the AI agent with additional context about the user, conversation state, or UI state.
+
+## Automatic Context Updates
+
+During voice conversations, several types of items are automatically added to the context:
+
+- **User speech**: Everything the user says is automatically transcribed and added as message items
+- **Agent responses**: All agent responses are added to maintain conversation flow
+- **Function calls**: When agents call tools, the function call details are automatically added
+- **Function outputs**: Tool results are automatically added by the SDK when tools complete
+
+## Manual Context Updates
+
+<Note>Adding context doesn't trigger an agent response.</Note>
+
+You can manually add items to the conversation context using the `conversation.item.create` event:
+
+```typescript
+import { useConversation } from "@outspeed/react";
+
+// Inside a React component (useConversation is a React hook)
+export default function MyComponent() {
+  const conversation = useConversation({});
+
+  const addToContext = async (text: string) => {
+    const event = {
+      type: "conversation.item.create",
+      item: {
+        type: "message",
+        role: "user",
+        content: [
+          {
+            type: "input_text",
+            text,
+          },
+        ],
+      },
+    };
+
+    await conversation.send(JSON.stringify(event));
+  };
+
+  // rest of component...
+}
+```
+
+## Event Notifications
+
+The server sends events for all context operations:
+
+```typescript
+// Item added (automatic or manual)
+conversation.on("conversation.item.created", (event) => {
+  console.log("Item added:", event.item);
+});
+
+// Item retrieved
+conversation.on("conversation.item.retrieved", (event) => {
+  console.log("Item retrieved:", event.item);
+});
+
+// Item deleted
+conversation.on("conversation.item.deleted", (event) => {
+  console.log("Item deleted:", event.item_id);
+});
+```
+
+## Retrieving Context Items
+
+You can retrieve a specific item from the conversation context by its ID:
+
+```typescript
+const retrieveEvent = {
+  type: "conversation.item.retrieve",
+  item_id: "item_12345",
+};
+
+await conversation.send(JSON.stringify(retrieveEvent));
+
+// Listen for the response
+conversation.on("conversation.item.retrieved", (event) => {
+  console.log("Retrieved item:", event.item);
+});
+```
+
+## Deleting Context Items
+
+You can remove items from the conversation context:
+
+```typescript
+const deleteEvent = {
+  type: "conversation.item.delete",
+  item_id: "item_12345",
+};
+
+await conversation.send(JSON.stringify(deleteEvent));
+
+// Listen for confirmation
+conversation.on("conversation.item.deleted", (event) => {
+  console.log("Deleted item ID:", event.item_id);
+});
+```
+
+
+
+## Item Structure
+
+Context items follow this structure:
+
+| Field     | Type              | Description                                                   |
+| --------- | ----------------- | ------------------------------------------------------------- |
+| `type`    | string            | Item type: "message", "function_call", "function_call_output" |
+| `role`    | string            | Message role: "user", "assistant", "system"       |
+| `content` | array             | Message content with type and text                            |
+| `status`  | string (optional) | Item status: "in_progress", "completed"                       |
+
+## Context Item Types
+
+### Message Items
+
+Standard conversation messages from users, assistants, or system
+
+### Function Call Items
+
+Tool invocations with parameters (automatically managed)
+
+### Function Output Items
+
+Results from tool executions (automatically managed)
+
+The context helps the AI agent maintain awareness of the conversation history and make more informed responses based on the full context of the interaction.

@@ -1,0 +1,122 @@
+---
+title: "End Call"
+description: "End Call is a system tool that enables AI agents to gracefully terminate voice conversations when users explicitly indicate they want to end the call."
+---
+
+## Overview
+
+The End Call system tool helps agents handle situations where users are:
+
+- Saying goodbye or farewell
+- Clearly indicating they want to end the call
+- Using phrases like "bye", "goodbye", "talk to you later", "I'm hanging up"
+- Concluding the conversation with clear intent to leave
+
+The agent uses conversation context to distinguish between genuine farewell intentions and brief acknowledgments that don't require ending the session.
+
+## Configuration
+
+Enable `end_call` system tool in your session configuration:
+
+```javascript
+const sessionConfig = {
+  // rest of config...
+  system_tools: [{ name: "end_call", enabled: true }],
+};
+```
+
+## Tool parameters
+
+| Parameter          | Type   | Required | Description                                                                  |
+| ------------------ | ------ | -------- | ---------------------------------------------------------------------------- |
+| `farewell_message` | string | Yes      | Final message to say before ending the call                                  |
+| `reason`           | string | Yes      | Why the call is ending (e.g., 'user said goodbye', 'conversation concluded') |
+
+## Override tool descriptions
+
+You can override the default tool description and parameter descriptions to customize the agent's behavior:
+
+```javascript
+const sessionConfig = {
+  // rest of config...
+  system_tools: [
+    {
+      name: "end_call",
+      description: "<override default description of end_call tool>",
+      parameter_descriptions: {
+        farewell_message: "<override default description of farewell_message parameter>",
+        reason: "<override default description of reason parameter>",
+      },
+    },
+  ],
+};
+```
+
+## When end call is used
+
+The agent automatically calls this tool when it detects:
+
+Clear goodbye scenarios like:
+
+- **Direct goodbye**: User says "goodbye", "bye", "farewell"
+- **Conversation conclusion**: User says "talk to you later", "see you soon"
+- **Explicit end request**: User says "I'm hanging up", "I need to go"
+- **Formal conclusion**: User indicates the conversation is finished
+
+### Example situations
+
+```json
+// User says goodbye
+Agent would call: end_call({
+  farewell_message: "Goodbye! Have a great day!",
+  reason: "user said goodbye"
+})
+
+// User says "I need to go"
+Agent would call: end_call({
+  farewell_message: "Of course! Take care!",
+  reason: "user requested to end"
+})
+
+// User says "thanks" (should NOT end call)
+Agent continues conversation instead of ending
+
+// User says "talk to you later"
+Agent would call: end_call({
+  farewell_message: "Talk to you later! Goodbye!",
+  reason: "conversation concluded"
+})
+```
+
+## Default implementation
+
+Here's how the End Call tool is defined on our server:
+
+```python
+tool_def = FunctionDefinition(
+    name="end_call",
+    description="End the conversation ONLY when the user explicitly says goodbye, farewell, or clearly indicates they want to end the call (e.g., 'bye', 'goodbye', 'talk to you later', 'I'm hanging up'). Do NOT end the call for brief responses like 'thanks', 'okay', 'got it', or simple acknowledgments - just return to listening mode instead.",
+    parameters=FunctionParameters(
+        type="object",
+        properties={
+            "farewell_message": FunctionProperty(
+                type="string",
+                description="Final message to say before ending the call",
+            ),
+            "reason": FunctionProperty(
+                type="string",
+                description="Why the call is ending (e.g., 'user said goodbye', 'conversation concluded', 'user requested to end')",
+            ),
+        },
+        required=["farewell_message", "reason"],
+    ),
+)
+```
+
+## Troubleshooting
+
+If you notice the agent ending sessions when it shouldn't:
+
+1. **Review Context**: Check if the conversation context provides clear goodbye signals
+2. **Adjust Instructions**: Refine your system prompt to distinguish between acknowledgments and farewells
+3. **Override description**: You can override the tool description to be more or less restrictive

@@ -1,0 +1,33 @@
+---
+title: "Voices"
+description: "Available voices for Outspeed voice agents"
+---
+
+# Voices
+
+Available voices for your voice agents:
+
+- sophie
+- savannah
+- brooke
+- zia
+- corinne
+- david
+- griffin
+- carson
+- ethan
+
+## Usage
+
+Use these voice names in your session configuration:
+
+```javascript
+const sessionConfig = {
+  // rest of config...
+  voice: "sophie", // Replace with any voice name from the list above
+};
+```
+
+```swift
+let ttsConfig = OutspeedSDK.TTSConfig(voiceId: "sophie")
+``` 

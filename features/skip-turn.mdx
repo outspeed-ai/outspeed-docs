@@ -1,0 +1,109 @@
+---
+title: "Skip Turn"
+description: "Skip Turn is a system tool that enables AI agents to intelligently decide when to skip their speaking turn based on conversation context. The agent uses this tool when users are not directly addressing them or when no response is needed."
+---
+
+## Overview
+
+The Skip Turn system tool helps agents handle situations where users are:
+
+- Singing songs
+- Talking to someone else
+- Having background conversations
+- Talking to themselves
+- Saying something unrelated to the conversation
+
+The agent uses conversation context to make intelligent decisions about when to skip turns, creating more natural interaction patterns.
+
+## Configuration
+
+Enable Skip Turn in your session configuration:
+
+```javascript
+const sessionConfig = {
+  // rest of config...
+  system_tools: [{ name: "skip_turn", enabled: true }],
+};
+```
+
+## Tool parameters
+
+| Parameter | Type   | Required | Description                                         |
+| --------- | ------ | -------- | --------------------------------------------------- |
+| `reason`  | string | Yes      | Brief explanation for why the turn is being skipped |
+
+## Override tool descriptions
+
+You can override the default tool description and parameter descriptions to customize the agent's behavior:
+
+```javascript
+const sessionConfig = {
+  // rest of config...
+  system_tools: [
+    {
+      name: "skip_turn",
+      description: "<override default description of skip_turn tool>",
+      parameter_descriptions: {
+        reason: "<override default description of reason parameter of skip_turn tool>",
+      },
+    },
+  ],
+};
+```
+
+## When skip turn is used
+
+The agent automatically calls this tool when it detects:
+
+### Direct scenarios
+
+- **Singing**: User is singing a song
+- **Third-party conversation**: User is talking to someone else in the room
+- **Background chatter**: Casual conversation not directed at the agent
+- **Self-talk**: User talking to themselves
+- **Unrelated content**: User saying something unrelated to the current conversation
+
+### Example situations
+
+```json
+// User singing
+Agent would call: skip_turn({ reason: "singing song" })
+
+// User talking to someone else
+Agent would call: skip_turn({ reason: "talking to someone else" })
+
+// Background conversation
+Agent would call: skip_turn({ reason: "background conversation" })
+
+// User talking to themselves
+Agent would call: skip_turn({ reason: "not addressing bot" })
+```
+
+## Default implementation
+
+Here's how the Skip Turn tool is defined on our server:
+
+```python
+tool_def = FunctionDefinition(
+    name="skip_turn",
+    description="Call this when the user is not directly addressing you or when no response is needed. Skip if the user is: singing, talking to someone else, having background conversation, talking to themselves, or saying something unrelated to our conversation. Use conversation context to decide. If genuinely unsure whether they're addressing you, ask for clarification instead of skipping.",
+    parameters=FunctionParameters(
+        type="object",
+        properties={
+            "reason": FunctionProperty(
+                type="string",
+                description="Brief reason for skipping this turn (e.g., 'singing song', 'talking to someone else', 'background conversation', 'not addressing bot')",
+            ),
+        },
+        required=["reason"],
+    ),
+)
+```
+
+## Troubleshooting
+
+If you notice the agent skipping turns when it shouldn't:
+
+1. **Review Context**: Check if the conversation context is clear enough
+2. **Adjust Instructions**: Refine your system prompt to provide better guidance
+3. **Override description**: You can override the tool description as per your need

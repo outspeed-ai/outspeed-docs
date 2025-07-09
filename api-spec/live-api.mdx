@@ -1,27 +1,38 @@
 ---
-title: "Outspeed Live API"
-description: "Build and deploy low-latency voice experiences with the Outspeed Live API"
+title: "Outspeed API"
+description: "Embed low-latency voice interaction in your apps with Outspeed API"
 ---
 
-The Outspeed Live API lets you create low-latency, multi-modal conversational experiences by connecting to
-speech-to-speech stack hosted on Outspeed's infrastructure.
+The Outspeed API enables you to build fast, natural voice experiences by connecting to our hosted speech-to-speech stack.
 
-Our stack enables realtime text and audio interactions, voice activity detection,
-function calling, and many other capabilities.
+With Outspeed, you can send and receive both text and audio in real time, leverage voice activity detection, call external functions, and more.
 
 <Note>
-  Outspeed Live API is compatible with OpenAI Realtime API.
+  Outspeed API is fully compatible with the OpenAI Realtime API.
 </Note>
+
+## How It Works
+
+Outspeed API is event-driven. After connecting via WebRTC, your app sends [Client Events](/api-spec/client) 
+and listens for [Server Events](/api-spec/server) to drive the conversation.
+
+Getting started is easy:
+
+- Install the [JS SDK](https://www.npmjs.com/package/@outspeed/client)
+- Install the [React SDK](https://www.npmjs.com/package/@outspeed/react)
+- Install the [Swift SDK](https://github.com/outspeed-ai/OutspeedSwift)
+
+Each SDK manages the WebRTC connection and event flow for you, so you can focus on building your app.
 
 ## Key Capabilities
 
-- **Text and Audio Interactions**: Support for text and audio inputs and outputs
-- **Realtime Processing**: Low-latency responses for natural conversations
-- **Contextual Memory**: Maintains conversation history within sessions
-- **Voice Activity Detection**: Automatically detects speech start/end for fluid interactions
-- **Function Calling**: Integrate external tools and services seamlessly 
+- **Text & Audio**: Send and receive both text and audio
+- **Realtime Responses**: Low-latency replies for natural conversations
+- **Function Calling**: Call external tools and services
 
 ## API Events
+
+The API is organized around events:
 
 <CardGroup>
   <Card
@@ -29,13 +40,13 @@ function calling, and many other capabilities.
     icon="arrow-up-right-from-square"
     href="/api-spec/client"
   >
-    Learn about the events that Realtime servers accept from clients.
+    Events your app can send to the Realtime server.
   </Card>
   <Card
     title="Server Events"
     icon="arrow-down-left-from-square"
     href="/api-spec/server"
   >
-    Understand the events emitted from Realtime servers to clients.
+    Events your app receives from the Realtime server.
   </Card>
 </CardGroup>

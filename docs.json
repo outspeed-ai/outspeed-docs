@@ -1,56 +1,84 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "maple",
+  "theme": "mint",
   "name": "Outspeed Docs",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373"
+    "primary": "#009689",
+    "light": "#00BBA7",
+    "dark": "#009689"
   },
-  "favicon": "/logo/1.svg",
+  "fonts": {
+    "heading": {
+      "family": "Montserrat"
+    }
+  },
+  "favicon": "/logo/outspeed-flat-inverse-favicon.svg",
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": "Get Started",
-        "pages": [
-          "get-started/overview",
-          "get-started/openai-compatibility",
-          "get-started/examples"
+        "tab": "Welcome",
+        "pages": ["get-started/overview"]
+      },
+      {
+        "tab": "Developer Guide",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": ["get-started/quickstart", "get-started/templates"]
+          },
+          {
+            "group": "Tools",
+            "pages": [
+              "features/tool-use",
+              "features/client-tools",
+              "features/system-tools",
+              "features/skip-turn",
+              "features/end-session"
+            ]
+          },
+          {
+            "group": "Controls",
+            "pages": ["features/speak-first", "features/context-management", "features/voices"]
+          }
         ]
       },
       {
-        "group": "Web",
-        "pages": [
-          "react/setup",
-          "react/example"
+        "tab": "SDKs",
+        "groups": [
+          {
+            "group": "Web",
+            "pages": ["react/setup", "react/example"]
+          },
+          {
+            "group": "iOS",
+            "pages": ["iOS/outspeed-swift-getting-started", "iOS/outspeed-swift-elevenlabs"]
+          }
         ]
       },
       {
-        "group": "iOS",
-        "pages": [
-          "iOS/outspeed-swift-getting-started",
-          "iOS/outspeed-swift-elevenlabs"
-        ]
-      },
-      {
-        "group": "API",
-        "pages": [
-          "api-spec/live-api",
-          "api-spec/client",
-          "api-spec/server"
+        "tab": "API",
+        "groups": [
+          {
+            "group": "API Reference",
+            "pages": ["api-spec/live-api", "api-spec/client", "api-spec/server"]
+          },
+          {
+            "group": "Compatibility",
+            "pages": ["get-started/openai-compatibility"]
+          }
         ]
       }
     ],
     "global": {
       "anchors": [
         {
-          "anchor": "Join Discord Community",
+          "anchor": "Discord Community",
           "href": "https://discord.gg/cmfFw6SYvp",
           "icon": "discord"
         },
         {
           "anchor": "Book a Demo",
-          "href": "https://cal.com/janakag/outspeed-intro",
+          "href": "https://cal.com/outspeed/early-access",
           "icon": "phone"
         }
       ]
@@ -69,14 +97,14 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Raise an Issue",
-      "href": "https://github.com/outspeed-ai/outspeed-docs/issues"
+      "label": "Get API Key",
+      "href": "https://cal.com/outspeed/early-access"
     }
   },
   "footer": {
     "socials": {
       "discord": "https://discord.gg/cmfFw6SYvp",
-      "github": "https://github.com/outspeed-ai/outspeed-docs"
+      "github": "https://github.com/outspeed-ai/outspeed-examples"
     }
   }
 }

@@ -1,0 +1,57 @@
+---
+title: "Speak First"
+description: "Control whether the agent initiates conversation or waits for user input"
+---
+
+## Overview
+
+The `first_message` field allows your AI agent to start the conversation automatically with a predefined greeting, instead of waiting for the user to speak first.
+
+## Basic Usage
+
+Add `first_message` to your session configuration:
+
+```javascript
+const sessionConfig = {
+  // rest of config...
+  first_message: "Hello! How can I help you today?",
+};
+```
+
+When the session starts, the agent will immediately speak this message to greet the user.
+
+## Examples
+
+### Professional Assistant
+
+```javascript
+first_message: "Good morning! I'm your AI assistant. What can I help you with today?"
+```
+
+### Customer Support
+
+```javascript
+first_message: "Hi there! Welcome to our support chat. How can I assist you?"
+```
+
+### Interview Bot
+
+```javascript
+first_message: "Hello! I'm excited to conduct your interview today. Shall we get started?"
+```
+
+### Casual Companion
+
+```javascript
+first_message: "Hey! Great to see you. What's on your mind?"
+```
+
+## Best Practices
+
+- **Keep it brief**: Short, welcoming messages work best
+- **Match your brand**: Use language that fits your application's tone
+- **Stay consistent**: Use similar greetings across sessions
+
+## Optional Field
+
+The `first_message` field is optional. If you don't include it, the session will start in listening mode, waiting for the user to speak first.
