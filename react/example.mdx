@@ -1,6 +1,6 @@
 ---
-title: 'React SDK Example'
-description: 'Build your first voice AI application with the Outspeed React SDK'
+title: "React SDK Example"
+description: "Build your first voice AI application with the Outspeed React SDK"
 ---
 
 ## Basic Voice Chat Component
@@ -8,33 +8,33 @@ description: 'Build your first voice AI application with the Outspeed React SDK'
 Here's a complete example of a React component that creates a voice conversation using the `useConversation` hook:
 
 ```tsx
-import React, { useState } from 'react';
-import { type SessionConfig } from '@outspeed/client';
-import { useConversation } from '@outspeed/react';
+import React, { useState } from "react";
+import { type SessionConfig } from "@outspeed/client";
+import { useConversation } from "@outspeed/react";
 
 const getEphemeralKeyFromServer = async (config: SessionConfig) => {
-  const tokenResponse = await fetch('/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const tokenResponse = await fetch("/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(config),
   });
 
   const data = await tokenResponse.json();
   if (!tokenResponse.ok) {
-    throw new Error('Failed to get ephemeral key');
+    throw new Error("Failed to get ephemeral key");
   }
 
   return data.client_secret.value;
 };
 
 const sessionConfig: SessionConfig = {
-  model: 'outspeed-v1',
-  instructions: 'You are a helpful but witty assistant.',
-  voice: 'david',  // Voice names must be lowercase. Find more voices at dashboard.outspeed.com
+  model: "outspeed-v1",
+  instructions: "You are a helpful but witty assistant named Alfred.",
+  voice: "david", // see the voices page for all available voices
   turn_detection: {
-    type: 'semantic_vad',
+    type: "semantic_vad",
   },
-  first_message: 'Hello, how can I assist you with Outspeed today?',
+  first_message: "Hello, how can I assist you with Outspeed today?",
 };
 
 export default function VoiceChat() {
@@ -52,14 +52,13 @@ export default function VoiceChat() {
       await conversation.startSession(ephemeralKey);
 
       // Listen for session creation event
-      conversation.on('session.created', (event) => {
-        console.log('Session created:', event);
+      conversation.on("session.created", (event) => {
+        console.log("Session created:", event);
         setSessionCreated(true);
         setIsConnecting(false);
       });
-
     } catch (error) {
-      console.error('Error starting session:', error);
+      console.error("Error starting session:", error);
       setIsConnecting(false);
     }
   };
@@ -69,7 +68,7 @@ export default function VoiceChat() {
       await conversation.endSession();
       setSessionCreated(false);
     } catch (error) {
-      console.error('Error ending session:', error);
+      console.error("Error ending session:", error);
     }
   };
 
@@ -106,6 +105,8 @@ export default function VoiceChat() {
 }
 ```
 
+<Note>Want to use a different voice? See all [available voices](/features/voices) you can choose from.</Note>
+
 ## Advanced Features
 
 ### Event Handling
@@ -114,21 +115,21 @@ You can listen to various events during the conversation:
 
 ```tsx
 // Listen for speech detection
-conversation.on('input_audio_buffer.speech_started', () => {
-  console.log('User started speaking');
+conversation.on("input_audio_buffer.speech_started", () => {
+  console.log("User started speaking");
 });
 
-conversation.on('input_audio_buffer.speech_stopped', () => {
-  console.log('User stopped speaking');
+conversation.on("input_audio_buffer.speech_stopped", () => {
+  console.log("User stopped speaking");
 });
 
 // Listen for AI responses
-conversation.on('response.text.delta', (event) => {
-  console.log('AI response text:', event.delta);
+conversation.on("response.text.delta", (event) => {
+  console.log("AI response text:", event.delta);
 });
 
-conversation.on('response.audio_transcript.delta', (event) => {
-  console.log('AI speech transcript:', event.delta);
+conversation.on("response.audio_transcript.delta", (event) => {
+  console.log("AI speech transcript:", event.delta);
 });
 ```
 
@@ -138,37 +139,36 @@ You can also send text messages programmatically:
 
 ```tsx
 const sendTextMessage = () => {
-  conversation.sendText('Tell me about the weather today');
+  conversation.sendText("Tell me about the weather today");
 };
 
 return (
   <div>
     {/* ... other components */}
-    <button onClick={sendTextMessage}>
-      Send Text Message
-    </button>
+    <button onClick={sendTextMessage}>Send Text Message</button>
   </div>
 );
 ```
 
 ### Mute Control
 
-Toggle the microphone on and off:
+Control the microphone state by passing `micMuted` prop to `useConversation`:
 
 ```tsx
-const [isMuted, setIsMuted] = useState(false);
+const [isMicMuted, setIsMicMuted] = useState(false);
+
+const conversation = useConversation({
+  micMuted: isMicMuted,
+});
 
 const toggleMute = () => {
-  conversation.toggleMute();
-  setIsMuted(!isMuted);
+  setIsMicMuted(!isMicMuted);
 };
 
 return (
   <div>
     {/* ... other components */}
-    <button onClick={toggleMute}>
-      {isMuted ? '🔇 Unmute' : '🎤 Mute'}
-    </button>
+    <button onClick={toggleMute}>{isMicMuted ? "🔇 Unmute" : "🎤 Mute"}</button>
   </div>
 );
 ```
@@ -183,10 +183,8 @@ const [error, setError] = useState<string | null>(null);
 const conversation = useConversation({
   sessionConfig: sessionConfig,
   onError: (err) => {
-    console.error('Conversation error:', err);
+    console.error("Conversation error:", err);
     setError(err.message);
-    setSessionCreated(false);
-    setIsConnecting(false);
   },
 });
 

@@ -2,164 +2,161 @@
 title: "Quickstart"
 description: "Add a voice agent to your React app in minutes."
 ---
-***
 
-## What you learn?
+import ServerFastAPI from "/snippets/server-fastapi.mdx";
+import ServerExpress from "/snippets/server-express.mdx";
 
-In this quickstart you'll learn:
-1. Add a voice agent to the React frontend of your app
-2. Set up a backend endpoint to start a session with the voice agent
-3. Show live conversation transcripts on the frontend
+## What you'll learn
 
-## Initial Setup
+In this quickstart you'll learn how to:
 
-We'll add the voice agent to your React frontend. You can clone the template [here](https://github.com/outspeed-ai/outspeed-react-template) if you don't have a pre-existing project, or follow the instructions here for an existing project.
+1. Install the Outspeed SDK
+2. Set up a backend endpoint to create sessions
+3. Create a simple voice agent that can talk to users
 
-### Install Outspeed
+## Step 1: Install Outspeed
 
 Install the React SDK using your preferred package manager:
 
 <CodeGroup>
 
 ```bash npm
-npm install @outspeed/react
+npm install @outspeed/client @outspeed/react
 ```
 
 ```bash pnpm
-pnpm add @outspeed/react
+pnpm add @outspeed/client @outspeed/react
 ```
 
 ```bash yarn
-yarn add @outspeed/react
+yarn add @outspeed/client @outspeed/react
 ```
 
 </CodeGroup>
 
-### Setup session endpoint
+## Step 2: Set up backend endpoint
 
-<Info>
-A session endpoint keeps your API key secure and lets users start voice conversations.
-</Info>
+<Info>You need a backend endpoint to keep your API key secure and create sessions.</Info>
 
-Create a `/token` endpoint on your backend. This endpoint should accept a POST request and create a session with the Outspeed API. Here's an example for Express.js:
+Create a `/token` endpoint on your backend:
 
 <CodeGroup>
-
-```javascript Express.js
-app.use(express.json());
-
-app.post('/token', async (req, res) => {
-  try {
-    const { model } = req.body;
-    if (model !== 'outspeed-v1') {
-      return res.status(400).json({ error: 'Invalid model. Only outspeed-v1 is supported.' });
-    }
-    const response = await fetch('https://api.outspeed.com/v1/realtime/sessions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.OUTSPEED_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(req.body),
-    });
-    if (!response.ok) {
-      const error = await response.text();
-      return res.status(response.status).json({ error: 'Failed to generate token' });
-    }
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-```
-
-```python FastAPI
-import os
-from fastapi import FastAPI, HTTPException, Request
-import httpx
-
-OUTSPEED_API_KEY = os.getenv("OUTSPEED_API_KEY")
-app = FastAPI()
-
-@app.post("/token")
-async def create_token(request: Request):
-    try:
-        session_config = await request.json()
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                "https://api.outspeed.com/v1/realtime/sessions",
-                headers={
-                    "Authorization": f"Bearer {OUTSPEED_API_KEY}",
-                    "Content-Type": "application/json",
-                },
-                json=session_config,
-            )
-            if not response.is_success:
-                raise HTTPException(status_code=response.status_code, detail="Failed to generate token")
-            return response.json()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal server error")
-```
-
+  <ServerExpress />
+  <ServerFastAPI />
 </CodeGroup>
 
-<Info>
-Find examples for different backends [here](https://github.com/outspeed-ai/outspeed-examples).
-</Info>
+## Step 3: Create React component
 
-### Add a frontend component
-
-Import the required hooks and types from the SDK:
+Here's a complete working example:
 
 ```tsx
-import { useConversation } from '@outspeed/react';
-import { type SessionConfig } from '@outspeed/client';
-```
+import { type SessionConfig } from "@outspeed/client";
+import { useConversation } from "@outspeed/react";
+import { useState } from "react";
 
-#### Setup your voice agent
+// Change this to your backend URL
+const SERVER_URL = "http://127.0.0.1:8000";
 
+const getEphemeralKeyFromServer = async (config: SessionConfig) => {
+  const tokenResponse = await fetch(`${SERVER_URL}/token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(config),
+  });
 
-```tsx
-const sessionConfig: SessionConfig = {
-  model: 'outspeed-v1',
-  instructions: 'You are a helpful assistant.',
-  voice: 'david', // Voice names must be lowercase. Find more voices at dashboard.outspeed.com
-  turn_detection: {
-    type: 'semantic_vad',
-  },
-  first_message: 'Hello! How can I help you today?', // Optional welcome message
+  const data = await tokenResponse.json();
+  if (!tokenResponse.ok) {
+    throw new Error("Failed to get ephemeral key");
+  }
+
+  return data.client_secret.value;
 };
-```
 
-Use the `useConversation` hook to start a session and show live transcripts:
-
-```tsx
-const conversation = useConversation({
-  sessionConfig,
-  getEphemeralKey: async (config) => {
-    const res = await fetch('/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(config),
-    });
-    const data = await res.json();
-    return data.client_secret.value;
+const sessionConfig: SessionConfig = {
+  model: "outspeed-v1",
+  instructions: "You are a helpful assistant.",
+  voice: "sophie", // see the voices page for all available voices
+  temperature: 0.5,
+  turn_detection: {
+    type: "semantic_vad",
   },
-});
+  first_message: "Hello! How can I help you today?",
+};
+
+export default function App() {
+  const [sessionCreated, setSessionCreated] = useState(false);
+
+  const conversation = useConversation({
+    onDisconnect: () => {
+      console.log("Disconnected! cleaning up...");
+      setSessionCreated(false);
+    },
+  });
+
+  const startSession = async () => {
+    try {
+      const ephemeralKey = await getEphemeralKeyFromServer(sessionConfig);
+
+      conversation.on("session.created", () => {
+        setSessionCreated(true);
+      });
+
+      await conversation.startSession(ephemeralKey);
+    } catch (error) {
+      console.error("Error starting session", error);
+    }
+  };
+
+  const endSession = async () => {
+    try {
+      await conversation.endSession();
+    } catch (error) {
+      console.error("Error ending session", error);
+    } finally {
+      setSessionCreated(false);
+    }
+  };
+
+  if (sessionCreated) {
+    return (
+      <div>
+        <h2>Voice session active!</h2>
+        <p>Start talking to your AI assistant</p>
+        <button onClick={endSession}>End Session</button>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h2>Voice AI Assistant</h2>
+      <p>Click the button to start talking</p>
+      <button onClick={startSession}>Start Session</button>
+    </div>
+  );
+}
 ```
 
-Display live transcripts in your component:
+<Note>Want to use a different voice? See all [available voices](/features/voices) you can choose from.</Note>
 
-```tsx
-<div>
-  {conversation.transcripts.map((t, i) => (
-    <div key={i}>{t.text}</div>
-  ))}
-</div>
-```
+## That's it!
+
+You now have a working voice agent that can:
+
+- Start and end voice sessions
+- Talk to users with AI-powered responses
+- Handle voice activity detection automatically
+
+## More Examples
+
+Want to see complete implementations with different frameworks? Check out our [Examples Repository](https://github.com/outspeed-ai/outspeed-examples) which includes:
+
+- **React + Vite + FastAPI** - Full-featured voice assistant with weather tools
+- **React + Vite + Cloudflare Functions** - Serverless voice assistant
+- **Create React App + FastAPI** - Simple React setup with Python backend
+- **Next.js** - complete Next.js voice assistant (also includes AI-to-AI chat)
+- **Swift iOS** - Native iOS voice bot with SwiftUI
 
 <Info>
-See a full example [here](/react/example).
+  For more advanced features like tools, context management, and system tools, check out the full documentation.
 </Info>
-
