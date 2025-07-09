@@ -25,7 +25,7 @@ const sessionConfig = {
 };
 ```
 
-## Tool Parameters
+## Tool parameters
 
 | Parameter          | Type   | Required | Description                                                                  |
 | ------------------ | ------ | -------- | ---------------------------------------------------------------------------- |
@@ -52,50 +52,43 @@ const sessionConfig = {
 };
 ```
 
-## When End Call is Used
+## When end call is used
 
 The agent automatically calls this tool when it detects:
 
-### Clear Goodbye Scenarios
+Clear goodbye scenarios like:
 
 - **Direct goodbye**: User says "goodbye", "bye", "farewell"
 - **Conversation conclusion**: User says "talk to you later", "see you soon"
 - **Explicit end request**: User says "I'm hanging up", "I need to go"
 - **Formal conclusion**: User indicates the conversation is finished
 
-### When NOT to end the session
+### Example situations
 
-- **Brief responses**: "thanks", "okay", "got it", "sure"
-- **Simple acknowledgments**: "alright", "sounds good", "I understand"
-- **Pauses in conversation**: User taking time to think
-- **Ambiguous statements**: When unclear if user wants to end
-
-### Example Situations
-
-```
+```json
 // User says goodbye
-// Agent would call: end_call({
-//   farewell_message: "Goodbye! Have a great day!",
-//   reason: "user said goodbye"
-// })
+Agent would call: end_call({
+  farewell_message: "Goodbye! Have a great day!",
+  reason: "user said goodbye"
+})
 
 // User says "I need to go"
-// Agent would call: end_call({
-//   farewell_message: "Of course! Take care!",
-//   reason: "user requested to end"
-// })
+Agent would call: end_call({
+  farewell_message: "Of course! Take care!",
+  reason: "user requested to end"
+})
 
 // User says "thanks" (should NOT end call)
-// Agent continues conversation instead of ending
+Agent continues conversation instead of ending
 
 // User says "talk to you later"
-// Agent would call: end_call({
-//   farewell_message: "Talk to you later! Goodbye!",
-//   reason: "conversation concluded"
-// })
+Agent would call: end_call({
+  farewell_message: "Talk to you later! Goodbye!",
+  reason: "conversation concluded"
+})
 ```
 
-## Default Implementation
+## Default implementation
 
 Here's how the End Call tool is defined on our server:
 

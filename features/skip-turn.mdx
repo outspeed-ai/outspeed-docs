@@ -26,7 +26,7 @@ const sessionConfig = {
 };
 ```
 
-## Tool Parameters
+## Tool parameters
 
 | Parameter | Type   | Required | Description                                         |
 | --------- | ------ | -------- | --------------------------------------------------- |
@@ -51,11 +51,11 @@ const sessionConfig = {
 };
 ```
 
-## When Skip Turn is Used
+## When skip turn is used
 
 The agent automatically calls this tool when it detects:
 
-### Direct Scenarios
+### Direct scenarios
 
 - **Singing**: User is singing a song
 - **Third-party conversation**: User is talking to someone else in the room
@@ -63,23 +63,23 @@ The agent automatically calls this tool when it detects:
 - **Self-talk**: User talking to themselves
 - **Unrelated content**: User saying something unrelated to the current conversation
 
-### Example Situations
+### Example situations
 
-```
+```json
 // User singing
-// Agent would call: skip_turn({ reason: "singing song" })
+Agent would call: skip_turn({ reason: "singing song" })
 
 // User talking to someone else
-// Agent would call: skip_turn({ reason: "talking to someone else" })
+Agent would call: skip_turn({ reason: "talking to someone else" })
 
 // Background conversation
-// Agent would call: skip_turn({ reason: "background conversation" })
+Agent would call: skip_turn({ reason: "background conversation" })
 
 // User talking to themselves
-// Agent would call: skip_turn({ reason: "not addressing bot" })
+Agent would call: skip_turn({ reason: "not addressing bot" })
 ```
 
-## Default Implementation
+## Default implementation
 
 Here's how the Skip Turn tool is defined on our server:
 

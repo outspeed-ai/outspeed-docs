@@ -18,7 +18,7 @@ System tools help agents manage conversation flow intelligently:
 
 ## Available System Tools
 
-### Skip Turn
+### Skip turn
 Allows agents to intelligently skip their speaking turn when users aren't directly addressing them.
 
 **Use Cases:**
@@ -29,7 +29,7 @@ Allows agents to intelligently skip their speaking turn when users aren't direct
 
 👉 **[Learn about Skip Turn →](skip-turn)**
 
-### End Session
+### End session
 Enables agents to gracefully terminate conversations when users explicitly say goodbye.
 
 **Use Cases:**
@@ -39,7 +39,7 @@ Enables agents to gracefully terminate conversations when users explicitly say g
 
 👉 **[Learn about End Session →](end-session)**
 
-## Basic Configuration
+## Basic sonfiguration
 
 Enable system tools in your session configuration:
 
@@ -53,7 +53,7 @@ const sessionConfig = {
 };
 ```
 
-## Override Tool Descriptions
+## Override tool descriptions
 
 You can customize how system tools behave by overriding their descriptions:
 
@@ -83,13 +83,13 @@ const sessionConfig = {
 ```
 
 
-## Best Practices
+## Best practices
 
-### When to Enable
+### When to enable
 - **Skip Turn**: Recommended for most applications to handle natural conversation flow
 - **End Session**: Essential for applications where users initiate call termination
 
-### Override Examples
+### Override examples
 
 **More Restrictive Skip Turn:**
 ```javascript
@@ -116,17 +116,17 @@ const sessionConfig = {
 
 ## Troubleshooting
 
-### Tools Not Working
+### Tools not working
 1. **Check configuration**: Ensure tools are properly enabled
 2. **Verify session**: Confirm tools are included in session config
 3. **Review logs**: Check for error messages in session events
 
-### Unexpected Behavior
+### Unexpected behavior
 1. **Monitor context**: Review conversation context when tools trigger
 2. **Adjust descriptions**: Override tool descriptions to fine-tune behavior
 3. **System prompt**: Ensure your system prompt doesn't conflict with tool usage
 
-### Performance Impact
+### Performance impact
 - System tools have minimal performance impact
 - No client-side processing required
 - Server-side execution is optimized and fast
