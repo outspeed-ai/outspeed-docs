@@ -38,6 +38,13 @@ function getTime() {
 
 **Important**: The return value from your function is sent directly to the AI model, which uses it to generate its response to the user.
 
+**Always return a value** - even for action-based tools:
+- **Data tools** (weather, calculations): Return the actual data
+- **Action tools** (generate image, open browser): Return acknowledgment like "Image generated successfully" or "Browser tab opened"
+- **On failure**: Return error description like "Failed to generate image: rate limit error"
+
+This tells the AI whether your tool succeeded or failed.
+
 ### Step 3: Configure Session
 
 ```typescript
@@ -83,6 +90,13 @@ Each tool schema must follow this structure:
 ````
 
 ## Best Practices
+
+### Return Values
+
+- **Always return something**: Every tool must return a string value
+- **Success messages**: "Task completed successfully" or actual data
+- **Error messages**: "Failed to connect: network timeout" with specific details
+- **Be descriptive**: Help the AI understand what happened
 
 ### Tool Design
 
