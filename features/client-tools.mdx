@@ -39,11 +39,12 @@ function getTime() {
 **Important**: The return value from your function is sent directly to the AI model, which uses it to generate its response to the user.
 
 **Always return a value** - even for action-based tools:
+
 - **Data tools** (weather, calculations): Return the actual data
 - **Action tools** (generate image, open browser): Return acknowledgment like "Image generated successfully" or "Browser tab opened"
 - **On failure**: Return error description like "Failed to generate image: rate limit error"
 
-This tells the AI whether your tool succeeded or failed.
+This tells the AI whether your tool succeeded or failed. See the [implementation section](#implementation) for more details.
 
 ### Step 3: Configure Session
 
@@ -66,7 +67,6 @@ That's it! When the user asks "What time is it?", the agent will:
 2. Receive the return value (e.g., "2:30:45 PM")
 3. Use that information to respond to the user
 
-
 ## Tool Schema Format
 
 Each tool schema must follow this structure:
@@ -87,16 +87,9 @@ Each tool schema must follow this structure:
     required: string[]      // Required parameter names
   }
 }
-````
+```
 
 ## Best Practices
-
-### Return Values
-
-- **Always return something**: Every tool must return a string value
-- **Success messages**: "Task completed successfully" or actual data
-- **Error messages**: "Failed to connect: network timeout" with specific details
-- **Be descriptive**: Help the AI understand what happened
 
 ### Tool Design
 
@@ -107,10 +100,69 @@ Each tool schema must follow this structure:
 
 ### Implementation
 
-- **Error handling**: Always wrap tool functions in try-catch blocks
-- **Return useful data**: Provide meaningful responses the AI can work with
-- **Handle async operations**: Use async/await for API calls
-- **Validate inputs**: Check parameters before processing
+**Always return meaningful values** - the AI uses your return value to respond to the user:
+
+```typescript
+// ✅ Good: Return actual data
+function getWeather({ city }: { city: string }) {
+  return "72°F and sunny in San Francisco";
+}
+
+// ✅ Good: Return success confirmation
+function sendEmail({ to, subject }: { to: string; subject: string }) {
+  // ... send email logic
+  return `Email sent to ${to}`;
+}
+
+// ✅ Good: Return error details
+function uploadFile({ filename }: { filename: string }) {
+  try {
+    // ... upload logic
+    return "File uploaded successfully";
+  } catch (error) {
+    return `Upload failed: ${error.message}`;
+  }
+}
+
+// ❌ Bad: Don't return undefined/null
+function badTool() {
+  // The AI gets nothing to work with
+  return null;
+}
+```
+
+**Handle errors gracefully**:
+
+```typescript
+function robustTool({ param }: { param: string }) {
+  try {
+    if (!param?.trim()) {
+      return "Parameter is required";
+    }
+
+    const result = performOperation(param);
+
+    // notice that we're returning something that model can use to respond to the user
+    return result || "Operation completed but no data returned";
+  } catch (error) {
+    return `Error: ${error.message}`; // for the model to understand the error
+  }
+}
+```
+
+**Use async/await for API calls**:
+
+```typescript
+async function fetchData({ query }: { query: string }) {
+  try {
+    const response = await fetch(`/api/search?q=${query}`);
+    const data = await response.json();
+    return `Found ${data.results.length} results for "${query}"`;
+  } catch (error) {
+    return "Search service unavailable"; // again, for the model to understand what went wrong
+  }
+}
+```
 
 ### Performance
 
