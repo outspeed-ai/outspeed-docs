@@ -1,0 +1,82 @@
+---
+title: "Send Text Messages"
+description: "Send text messages to the AI agent programmatically"
+---
+
+## Overview
+
+You can send text messages to the AI agent programmatically, either by sending events directly or using the convenient `sendText` method.
+
+## Using sendText Method
+
+The React SDK provides a convenient `sendText` method that handles both events for you:
+
+```typescript
+import { useConversation } from "@outspeed/react";
+
+// inside a React component
+const conversation = useConversation({});
+
+// Send text and get AI response
+await conversation.sendText("What's the weather like?");
+```
+
+## Using Events
+
+To send a text message, you need to send two events:
+
+```typescript
+// 1. Add text message to conversation context
+const messageEvent = {
+  type: "conversation.item.create",
+  item: {
+    type: "message",
+    role: "user",
+    content: [
+      {
+        type: "input_text",
+        text: "What's the weather like?",
+      },
+    ],
+  },
+};
+
+await conversation.send(JSON.stringify(messageEvent));
+
+// 2. Request AI response
+const responseEvent = {
+  type: "response.create",
+};
+
+await conversation.send(JSON.stringify(responseEvent));
+```
+
+## Example Usage
+
+```typescript
+function ChatInput() {
+  const [message, setMessage] = useState("");
+  const conversation = useConversation({});
+
+  // add the logic to start & end a conversation session
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!message.trim()) return;
+
+    try {
+      await conversation.sendText(message);
+      setMessage(""); // Clear input after sending
+    } catch (error) {
+      console.error("Failed to send message:", error);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Type a message..." />
+      <button type="submit">Send</button>
+    </form>
+  );
+}
+```
