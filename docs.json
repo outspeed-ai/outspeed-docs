@@ -38,7 +38,13 @@
           },
           {
             "group": "Controls",
-            "pages": ["features/speak-first", "features/context-management", "features/voices", "features/send-text"]
+            "pages": [
+              "features/speak-first",
+              "features/context-management",
+              "features/voices",
+              "features/send-text",
+              "features/input-language"
+            ]
           }
         ]
       },

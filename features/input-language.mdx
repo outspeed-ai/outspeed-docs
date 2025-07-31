@@ -1,0 +1,80 @@
+---
+title: "Input Language"
+description: "Configure the language users can speak in during voice conversations"
+---
+
+## Overview
+
+The `input_language` field in your session configuration allows users to speak in different languages. The AI agent will understand their speech and _respond in English._
+
+<Note>The model will still respond in English, even if the user speaks in a different language.</Note>
+
+## Supported Languages
+
+Currently supported input languages:
+
+- **en** - English (default)
+- **zh** - Chinese (Mandarin)
+- **hi** - Hindi
+
+## Configuration
+
+Add `input_language` to your session configuration:
+
+```typescript
+const sessionConfig = {
+  model: "outspeed-v1",
+  instructions: "You are a helpful assistant.",
+  voice: "sophie",
+  input_language: "zh", // User can speak in Chinese
+  turn_detection: {
+    type: "semantic_vad",
+  },
+  first_message: "Hello! How can I help you today?",
+};
+```
+
+## Language Examples
+
+### English (Default)
+
+```typescript
+const sessionConfig = {
+  // rest of config...
+  input_language: "en", // or omit this field entirely
+};
+
+// User speaks: "What's the weather like?"
+// Agent responds: "The weather is sunny and 72°F."
+```
+
+### Chinese (Mandarin)
+
+```typescript
+const sessionConfig = {
+  // rest of config...
+  input_language: "zh",
+};
+
+// User speaks: "今天天气怎么样？" (How's the weather today?)
+// Agent responds: "The weather is sunny and 72°F."
+```
+
+### Hindi
+
+```typescript
+const sessionConfig = {
+  // rest of config...
+  input_language: "hi",
+};
+
+// User speaks: "आज मौसम कैसा है?" (How's the weather today?)
+// Agent responds: "The weather is sunny and 72°F."
+```
+
+## Important Notes
+
+- **Input only**: This setting only affects the language users can speak in
+- **English output**: The AI agent will always respond in English
+- **Default behavior**: Default input language value is `en` for English
+- **Single language**: Each session supports one input language at a time
