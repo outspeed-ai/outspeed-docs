@@ -107,6 +107,42 @@ export default function VoiceChat() {
 
 <Note>Want to use a different voice? See all [available voices](/features/voices) you can choose from.</Note>
 
+## Connection Management
+
+### onDisconnect Callback
+
+Use `onDisconnect` to handle cleanup when the conversation ends:
+
+```tsx
+const conversation = useConversation({
+  onDisconnect: () => {
+    console.log("Disconnected! cleaning up...");
+    setSessionCreated(false);
+    // Add any cleanup logic here
+  },
+});
+```
+
+**Important**: Use `onDisconnect` for cleanup logic, not `onError`. The `onError` callback is called for runtime errors as well, so it's not ideal for cleanup tasks.
+
+### onError Callback
+
+Use `onError` specifically for handling errors:
+
+```tsx
+const conversation = useConversation({
+  onError: (err) => {
+    console.error("Conversation error:", err);
+    // Handle error display/logging only
+  },
+  onDisconnect: () => {
+    console.log("Session ended");
+    setSessionCreated(false);
+    // Handle cleanup here instead
+  },
+});
+```
+
 ## Advanced Features
 
 ### Event Handling
@@ -202,18 +238,25 @@ return (
 );
 ```
 
-## Error Handling
+## Complete Example with Error Handling
 
-Always implement proper error handling for a robust user experience:
+Here's a more complete example showing proper error and disconnect handling:
 
 ```tsx
 const [error, setError] = useState<string | null>(null);
+const [sessionCreated, setSessionCreated] = useState(false);
 
 const conversation = useConversation({
-  sessionConfig: sessionConfig,
   onError: (err) => {
     console.error("Conversation error:", err);
     setError(err.message);
+    // Only handle error display here
+  },
+  onDisconnect: () => {
+    console.log("Session ended");
+    setSessionCreated(false);
+    setError(null); // Clear any previous errors
+    // Handle all cleanup logic here
   },
 });
 
