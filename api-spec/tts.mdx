@@ -21,14 +21,15 @@ POST `https://api.outspeed.com/v1/tts/`
 }
 ```
 
-- **voice**: the voice identifier
+- **voice**: the voice identifier.
+  - Available voices: "linda", "aria", "kate", "jasmine", "emily", "isabella", "clark"
 - **text**: the text to synthesize
 - **stream**: set to `true` to stream audio chunks; `false` returns the full WAV
 
 ### Response
 
 - Content-Type: `audio/wav`
-- Body: WAV audio bytes (streamed or full file depending on `stream`)
+- Body: PCM audio bytes (int16) at 24kHz sample rate (streamed or full file depending on `stream`)
 
 <Info>
   Authenticate with{" "}
@@ -49,7 +50,7 @@ curl \
   --output tts.wav
 ```
 
-```javascript
+```bash javascript
 // Node.js 18+
 import fs from "node:fs";
 
@@ -88,7 +89,7 @@ curl \
   --output tts.wav
 ```
 
-```javascript
+```bash javascript
 // Node.js 18+ streaming to file
 import fs from "node:fs";
 import { Readable, Writable } from "node:stream";
