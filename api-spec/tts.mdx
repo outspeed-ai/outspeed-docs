@@ -52,27 +52,11 @@ curl \
 
 ```bash javascript
 // Node.js 18+
-import fs from "node:fs";
 
-function createWavHeader(dataLen, sampleRate = 24000, channels = 1, bitsPerSample = 16) {
-  const header = Buffer.alloc(44);
-  const byteRate = (sampleRate * channels * bitsPerSample) / 8;
-  const blockAlign = (channels * bitsPerSample) / 8;
-  header.write("RIFF", 0);
-  header.writeUInt32LE(36 + dataLen, 4);
-  header.write("WAVE", 8);
-  header.write("fmt ", 12);
-  header.writeUInt32LE(16, 16);
-  header.writeUInt16LE(1, 20);
-  header.writeUInt16LE(channels, 22);
-  header.writeUInt32LE(sampleRate, 24);
-  header.writeUInt32LE(byteRate, 28);
-  header.writeUInt16LE(blockAlign, 32);
-  header.writeUInt16LE(bitsPerSample, 34);
-  header.write("data", 36);
-  header.writeUInt32LE(dataLen, 40);
-  return header;
-}
+//Use a WAV helper library to write a proper WAV file from PCM:
+//npm install wav
+
+import wav from "wav";
 
 const res = await fetch("https://api.outspeed.com/v1/tts/", {
   method: "POST",
@@ -85,8 +69,9 @@ const res = await fetch("https://api.outspeed.com/v1/tts/", {
 
 if (!res.ok) throw new Error(`TTS failed: ${res.status}`);
 const pcm = Buffer.from(await res.arrayBuffer());
-const header = createWavHeader(pcm.length);
-fs.writeFileSync("tts.wav", Buffer.concat([header, pcm]));
+const writer = new wav.FileWriter("tts.wav", { channels: 1, sampleRate: 24000, bitDepth: 16 });
+writer.write(pcm);
+writer.end();
 ```
 
 </CodeGroup>
@@ -107,29 +92,13 @@ curl \
 ```
 
 ```bash javascript
-// Node.js 18+ (gather streamed PCM, then write WAV)
-import fs from "node:fs";
-import { Readable } from "node:stream";
+// Node.js 18+ (streaming)
 
-function createWavHeader(dataLen, sampleRate = 24000, channels = 1, bitsPerSample = 16) {
-  const header = Buffer.alloc(44);
-  const byteRate = (sampleRate * channels * bitsPerSample) / 8;
-  const blockAlign = (channels * bitsPerSample) / 8;
-  header.write("RIFF", 0);
-  header.writeUInt32LE(36 + dataLen, 4);
-  header.write("WAVE", 8);
-  header.write("fmt ", 12);
-  header.writeUInt32LE(16, 16);
-  header.writeUInt16LE(1, 20);
-  header.writeUInt16LE(channels, 22);
-  header.writeUInt32LE(sampleRate, 24);
-  header.writeUInt32LE(byteRate, 28);
-  header.writeUInt16LE(blockAlign, 32);
-  header.writeUInt16LE(bitsPerSample, 34);
-  header.write("data", 36);
-  header.writeUInt32LE(dataLen, 40);
-  return header;
-}
+//Use a WAV helper library to write a proper WAV file from PCM:
+//npm install wav
+
+import { Readable } from "node:stream";
+import wav from "wav";
 
 const res = await fetch("https://api.outspeed.com/v1/tts/", {
   method: "POST",
@@ -142,11 +111,13 @@ const res = await fetch("https://api.outspeed.com/v1/tts/", {
 
 if (!res.ok || !res.body) throw new Error(`TTS failed: ${res.status}`);
 const nodeReadable = Readable.fromWeb(res.body);
-const chunks = [];
-for await (const chunk of nodeReadable) chunks.push(chunk);
-const pcm = Buffer.concat(chunks);
-const header = createWavHeader(pcm.length);
-fs.writeFileSync("tts.wav", Buffer.concat([header, pcm]));
+const writer = new wav.FileWriter("tts.wav", { channels: 1, sampleRate: 24000, bitDepth: 16 });
+await new Promise((resolve, reject) => {
+  nodeReadable.pipe(writer);
+  writer.on("finish", resolve);
+  writer.on("error", reject);
+  nodeReadable.on("error", reject);
+});
 ```
 
 </CodeGroup>
