@@ -29,7 +29,7 @@ POST `https://api.outspeed.com/v1/tts/`
 ### Response
 
 - Content-Type: `audio/wav`
-- Body: PCM audio bytes (int16) at 24kHz sample rate (streamed or full file depending on `stream`)
+- Body: Raw PCM audio bytes (little-endian int16), 24kHz, mono. No WAV header is included. Wrap with a WAV header or convert with a tool like ffmpeg.
 
 <Info>
   Authenticate with{" "}
@@ -43,33 +43,55 @@ POST `https://api.outspeed.com/v1/tts/`
 ```bash curl
 curl \
   -X POST \
-  'https://api-janak.internal.outspeed.com/v1/tts/' \
+  'https://api.outspeed.com/v1/tts/' \
   -H 'Authorization: Bearer YOUR_OUTSPEED_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{"voice":"clark","text":"Hello, world!","stream":false}' \
-  --output tts.wav
+  --output tts.pcm
+```
+
+```bash ffmpeg
+# Convert raw PCM16 (24kHz mono) to WAV
+ffmpeg -f s16le -ar 24000 -ac 1 -i tts.pcm tts.wav
 ```
 
 ```bash javascript
 // Node.js 18+
 import fs from "node:fs";
 
-const res = await fetch("https://api-janak.internal.outspeed.com/v1/tts/", {
+function createWavHeader(dataLen, sampleRate = 24000, channels = 1, bitsPerSample = 16) {
+  const header = Buffer.alloc(44);
+  const byteRate = (sampleRate * channels * bitsPerSample) / 8;
+  const blockAlign = (channels * bitsPerSample) / 8;
+  header.write("RIFF", 0);
+  header.writeUInt32LE(36 + dataLen, 4);
+  header.write("WAVE", 8);
+  header.write("fmt ", 12);
+  header.writeUInt32LE(16, 16);
+  header.writeUInt16LE(1, 20);
+  header.writeUInt16LE(channels, 22);
+  header.writeUInt32LE(sampleRate, 24);
+  header.writeUInt32LE(byteRate, 28);
+  header.writeUInt16LE(blockAlign, 32);
+  header.writeUInt16LE(bitsPerSample, 34);
+  header.write("data", 36);
+  header.writeUInt32LE(dataLen, 40);
+  return header;
+}
+
+const res = await fetch("https://api.outspeed.com/v1/tts/", {
   method: "POST",
   headers: {
     Authorization: "Bearer YOUR_OUTSPEED_API_KEY",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({
-    voice: "clark",
-    text: "Hello, world!",
-    stream: false,
-  }),
+  body: JSON.stringify({ voice: "clark", text: "Hello, world!", stream: false }),
 });
 
 if (!res.ok) throw new Error(`TTS failed: ${res.status}`);
-const buf = Buffer.from(await res.arrayBuffer());
-fs.writeFileSync("tts.wav", buf);
+const pcm = Buffer.from(await res.arrayBuffer());
+const header = createWavHeader(pcm.length);
+fs.writeFileSync("tts.wav", Buffer.concat([header, pcm]));
 ```
 
 </CodeGroup>
@@ -81,20 +103,45 @@ fs.writeFileSync("tts.wav", buf);
 ```bash curl
 curl \
   -X POST \
-  'https://api-janak.internal.outspeed.com/v1/tts/' \
+  'https://api.outspeed.com/v1/tts/' \
   -H 'Authorization: Bearer YOUR_OUTSPEED_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{"voice":"clark","text":"Hello, world!","stream":true}' \
   --no-buffer \
-  --output tts.wav
+  --output tts.pcm
+```
+
+```bash ffmpeg
+# Convert streamed PCM file to WAV
+ffmpeg -f s16le -ar 24000 -ac 1 -i tts.pcm tts.wav
 ```
 
 ```bash javascript
-// Node.js 18+ streaming to file
+// Node.js 18+ (gather streamed PCM, then write WAV)
 import fs from "node:fs";
-import { Readable, Writable } from "node:stream";
+import { Readable } from "node:stream";
 
-const res = await fetch("https://api-janak.internal.outspeed.com/v1/tts/", {
+function createWavHeader(dataLen, sampleRate = 24000, channels = 1, bitsPerSample = 16) {
+  const header = Buffer.alloc(44);
+  const byteRate = (sampleRate * channels * bitsPerSample) / 8;
+  const blockAlign = (channels * bitsPerSample) / 8;
+  header.write("RIFF", 0);
+  header.writeUInt32LE(36 + dataLen, 4);
+  header.write("WAVE", 8);
+  header.write("fmt ", 12);
+  header.writeUInt32LE(16, 16);
+  header.writeUInt16LE(1, 20);
+  header.writeUInt16LE(channels, 22);
+  header.writeUInt32LE(sampleRate, 24);
+  header.writeUInt32LE(byteRate, 28);
+  header.writeUInt16LE(blockAlign, 32);
+  header.writeUInt16LE(bitsPerSample, 34);
+  header.write("data", 36);
+  header.writeUInt32LE(dataLen, 40);
+  return header;
+}
+
+const res = await fetch("https://api.outspeed.com/v1/tts/", {
   method: "POST",
   headers: {
     Authorization: "Bearer YOUR_OUTSPEED_API_KEY",
@@ -105,12 +152,11 @@ const res = await fetch("https://api-janak.internal.outspeed.com/v1/tts/", {
 
 if (!res.ok || !res.body) throw new Error(`TTS failed: ${res.status}`);
 const nodeReadable = Readable.fromWeb(res.body);
-const file = fs.createWriteStream("tts.wav");
-await new Promise((resolve, reject) => {
-  nodeReadable.pipe(file);
-  file.on("finish", resolve);
-  file.on("error", reject);
-});
+const chunks = [];
+for await (const chunk of nodeReadable) chunks.push(chunk);
+const pcm = Buffer.concat(chunks);
+const header = createWavHeader(pcm.length);
+fs.writeFileSync("tts.wav", Buffer.concat([header, pcm]));
 ```
 
 </CodeGroup>
