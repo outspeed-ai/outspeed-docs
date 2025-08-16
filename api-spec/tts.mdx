@@ -1,0 +1,115 @@
+---
+title: "Text-to-Speech (HTTP)"
+description: "Generate WAV audio from text using the HTTP TTS endpoint."
+---
+
+## Overview
+
+POST text and a voice to the TTS endpoint to receive a WAV audio response. Include your API key via the `Authorization` header.
+
+## Endpoint
+
+POST `https://api.outspeed.com/v1/tts/`
+
+### Request Body
+
+```json
+{
+  "voice": "clark",
+  "text": "Hello, world!",
+  "stream": false
+}
+```
+
+- **voice**: the voice identifier
+- **text**: the text to synthesize
+- **stream**: set to `true` to stream audio chunks; `false` returns the full WAV
+
+### Response
+
+- Content-Type: `audio/wav`
+- Body: WAV audio bytes (streamed or full file depending on `stream`)
+
+<Info>
+  Authenticate with{" "}
+  <code>Authorization: Bearer &lt;YOUR_OUTSPEED_API_KEY&gt;</code>.
+</Info>
+
+## Examples (non‑streaming)
+
+<CodeGroup>
+
+```bash curl
+curl \
+  -X POST \
+  'https://api-janak.internal.outspeed.com/v1/tts/' \
+  -H 'Authorization: Bearer YOUR_OUTSPEED_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{"voice":"clark","text":"Hello, world!","stream":false}' \
+  --output tts.wav
+```
+
+```javascript
+// Node.js 18+
+import fs from "node:fs";
+
+const res = await fetch("https://api-janak.internal.outspeed.com/v1/tts/", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer YOUR_OUTSPEED_API_KEY",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    voice: "clark",
+    text: "Hello, world!",
+    stream: false,
+  }),
+});
+
+if (!res.ok) throw new Error(`TTS failed: ${res.status}`);
+const buf = Buffer.from(await res.arrayBuffer());
+fs.writeFileSync("tts.wav", buf);
+```
+
+</CodeGroup>
+
+## Examples (streaming)
+
+<CodeGroup>
+
+```bash curl
+curl \
+  -X POST \
+  'https://api-janak.internal.outspeed.com/v1/tts/' \
+  -H 'Authorization: Bearer YOUR_OUTSPEED_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{"voice":"clark","text":"Hello, world!","stream":true}' \
+  --no-buffer \
+  --output tts.wav
+```
+
+```javascript
+// Node.js 18+ streaming to file
+import fs from "node:fs";
+import { Readable, Writable } from "node:stream";
+
+const res = await fetch("https://api-janak.internal.outspeed.com/v1/tts/", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer YOUR_OUTSPEED_API_KEY",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ voice: "clark", text: "Hello, world!", stream: true }),
+});
+
+if (!res.ok || !res.body) throw new Error(`TTS failed: ${res.status}`);
+const nodeReadable = Readable.fromWeb(res.body);
+const file = fs.createWriteStream("tts.wav");
+await new Promise((resolve, reject) => {
+  nodeReadable.pipe(file);
+  file.on("finish", resolve);
+  file.on("error", reject);
+});
+```
+
+</CodeGroup>
