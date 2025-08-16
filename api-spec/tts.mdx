@@ -50,11 +50,6 @@ curl \
   --output tts.pcm
 ```
 
-```bash ffmpeg
-# Convert raw PCM16 (24kHz mono) to WAV
-ffmpeg -f s16le -ar 24000 -ac 1 -i tts.pcm tts.wav
-```
-
 ```bash javascript
 // Node.js 18+
 import fs from "node:fs";
@@ -109,11 +104,6 @@ curl \
   -d '{"voice":"clark","text":"Hello, world!","stream":true}' \
   --no-buffer \
   --output tts.pcm
-```
-
-```bash ffmpeg
-# Convert streamed PCM file to WAV
-ffmpeg -f s16le -ar 24000 -ac 1 -i tts.pcm tts.wav
 ```
 
 ```bash javascript
