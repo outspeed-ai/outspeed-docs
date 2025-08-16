@@ -1,0 +1,123 @@
+---
+title: "Text-to-Speech (HTTP)"
+description: "Generate WAV audio from text using the HTTP TTS endpoint."
+---
+
+## Overview
+
+POST text and a voice to the TTS endpoint to receive a WAV audio response. Include your API key via the `Authorization` header.
+
+## Endpoint
+
+POST `https://api.outspeed.com/v1/tts/`
+
+### Request Body
+
+```json
+{
+  "voice": "clark",
+  "text": "Hello, world!",
+  "stream": false
+}
+```
+
+- **voice**: the voice identifier.
+  - Available voices: "linda", "aria", "kate", "jasmine", "emily", "isabella", "clark"
+- **text**: the text to synthesize
+- **stream**: set to `true` to stream audio chunks; `false` returns the full WAV
+
+### Response
+
+- Content-Type: `audio/wav`
+- Body: Raw PCM audio bytes (little-endian int16), 24kHz, mono. No WAV header is included. Wrap with a WAV header or convert with a tool like ffmpeg.
+
+<Info>
+  Authenticate with{" "}
+  <code>Authorization: Bearer &lt;YOUR_OUTSPEED_API_KEY&gt;</code>.
+</Info>
+
+## Examples (non‑streaming)
+
+<CodeGroup>
+
+```bash curl
+curl \
+  -X POST \
+  'https://api.outspeed.com/v1/tts/' \
+  -H 'Authorization: Bearer YOUR_OUTSPEED_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{"voice":"clark","text":"Hello, world!","stream":false}' \
+  --output tts.pcm
+```
+
+```bash javascript
+// Node.js 18+
+
+//Use a WAV helper library to write a proper WAV file from PCM:
+//npm install wav
+
+import wav from "wav";
+
+const res = await fetch("https://api.outspeed.com/v1/tts/", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer YOUR_OUTSPEED_API_KEY",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ voice: "clark", text: "Hello, world!", stream: false }),
+});
+
+if (!res.ok) throw new Error(`TTS failed: ${res.status}`);
+const pcm = Buffer.from(await res.arrayBuffer());
+const writer = new wav.FileWriter("tts.wav", { channels: 1, sampleRate: 24000, bitDepth: 16 });
+writer.write(pcm);
+writer.end();
+```
+
+</CodeGroup>
+
+## Examples (streaming)
+
+<CodeGroup>
+
+```bash curl
+curl \
+  -X POST \
+  'https://api.outspeed.com/v1/tts/' \
+  -H 'Authorization: Bearer YOUR_OUTSPEED_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{"voice":"clark","text":"Hello, world!","stream":true}' \
+  --no-buffer \
+  --output tts.pcm
+```
+
+```bash javascript
+// Node.js 18+ (streaming)
+
+//Use a WAV helper library to write a proper WAV file from PCM:
+//npm install wav
+
+import { Readable } from "node:stream";
+import wav from "wav";
+
+const res = await fetch("https://api.outspeed.com/v1/tts/", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer YOUR_OUTSPEED_API_KEY",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ voice: "clark", text: "Hello, world!", stream: true }),
+});
+
+if (!res.ok || !res.body) throw new Error(`TTS failed: ${res.status}`);
+const nodeReadable = Readable.fromWeb(res.body);
+const writer = new wav.FileWriter("tts.wav", { channels: 1, sampleRate: 24000, bitDepth: 16 });
+await new Promise((resolve, reject) => {
+  nodeReadable.pipe(writer);
+  writer.on("finish", resolve);
+  writer.on("error", reject);
+  nodeReadable.on("error", reject);
+});
+```
+
+</CodeGroup>
