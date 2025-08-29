@@ -6,29 +6,36 @@ description: "Available voices for Outspeed voice agents"
 
 ## Overview
 
-You can use the following voices in your voice agents:
+## Standard Voices
 
-## Stable Voices
-- sophie
-- savannah
-- brooke
-- zia
-- corinne
-- david
-- griffin
-- carson
-- ethan
+- sophie `en`
+- savannah `en`
+- brooke `en`
+- zia `en`
+- corinne `en`
+- david `en`
+- griffin `en`
+- carson `en`
+- ethan `en`
+- apoorva `hi`
+- ishan `hi`
 
 ## Beta Voices
-- clark _(beta)_
-- linda _(beta)_
 
 <Note>Beta voices are still being improved.</Note>
+
+- clark `en`
+- linda `en`
+- isabella `en`
+- emily `en`
+- aria `en`
+- jasmine `en`
 
 ## Usage
 
 Use these voice names in your session configuration:
 
+#### JavaScript
 ```javascript
 const sessionConfig = {
   // rest of config...
@@ -36,6 +43,7 @@ const sessionConfig = {
 };
 ```
 
+#### Swift
 ```swift
 let ttsConfig = OutspeedSDK.TTSConfig(voiceId: "sophie")
 ``` 
