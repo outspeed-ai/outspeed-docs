@@ -43,6 +43,7 @@
               "features/context-management",
               "features/voices",
               "features/send-text",
+              "features/speak",
               "features/input-language"
             ]
           }
@@ -57,10 +58,7 @@
           },
           {
             "group": "iOS",
-            "pages": [
-              "iOS/outspeed-swift-getting-started",
-              "iOS/outspeed-swift-elevenlabs"
-            ]
+            "pages": ["iOS/outspeed-swift-getting-started", "iOS/outspeed-swift-elevenlabs"]
           }
         ]
       },
@@ -69,12 +67,7 @@
         "groups": [
           {
             "group": "API Reference",
-            "pages": [
-              "api-spec/live-api",
-              "api-spec/client",
-              "api-spec/server",
-              "api-spec/tts"
-            ]
+            "pages": ["api-spec/live-api", "api-spec/client", "api-spec/server", "api-spec/tts"]
           },
           {
             "group": "Compatibility",
