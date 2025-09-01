@@ -21,6 +21,8 @@ const conversation = useConversation({});
 await conversation.sendText("What's the weather like?");
 ```
 
+<Note>`sendText` will generate a response only if the model is currently **not** generating anything.</Note>
+
 ## Using Events
 
 To send a text message, you need to send two events:
@@ -79,4 +81,41 @@ function ChatInput() {
     </form>
   );
 }
+```
+
+## Important Notes
+
+### Concurrent sendText Calls
+
+`sendText` will generate a response only if the model is currently not generating anything.
+
+If you simultaneously call two `sendText` methods, the first one would trigger an AI response, and the second one would fail with an error event:
+
+```json
+{
+  "event_id": "b5ea58f4-8dfe-4590-959c-0c85ef108b9b",
+  "type": "error",
+  "server_sent": true,
+  "created_at_": 1756734784.1917815,
+  "error": {
+    "type": "invalid_request_error",
+    "code": "conversation_already_has_active_response",
+    "message": "Conversation already has an active response",
+    "param": null,
+    "event_id": null
+  }
+}
+```
+
+### Handling the Error
+
+```typescript
+const conversation = useConversation({
+  onError: (error) => {
+    if (error.code === "conversation_already_has_active_response") {
+      console.log("AI is currently responding, please wait");
+      // Show user feedback or queue the message
+    }
+  },
+});
 ```
