@@ -1,0 +1,107 @@
+---
+title: "Speak"
+description: "Make the AI agent speak specific text directly"
+---
+
+## Overview
+
+The `speak` method allows you to make the AI agent speak specific text directly, without any processing. It's basically Text-to-Speech.
+
+## Using speak Method
+
+The React SDK provides a `speak` method on the conversation object:
+
+```typescript
+import { useConversation } from "@outspeed/react";
+
+// Inside a React component
+const conversation = useConversation({});
+
+// Make the agent speak specific text
+await conversation.speak("Hey there, I'm Perry from Outspeed! How can I help you today?");
+```
+
+<Note>The text will be added to the context as a message item.</Note>
+
+## Key Differences
+
+| Method | Purpose | Behavior |
+|--------|---------|----------|
+| `sendText()` | Send user message | AI processes the message and generates a response |
+| `speak()` | Direct speech output | AI speaks the exact text provided without processing |
+
+## Example Usage
+
+```typescript
+function VoiceAnnouncements() {
+  const conversation = useConversation({});
+
+  const makeAnnouncement = async (text: string) => {
+    try {
+      await conversation.speak(text);
+    } catch (error) {
+      console.error("Failed to speak:", error);
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={() => makeAnnouncement("Welcome to our service!")}>
+        Welcome Message
+      </button>
+      
+      <button onClick={() => makeAnnouncement("Please hold while we connect you.")}>
+        Hold Message
+      </button>
+      
+      <button onClick={() => makeAnnouncement("Thank you for using Outspeed!")}>
+        Thank You Message
+      </button>
+    </div>
+  );
+}
+```
+
+## Common Use Cases
+
+- **System announcements**: Status updates or notifications
+- **Predefined responses**: Quick replies without AI processing
+- **Error messages**: Speaking error states directly
+- **Welcome messages**: Greeting users with specific text
+- **Instructions**: Providing step-by-step guidance
+
+## Complete Example
+
+```typescript
+function CustomerService() {
+  const [isOnHold, setIsOnHold] = useState(false);
+  const conversation = useConversation({});
+
+  const putOnHold = async () => {
+    setIsOnHold(true);
+    await conversation.speak("Please hold while I transfer you to a specialist. This may take a few moments.");
+  };
+
+  const removeFromHold = async () => {
+    setIsOnHold(false);
+    await conversation.speak("Thank you for holding. How can I assist you today?");
+  };
+
+  const endCall = async () => {
+    await conversation.speak("Thank you for contacting us. Have a great day!");
+    await conversation.endSession();
+  };
+
+  return (
+    <div>
+      {isOnHold ? (
+        <button onClick={removeFromHold}>Take Off Hold</button>
+      ) : (
+        <button onClick={putOnHold}>Put On Hold</button>
+      )}
+      
+      <button onClick={endCall}>End Call</button>
+    </div>
+  );
+}
+```
