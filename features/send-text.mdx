@@ -19,9 +19,31 @@ const conversation = useConversation({});
 
 // Send text and get AI response
 await conversation.sendText("What's the weather like?");
+
+// Cancel ongoing response and send new text
+await conversation.sendText("What's the weather like?", { cancelOngoing: true });
 ```
 
 <Note>`sendText` will generate a response only if the model is currently **not** generating anything.</Note>
+
+## Options
+
+The `sendText` method accepts an optional second parameter with these options:
+
+| Option          | Type    | Default | Description                                                        |
+| --------------- | ------- | ------- | ------------------------------------------------------------------ |
+| `cancelOngoing` | boolean | `false` | Cancel any ongoing response generation before sending the new text |
+
+### Cancel Ongoing Responses
+
+When the AI is generating a response, you can cancel it and send a new message:
+
+```typescript
+// This will cancel any ongoing response and send the new text
+await conversation.sendText("Actually, tell me about the weather in Tokyo instead", {
+  cancelOngoing: true,
+});
+```
 
 ## Using Events
 
@@ -87,9 +109,33 @@ function ChatInput() {
 
 ### Concurrent sendText Calls
 
-`sendText` will generate a response only if the model is currently not generating anything.
+By default, `sendText` will generate a response only if the model is currently not generating anything.
 
-If you simultaneously call two `sendText` methods, the first one would trigger an AI response, and the second one would fail with an error event:
+If you call `sendText` while the AI is responding, you have two options:
+
+**Option 1: Handle the error (default behavior)**
+
+```typescript
+const conversation = useConversation({});
+
+conversation.on("error", (event) => {
+  if (event.error.code === "conversation_already_has_active_response") {
+    console.log("AI is currently responding, please wait");
+    // Show user feedback or queue the message
+  }
+});
+```
+
+**Option 2: Cancel ongoing response**
+
+```typescript
+// This will cancel the current response and send the new message
+await conversation.sendText("New message", { cancelOngoing: true });
+```
+
+### Error Response
+
+If you don't use `cancelOngoing: true`, simultaneous calls will fail with this error:
 
 ```json
 {
@@ -105,17 +151,4 @@ If you simultaneously call two `sendText` methods, the first one would trigger a
     "event_id": null
   }
 }
-```
-
-### Handling the Error
-
-```typescript
-const conversation = useConversation({
-  onError: (error) => {
-    if (error.code === "conversation_already_has_active_response") {
-      console.log("AI is currently responding, please wait");
-      // Show user feedback or queue the message
-    }
-  },
-});
 ```
