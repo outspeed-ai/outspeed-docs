@@ -28,15 +28,18 @@ POST `https://api.outspeed.com/v1/tts/`
 
 ### Response
 
-- Content-Type: `audio/wav`
+- Content-Type: `audio/pcm`
+- Headers:
+  - `X-Sample-Rate`: Sample rate (default: 24000)
+  - `X-Channels`: Number of audio channels (default: 1)
+  - `X-Bit-Depth`: Bit depth (default: 16)
 - Body: Raw PCM audio bytes (little-endian int16), 24kHz, mono. No WAV header is included. Wrap with a WAV header or convert with a tool like ffmpeg.
 
 <Info>
-  Authenticate with{" "}
-  <code>Authorization: Bearer &lt;YOUR_OUTSPEED_API_KEY&gt;</code>.
+  Authenticate with <code>Authorization: Bearer &lt;YOUR_OUTSPEED_API_KEY&gt;</code>.
 </Info>
 
-## Examples (non‑streaming)
+## Examples (non-streaming)
 
 <CodeGroup>
 
