@@ -5,13 +5,18 @@ description: "Configure the language users can speak in during voice conversatio
 
 ## Overview
 
-The `input_language` field in your session configuration allows users to speak in different languages. The AI agent will understand their speech and _respond in English._
+The `input_language` field in your session configuration provides a **hint** about the primary language users will speak.
+However, the model can understand multiple languages simultaneously, regardless of the hint provided.
+The AI agent will understand their speech and respond in the language corresponding to the chosen voice.
 
-<Note>The model will still respond in English, even if the user speaks in a different language.</Note>
+<Note>
+  The response language depends on your chosen voice. See [available voices](/features/voices) for language support. The
+  `input_language` setting is a hint to optimize recognition, but users can speak in any supported language.
+</Note>
 
 ## Supported Languages
 
-Currently supported input languages:
+Currently supported input language hints:
 
 - **en** - English (default)
 - **zh** - Chinese (Mandarin)
@@ -19,14 +24,14 @@ Currently supported input languages:
 
 ## Configuration
 
-Add `input_language` to your session configuration:
+Add `input_language` to your session configuration as a hint for the primary expected language:
 
 ```typescript
 const sessionConfig = {
   model: "outspeed-v1",
   instructions: "You are a helpful assistant.",
   voice: "sophie",
-  input_language: "zh", // User can speak in Chinese
+  input_language: "zh", // Hint: Primary language is Chinese, but users can still switch to English mid-conversation
   turn_detection: {
     type: "semantic_vad",
   },
@@ -45,36 +50,72 @@ const sessionConfig = {
 };
 
 // User speaks: "What's the weather like?"
-// Agent responds: "The weather is sunny and 72°F."
+// Agent responds: "The weather is sunny and 72°F." (English voice responds in English)
 ```
 
-### Chinese (Mandarin)
+### Chinese (Mandarin) with Multilingual Support
 
 ```typescript
 const sessionConfig = {
   // rest of config...
-  input_language: "zh",
+  input_language: "zh", // Hint: Primary language is Chinese, but users can still switch to English mid-conversation
 };
 
 // User speaks: "今天天气怎么样？" (How's the weather today?)
-// Agent responds: "The weather is sunny and 72°F."
+// Agent responds: "The weather is sunny and 72°F." (English voice responds in English)
+
+// User can also mix languages:
+// User speaks: "今天 how are you?"
+// Agent responds: "Hello! I'm doing well, thank you for asking." (English voice responds in English)
 ```
 
-### Hindi
+### Hindi with Multilingual Support
 
 ```typescript
 const sessionConfig = {
   // rest of config...
-  input_language: "hi",
+  voice: "apoorva", // Hindi voice
+  input_language: "hi", // Hint for Hindi, but users can mix languages
 };
 
 // User speaks: "आज मौसम कैसा है?" (How's the weather today?)
-// Agent responds: "The weather is sunny and 72°F."
+// Agent responds: "मौसम धूप है और 72°F है।" (Hindi voice responds in Hindi)
+
+// User can also mix languages:
+// User speaks: "हेलो, सब बढ़िया? Everything is fine?"
+// Agent responds: "हैलो! हाँ, सब कुछ ठीक है। मैं आपकी कैसे मदद कर सकती हूँ?" (Hindi voice responds in Hindi)
+```
+
+## Language Detection
+
+The system automatically detects which languages are spoken in each user input and includes this information in the transcription event:
+
+```json
+{
+  "event_id": "bf03fb6b-1160-411d-b332-f2a97b743d2c",
+  "type": "conversation.item.input_audio_transcription.completed",
+  "server_sent": true,
+  "item_id": "item_5c49066c55c549d29132a467d01e8e3b",
+  "transcript": "हेलो, सब बढ़िया? Everything is fine?",
+  "languages": ["hi", "en"],
+  "content_index": 0
+}
+```
+
+The `languages` array contains all detected languages in the user's input, allowing you to understand the linguistic composition of each utterance.
+
+You can listen to this event to understand the languages spoken in the user's input.
+
+```typescript
+conversation.on("conversation.item.input_audio_transcription.completed", (event) => {
+  console.log("Languages spoken:", event.languages);
+});
 ```
 
 ## Important Notes
 
-- **Input only**: This setting only affects the language users can speak in
-- **English output**: The AI agent will always respond in English
+- **Hint, not restriction**: `input_language` is a hint to optimize recognition, not a limitation
+- **Multilingual support**: Users can speak multiple languages in a single session or even single utterance
+- **Voice-dependent output**: The AI agent responds in the language of the chosen voice (see [available voices](/features/voices))
 - **Default behavior**: Default input language value is `en` for English
-- **Single language**: Each session supports one input language at a time
+- **Language detection**: Each transcription includes detected languages in the `languages` array
