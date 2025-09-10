@@ -1,0 +1,47 @@
+---
+title: "Pronunciation Rules"
+description: "Customize how the AI pronounces specific words and terms"
+---
+
+## Overview
+
+Custom pronunciation rules allow you to control how the AI pronounces specific words, acronyms, and technical terms in its speech output. This is an optional feature.
+
+## Configuration
+
+Add `custom_pronunciation_rules` to your session configuration:
+
+```typescript
+const sessionConfig = {
+  model: "outspeed-v1",
+  instructions: "You are a helpful assistant.",
+  voice: "sophie",
+  custom_pronunciation_rules: [
+    {
+      pattern: "Node.js",
+      pronunciation: "Node JS",
+    },
+    {
+      pattern: "React.js",
+      pronunciation: "React JS",
+    },
+    {
+      pattern: "API",
+      pronunciation: "A P I",
+    },
+  ],
+  // rest of config...
+};
+```
+
+## Common Examples
+
+```typescript
+custom_pronunciation_rules: [
+  { pattern: "AWS", pronunciation: "A W S" },
+  { pattern: "JSON", pronunciation: "Jason" },
+  { pattern: "API", pronunciation: "A P I" },
+  { pattern: "Node.js", pronunciation: "Node JS" },
+  { pattern: "React.js", pronunciation: "React JS" },
+];
+```
