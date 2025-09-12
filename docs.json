@@ -45,6 +45,7 @@
               "features/send-text",
               "features/speak",
               "features/pronunciation",
+              "features/resume-session",
               "features/input-language"
             ]
           }

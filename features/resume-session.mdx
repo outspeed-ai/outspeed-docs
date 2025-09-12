@@ -1,0 +1,86 @@
+---
+title: "Resume Session"
+description: "Continue voice conversations from where they left off"
+---
+
+## Overview
+
+Session resumption allows you to continue voice conversations from where they left off, even after page refreshes or application restarts. This provides a seamless user experience for ongoing conversations.
+
+## How It Works
+
+To resume a session, pass the `resume_session` query parameter when requesting an ephemeral key from your backend.
+
+### Backend Implementation
+
+Update your `/token` endpoint to handle session resumption:
+
+```typescript
+app.post("/token", async (req, res) => {
+  const { resume_session } = req.query; // resume_session is the ID of the session to resume
+  
+  let url = "https://api.outspeed.com/v1/realtime/sessions";
+  if (resume_session) {
+    url += `?resume_session=${resume_session}`;
+  }
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.OUTSPEED_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(req.body),
+  });
+
+  const data = await response.json();
+  res.json(data);
+});
+```
+
+### Frontend Usage
+
+Request an ephemeral key with the session ID to resume:
+
+```typescript
+const getEphemeralKeyFromServer = async (config: SessionConfig, sessionId?: string) => {
+  let url = `${SERVER_URL}/token`;
+  if (sessionId) {
+    url += `?resume_session=${sessionId}`;
+  }
+
+  const tokenResponse = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(config),
+  });
+
+  const data = await tokenResponse.json();
+  return data.client_secret.value;
+};
+
+// Resume existing session
+const ephemeralKey = await getEphemeralKeyFromServer(sessionConfig, "session_123");
+await conversation.startSession(ephemeralKey);
+```
+
+## Context Restoration
+
+When a session is resumed, the context is restored and you'll receive a `context.restored` event:
+
+```typescript
+conversation.on("context.restored", (event) => {
+  console.log("Context restored with items:", event.items);
+  // Handle restored conversation items
+  event.items.forEach(item => {
+    console.log(`${item.role}: ${item.content}`);
+  });
+});
+```
+
+## Use Cases
+
+- **Page refreshes**: Continue conversations after accidental refreshes
+- **Application restarts**: Resume conversations across app sessions
+- **Multi-device**: Continue conversations on different devices
+
