@@ -49,7 +49,9 @@ export default function VoiceChat() {
     try {
       setIsConnecting(true);
       const ephemeralKey = await getEphemeralKeyFromServer(sessionConfig);
-      await conversation.startSession(ephemeralKey);
+      await conversation.startSession(ephemeralKey, {
+        source: "react-example" // Optional: custom string to identify session source
+      });
 
       // Listen for session creation event
       conversation.on("session.created", (event) => {
