@@ -1,0 +1,84 @@
+---
+title: "Auto Reconnection"
+description: "Handle connection drops on mobile browsers when app goes to background"
+---
+
+## Overview
+
+Mobile browsers have privacy protections that affect voice conversations when your app goes to the background.
+
+<Note>
+  **Context is preserved**: When auto-reconnection happens, your conversation context and history are automatically
+  restored. You don't need to worry about losing the conversation state.
+</Note>
+
+## What Happens on Mobile
+
+### 1. App Goes to Background
+
+When users switch apps or lock their phone:
+
+- **Microphone access is revoked** within seconds (privacy protection)
+- User's voice won't reach the AI, even though connection appears active
+- WebRTC connection may drop after extended background time
+
+### 2. App Returns to Foreground
+
+When users return to your app:
+
+- SDK automatically attempts to reconnect
+- Microphone permissions are restored
+- Conversation resumes seamlessly
+
+## Handling Reconnection
+
+### Listen for Connection State Changes
+
+```typescript
+const conversation = useConversation({
+  onStatusChange: (status) => {
+    // Status values: "connected" | "connecting" | "disconnecting" | "disconnected" | "reconnecting"
+
+    if (status === "reconnecting") {
+      // Show "Reconnecting..." message to user
+      showReconnectingIndicator();
+    } else if (status === "connected") {
+      // Hide loading indicators
+      hideReconnectingIndicator();
+    }
+  },
+});
+```
+
+### Detect New vs Reconnected Sessions
+
+Use the `session.created` event to know if this is a fresh start or reconnection:
+
+```typescript
+conversation.on("session.created", (event) => {
+  if (event.run_id === 0) {
+    // This is a brand new session
+    console.log("New conversation started");
+  } else {
+    // This is a reconnection (run_id will be 1, 2, 3, etc.)
+    console.log(`Reconnected - Run #${event.run_id}`);
+    // showToast("Connection restored!");
+  }
+});
+```
+
+## Best Practices
+
+### User Experience
+
+- **Show clear status**: Use visual indicators for connection states
+- **Inform about background**: Educate users that voice won't work in background due to privacy restrictions
+- **Seamless return**: Make reconnection feel automatic and smooth
+
+## Summary
+
+1. **Mobile browsers revoke mic access** when app goes to background
+2. **SDK auto-reconnects** when app returns to foreground
+3. **Use `onStatusChange`** to show connection status to users
+4. **Use `session.created` with `run_id`** to detect new vs reconnected sessions
+5. **Provide clear visual feedback** so users understand what's happening
