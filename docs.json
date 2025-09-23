@@ -24,7 +24,7 @@
         "groups": [
           {
             "group": "Get Started",
-            "pages": ["get-started/quickstart", "get-started/templates"]
+            "pages": ["get-started/quickstart", "get-started/authentication", "get-started/templates"]
           },
           {
             "group": "Tools",
