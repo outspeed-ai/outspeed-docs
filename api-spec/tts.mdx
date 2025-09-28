@@ -15,14 +15,15 @@ POST `https://api.outspeed.com/v1/tts/`
 
 ```json
 {
+  "model": "outspeed-tts-v1",
   "voice": "clark",
   "text": "Hello, world!",
   "stream": false
 }
 ```
 
-- **voice**: the voice identifier.
-  - Available voices: "linda", "aria", "kate", "jasmine", "emily", "isabella", "clark"
+- **model**: TTS model to use. Options: `outspeed-tts-v1`, `outspeed-tts-v2`
+- **voice**: the voice identifier. Find all available voices and their models at [TTS Playground](https://dashboard.outspeed.com/tts)
 - **text**: the text to synthesize
 - **stream**: set to `true` to stream audio chunks; `false` returns the full WAV
 
@@ -49,7 +50,7 @@ curl \
   'https://api.outspeed.com/v1/tts/' \
   -H 'Authorization: Bearer YOUR_OUTSPEED_API_KEY' \
   -H 'Content-Type: application/json' \
-  -d '{"voice":"clark","text":"Hello, world!","stream":false}' \
+  -d '{"model":"outspeed-tts-v1","voice":"clark","text":"Hello, world!","stream":false}' \
   --output tts.pcm
 ```
 
@@ -67,7 +68,7 @@ const res = await fetch("https://api.outspeed.com/v1/tts/", {
     Authorization: "Bearer YOUR_OUTSPEED_API_KEY",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ voice: "clark", text: "Hello, world!", stream: false }),
+  body: JSON.stringify({ model: "outspeed-tts-v1", voice: "clark", text: "Hello, world!", stream: false }),
 });
 
 if (!res.ok) throw new Error(`TTS failed: ${res.status}`);
@@ -89,7 +90,7 @@ curl \
   'https://api.outspeed.com/v1/tts/' \
   -H 'Authorization: Bearer YOUR_OUTSPEED_API_KEY' \
   -H 'Content-Type: application/json' \
-  -d '{"voice":"clark","text":"Hello, world!","stream":true}' \
+  -d '{"model":"outspeed-tts-v1","voice":"clark","text":"Hello, world!","stream":true}' \
   --no-buffer \
   --output tts.pcm
 ```
@@ -109,7 +110,7 @@ const res = await fetch("https://api.outspeed.com/v1/tts/", {
     Authorization: "Bearer YOUR_OUTSPEED_API_KEY",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ voice: "clark", text: "Hello, world!", stream: true }),
+  body: JSON.stringify({ model: "outspeed-tts-v1", voice: "clark", text: "Hello, world!", stream: true }),
 });
 
 if (!res.ok || !res.body) throw new Error(`TTS failed: ${res.status}`);
