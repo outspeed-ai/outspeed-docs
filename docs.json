@@ -108,7 +108,7 @@
     "primary": {
       "type": "button",
       "label": "Get API Key",
-      "href": "https://cal.com/outspeed/early-access"
+      "href": "https://dashboard.outspeed.com/api-keys"
     }
   },
   "footer": {
