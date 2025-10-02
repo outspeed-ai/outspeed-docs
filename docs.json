@@ -42,6 +42,7 @@
               "features/speak-first",
               "features/context-management",
               "features/voices",
+              "features/voice-cloning",
               "features/send-text",
               "features/auto-reconnection",
               "features/speak",

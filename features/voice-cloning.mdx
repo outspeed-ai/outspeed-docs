@@ -1,0 +1,65 @@
+---
+title: "Voice Cloning"
+description: "Create custom AI voices from audio samples"
+---
+
+## Overview
+
+Voice cloning allows you to create highly realistic custom AI voices from your own audio samples. This enables a personalized and branded voice experience for your applications.
+
+1. **Upload Audio**: Provide clear audio samples of the voice you want to clone
+2. **Generate Voice**: Outspeed's AI processes the samples to create a new voice
+3. **Use in Apps**: Integrate your custom voice into your agents and TTS requests
+
+<Note>Cloned voices are currently only available for use with our [Text-to-Speech (TTS) API](/api-spec/tts).</Note>
+
+## Getting Started
+
+1. **Visit Dashboard**: Go to the [Voice Upload page](https://dashboard.outspeed.com/tts/upload-voice) in your Outspeed Dashboard
+2. **Upload Samples**: Follow the instructions to upload your audio files
+3. **Create Voice**: Once processed, your new voice will be available to use
+4. **Copy Voice ID**: Copy the generated Voice ID for use in your code
+
+## Audio Requirements
+
+- **Length**: Minimum 10 seconds of clear speech
+- **Size**: Maximum 3 MB
+- **Quality**: High-quality audio (e.g., studio recording, no background noise)
+- **Format**: Only WAV files are supported
+- **Content**: Natural speech, varied tone and pitch
+
+<Warning>
+  **Do not upload copyrighted material or impersonate individuals without consent.** Ensure you have the necessary
+  rights for all uploaded audio.
+</Warning>
+
+## Usage
+
+Once you have your custom Voice ID, use it with our [Text-to-Speech (HTTP)](/api-spec/tts):
+
+### In TTS API Requests
+
+```json
+{
+  "model": "outspeed-tts-v2",
+  "voice": "your-custom-voice-id",
+  "text": "This is my custom voice."
+}
+```
+
+### In Dialogue Generation
+
+```json
+{
+  "model": "outspeed-tts-v2",
+  "text": "*Narrator:* This is my custom voice. Character: Hello!",
+  "speaker_voice": "your-custom-voice-id",
+  "narrator_voice": "another-custom-voice-id"
+}
+```
+
+## Best Practices
+
+- **High-quality audio**: Crucial for best results
+- **Consent**: Always obtain consent if cloning a real person's voice
+- **Monitor usage**: Track how your custom voices perform in real applications
