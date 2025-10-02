@@ -43,6 +43,7 @@
               "features/context-management",
               "features/voices",
               "features/send-text",
+              "features/webhooks",
               "features/auto-reconnection",
               "features/speak",
               "features/pronunciation",
