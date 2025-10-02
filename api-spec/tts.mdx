@@ -5,9 +5,12 @@ description: "Generate WAV audio from text using the HTTP TTS endpoint."
 
 ## Overview
 
-POST text and a voice to the TTS endpoint to receive a WAV audio response. Include your API key via the `Authorization` header.
+Generate audio from text using our TTS endpoints. We support both single-voice and multi-voice dialogue generation.
 
-## Endpoint
+- **Single Voice TTS**: Convert text to speech with one voice
+- **Dialogue Generation**: Mix narrator and character voices in the same audio file
+
+## Single Voice TTS
 
 POST `https://api.outspeed.com/v1/tts/`
 
@@ -15,14 +18,14 @@ POST `https://api.outspeed.com/v1/tts/`
 
 ```json
 {
-  "model": "outspeed-tts-v1",
+  "model": "outspeed-tts-v2",
   "voice": "clark",
   "text": "Hello, world!",
   "stream": false
 }
 ```
 
-- **model**: TTS model to use. Options: `outspeed-tts-v1`, `outspeed-tts-v2`
+- **model**: TTS model to use. Use `outspeed-tts-v2` (`outspeed-tts-v1` is deprecated)
 - **voice**: the voice identifier. Find all available voices and their models at [TTS Playground](https://dashboard.outspeed.com/tts)
 - **text**: the text to synthesize
 - **stream**: set to `true` to stream audio chunks; `false` returns the full WAV
@@ -50,7 +53,7 @@ curl \
   'https://api.outspeed.com/v1/tts/' \
   -H 'Authorization: Bearer YOUR_OUTSPEED_API_KEY' \
   -H 'Content-Type: application/json' \
-  -d '{"model":"outspeed-tts-v1","voice":"clark","text":"Hello, world!","stream":false}' \
+  -d '{"model":"outspeed-tts-v2","voice":"clark","text":"Hello, world!","stream":false}' \
   --output tts.pcm
 ```
 
@@ -68,7 +71,7 @@ const res = await fetch("https://api.outspeed.com/v1/tts/", {
     Authorization: "Bearer YOUR_OUTSPEED_API_KEY",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ model: "outspeed-tts-v1", voice: "clark", text: "Hello, world!", stream: false }),
+  body: JSON.stringify({ model: "outspeed-tts-v2", voice: "clark", text: "Hello, world!", stream: false }),
 });
 
 if (!res.ok) throw new Error(`TTS failed: ${res.status}`);
@@ -90,7 +93,7 @@ curl \
   'https://api.outspeed.com/v1/tts/' \
   -H 'Authorization: Bearer YOUR_OUTSPEED_API_KEY' \
   -H 'Content-Type: application/json' \
-  -d '{"model":"outspeed-tts-v1","voice":"clark","text":"Hello, world!","stream":true}' \
+  -d '{"model":"outspeed-tts-v2","voice":"clark","text":"Hello, world!","stream":true}' \
   --no-buffer \
   --output tts.pcm
 ```
@@ -110,7 +113,7 @@ const res = await fetch("https://api.outspeed.com/v1/tts/", {
     Authorization: "Bearer YOUR_OUTSPEED_API_KEY",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ model: "outspeed-tts-v1", voice: "clark", text: "Hello, world!", stream: true }),
+  body: JSON.stringify({ model: "outspeed-tts-v2", voice: "clark", text: "Hello, world!", stream: true }),
 });
 
 if (!res.ok || !res.body) throw new Error(`TTS failed: ${res.status}`);
@@ -125,3 +128,82 @@ await new Promise((resolve, reject) => {
 ```
 
 </CodeGroup>
+
+## Dialogue Generation
+
+Generate audio with multiple voices (narrator + character) using the `outspeed-tts-v2` model.
+
+<Note>Try it visually at the [Dialogue Playground](https://dashboard.outspeed.com/tts/dialogue)</Note>
+
+### Endpoint
+
+POST `https://api.outspeed.com/v1/tts/dialogue`
+
+### Request Body
+
+```json
+{
+  "model": "outspeed-tts-v2",
+  "text": "*The old library stood silent.* I pushed open the heavy door. *Inside, dust particles danced in my flashlight beam.*",
+  "speaker_voice": "9c5c73f4-1cb7-46cf-91d8-24c80b6288f0",
+  "narrator_voice": "a42c84b2-0e6b-4c9f-a8e7-3f5d1c2e8a9b",
+  "narrator_delimiter": "*"
+}
+```
+
+### Parameters
+
+| Parameter            | Type   | Required | Description                                         |
+| -------------------- | ------ | -------- | --------------------------------------------------- |
+| `model`              | string | Yes      | Must be `outspeed-tts-v2`                           |
+| `text`               | string | Yes      | Dialogue text with delimiters for narrator parts    |
+| `speaker_voice`      | string | Yes      | Voice ID for character dialogue                     |
+| `narrator_voice`     | string | No       | Voice ID for narrator parts (omit to skip narrator) |
+| `narrator_delimiter` | string | No       | Delimiter: `*`, `(`, `[`, or `{` (default: `*`)     |
+
+### Delimiter Usage
+
+- **Text in delimiters** = narrator voice
+- **Text outside delimiters** = character voice
+
+Supported delimiters:
+
+- `*` → `*narrator text*`
+- `(` → `(narrator text)`
+- `[` → `[narrator text]`
+- `{` → `{narrator text}`
+
+### Examples
+
+<CodeGroup>
+
+```bash Audiobook Style
+curl -X POST https://api.outspeed.com/v1/tts/dialogue \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "outspeed-tts-v2",
+    "text": "*The old library stood silent.* I pushed open the heavy door. *Inside, dust particles danced in my flashlight beam.*",
+    "speaker_voice": "<voice-id-1>",
+    "narrator_voice": "<voice-id-2>,
+    "narrator_delimiter": "*"
+  }' \
+  --output dialogue.wav
+```
+
+</CodeGroup>
+
+### Voice Selection
+
+Both voices require **voice IDs** (not names). Get voice IDs from:
+
+- [TTS Playground](https://dashboard.outspeed.com/tts) - Browse and copy existing voice IDs
+- [Voice Upload](/features/voice-cloning) - Upload custom voices or create [voice clones](/features/voice-cloning)
+
+### Response
+
+Same as single voice TTS:
+
+- Content-Type: `audio/wav`
+- Headers: `X-Sample-Rate`, `X-Channels`, `X-Bit-Depth`
+- Body: Raw PCM audio bytes
