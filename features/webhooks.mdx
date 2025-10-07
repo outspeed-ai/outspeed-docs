@@ -38,23 +38,23 @@ Every webhook request includes an `X-Outspeed-Signature` header containing an HM
 ```python
 import hmac
 import hashlib
-import json
+from typing import Union
 
-def verify_webhook(payload_body, signature_header, webhook_secret):
-    # Generate expected signature
-    payload_str = json.dumps(payload_body, separators=(',', ':'), sort_keys=True)
+def verify_webhook(raw_body: Union[str, bytes], signature_header: str, webhook_secret: str) -> bool:
+    # Generate expected signature from raw body
     expected_signature = "sha256=" + hmac.new(
         webhook_secret.encode(),
-        payload_str.encode(),
+        raw_body.encode() if isinstance(raw_body, str) else raw_body,
         hashlib.sha256
     ).hexdigest()
 
     # Compare signatures (timing-safe comparison)
     return hmac.compare_digest(expected_signature, signature_header)
 
-# Usage
+# Usage (example with any FastAPI)
 signature = request.headers.get('X-Outspeed-Signature')
-is_valid = verify_webhook(request.json, signature, 'whsec_your_secret_here')
+raw_body = await request.body()  # Get raw body bytes
+is_valid = verify_webhook(raw_body, signature, 'whsec_your_secret_here')
 ```
 
 **Security Best Practices:**
@@ -199,7 +199,7 @@ Content-Type: application/json
 ### Signature Verification Fails
 
 - Ensure you're using the correct secret (from creation time)
-- Verify payload serialization matches exactly: `separators=(',', ':'), sort_keys=True`
+- **CRITICAL**: Use the raw request body for verification, not the parsed JSON
 - Check for middleware that modifies the request body before verification
 
 ### Webhook Timeouts
@@ -254,18 +254,22 @@ User-Agent: Outspeed-Webhooks/1.0
 ```javascript Node.js/Express
 const express = require("express");
 const crypto = require("crypto");
+const bodyParser = require('body-parser');
 
-app.post("/webhook", express.json(), (req, res) => {
+// Ensure express js is parsing the RAW body
+app.use(bodyParser.raw({ type: '*/*' }));
+
+app.post("/webhook", (req, res) => {
   const signature = req.headers["x-outspeed-signature"];
-  const payload = req.body;
+  const rawBody = req.body; // Raw body is now available via req.body
+  const payload = JSON.parse(rawBody.toString()); // Parse the raw body to get the payload object
 
   // 1. Verify signature
-  const payloadStr = JSON.stringify(payload);
   const expectedSig =
-    "sha256=" + crypto.createHmac("sha256", process.env.WEBHOOK_SECRET).update(payloadStr).digest("hex");
+    "sha256=" + crypto.createHmac("sha256", process.env.WEBHOOK_SECRET).update(rawBody).digest("hex");
 
   if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSig))) {
-    return res.status(401).json({ error: "Invalid signature" });
+      return res.status(401).json({ error: "Invalid signature" });
   }
 
   // 2. Check timestamp (prevent replay attacks)
@@ -309,25 +313,27 @@ WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET")
 @app.post("/webhook")
 async def webhook(request: Request):
     signature = request.headers.get("X-Outspeed-Signature")
-    payload = await request.json()
+    raw_payload = await request.body()  # Get raw body as bytes
 
-    # 1. Verify signature
-    payload_str = json.dumps(payload, separators=(',', ':'), sort_keys=True)
+    # 1. Verify signature using raw bytes
     expected_sig = 'sha256=' + hmac.new(
         WEBHOOK_SECRET.encode(),
-        payload_str.encode(),
+        raw_payload,  # raw_payload is already bytes, use directly
         hashlib.sha256
     ).hexdigest()
 
     if not hmac.compare_digest(signature, expected_sig):
         raise HTTPException(status_code=401, detail="Invalid signature")
 
-    # 2. Check timestamp
+    # 2. Parse payload after verification
+    payload = json.loads(raw_payload)
+
+    # 3. Check timestamp
     age = time.time() - payload['timestamp']
     if age > 300:
         raise HTTPException(status_code=400, detail="Webhook too old")
 
-    # 3. Respond quickly
+    # 4. Respond quickly
     await process_webhook_async(payload)
     return {"received": True}
 
