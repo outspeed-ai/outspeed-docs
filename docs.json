@@ -44,6 +44,7 @@
               "features/voices",
               "features/voice-cloning",
               "features/send-text",
+              "features/webhooks",
               "features/auto-reconnection",
               "features/speak",
               "features/pronunciation",

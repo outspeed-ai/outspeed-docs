@@ -1,0 +1,437 @@
+---
+title: "Agent Webhooks"
+description: "Receive notifications when voice sessions complete"
+---
+
+## Overview
+
+Webhooks allow you to receive notifications when voice sessions complete. When a session ends, Outspeed automatically sends session data (including the full conversation transcript) to your specified webhook endpoints via HTTP POST requests.
+
+## Use Cases
+
+- **Store conversation transcripts** in your database
+- **Trigger post-call workflows** (CRM updates, follow-up emails, analytics)
+
+## Setup Guide
+
+### 1. Create a Webhook
+
+1. Navigate to your **Agent Detail** page
+2. Click **Edit** in the top-right corner
+3. Scroll to the **Webhooks** section
+4. Enter your webhook URL (must use HTTPS)
+5. Click **Add** button
+6. **⚠️ IMPORTANT**: Copy the webhook secret immediately - it will only be shown once
+
+**Limitations:**
+
+- Maximum 3 webhooks per agent
+- Only HTTPS URLs are accepted (HTTP rejected for security)
+
+### 2. Verify Webhook Signatures (Security)
+
+Every webhook request includes an `X-Outspeed-Signature` header containing an HMAC-SHA256 signature. **Always verify this signature** to ensure requests are authentic.
+
+**Verification Example (Python):**
+
+```python
+import hmac
+import hashlib
+
+def verify_webhook(raw_body: bytes, signature_header: str, webhook_secret: str) -> bool:
+    """
+    Verify webhook signature using HMAC-SHA256.
+
+    Args:
+        raw_body: Raw request body as bytes
+        signature_header: Value from X-Outspeed-Signature header
+        webhook_secret: Webhook secret from Outspeed dashboard
+
+    Returns:
+        True if signature is valid, False otherwise
+    """
+    expected_signature = "sha256=" + hmac.new(
+        webhook_secret.encode(),
+        raw_body,
+        hashlib.sha256
+    ).hexdigest()
+
+    # Timing-safe comparison
+    return hmac.compare_digest(expected_signature, signature_header)
+
+# Usage example
+signature = request.headers.get('X-Outspeed-Signature')
+if not signature:
+    raise HTTPException(status_code=401, detail="Missing signature header")
+
+raw_body = await request.body()
+is_valid = verify_webhook(raw_body, signature, 'whsec_your_secret_here')
+```
+
+**Security Best Practices:**
+
+- Store webhook secrets securely (environment variables, secret manager)
+- Always verify signatures before processing
+- Check timestamp to prevent replay attacks (see below)
+- Never hardcode secrets in your code
+
+## Webhook Payload Structure
+
+```json
+{
+  "event": "session.completed",
+  "session_id": "sess_abc123",
+  "agent_id": "agent_xyz789",
+  "run_id": 0,
+  "timestamp": 1704067200,
+  "user_id": "user_456",
+  "context": [
+    {
+      "role": "user",
+      "content": "Hello, how can you help me?",
+      "timestamp": 1704067150
+    },
+    {
+      "role": "assistant",
+      "content": "I can help you with...",
+      "timestamp": 1704067155
+    }
+  ]
+}
+```
+
+**Field Descriptions:**
+
+| Field        | Type    | Description                                                          |
+| ------------ | ------- | -------------------------------------------------------------------- |
+| `event`      | string  | Always `"session.completed"`                                         |
+| `session_id` | string  | Unique session identifier                                            |
+| `agent_id`   | string  | Agent template used for this session                                 |
+| `run_id`     | integer | Session resume count (0 = first run, 1+ = resumed)                   |
+| `timestamp`  | integer | Unix/POSIX timestamp (seconds since epoch) when webhook was sent     |
+| `user_id`    | string  | User who created the session                                         |
+| `context`    | array   | Full conversation transcript with role, content, and Unix timestamps |
+
+## Replay Attack Prevention
+
+The `timestamp` field is a Unix/POSIX timestamp (seconds since epoch) that allows you to reject old webhook requests:
+
+```python
+import time
+
+def is_recent(webhook_timestamp, tolerance_seconds=600):
+    """Reject webhooks older than 10 minutes"""
+    current_time = int(time.time())
+    age = current_time - webhook_timestamp
+    return age <= tolerance_seconds
+```
+
+**Recommended tolerance**: 600 seconds (10 minutes)
+
+## Webhook Management
+
+### Enable/Disable Webhook
+
+1. Go to Agent Detail page → **Edit mode**
+2. Find the webhook in the Webhooks section
+3. Click **Enable** or **Disable** button
+4. Click **Save Changes** at the top
+
+**Use Case**: Temporarily disable webhooks during maintenance without losing configuration.
+
+### Delete Webhook
+
+1. Go to Agent Detail page → **Edit mode**
+2. Click the **trash icon** next to the webhook
+3. Confirm deletion
+4. Click **Save Changes**
+
+<Warning>Deleting a webhook is permanent. You'll need to create a new webhook and receive a new secret.</Warning>
+
+## Delivery & Retry Behavior
+
+### Retry Policy
+
+- **Maximum 5 attempts** per webhook
+- **Exponential backoff**: 1s, 2s, 4s, 8s between retries
+- **Success criteria**: HTTP status code 2xx (200-299)
+- **Failure criteria**:
+  - Non-2xx status codes
+  - Network timeouts (10 seconds)
+  - Connection errors
+
+### Expected Response
+
+Your webhook endpoint should:
+
+- Respond with **HTTP 200-299** status code
+- Respond within **10 seconds**
+- Return quickly (process data asynchronously if needed)
+
+**Example Response:**
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"received": true}
+```
+
+## Viewing Delivery Logs
+
+### In the Dashboard
+
+1. Go to **Sessions** page
+2. Find a session from your agent
+3. Expand the **Webhook Deliveries** section
+
+**Log Information:**
+
+- ✓/✗ Success or failure indicator
+- Webhook URL
+- HTTP status code
+- Attempt number (1-5)
+- Response time (milliseconds)
+- Timestamp (when delivery was attempted)
+- Full response body (expandable)
+
+**Use Cases:**
+
+- Debug webhook failures
+- Monitor delivery performance
+- Verify webhook is receiving data correctly
+
+## Debugging Webhooks
+
+### Enable Detailed Logging
+
+Add comprehensive logging to help debug webhook issues:
+
+```python
+import logging
+
+logger = logging.getLogger(__name__)
+
+@app.post("/webhook")
+async def webhook(request: Request):
+    logger.info(f"Webhook received at {datetime.now().isoformat()}")
+
+    signature = request.headers.get("X-Outspeed-Signature")
+    if signature:
+        # Mask sensitive data
+        logger.info(f"Signature: {signature[:20]}...{signature[-10:]}")
+    else:
+        logger.warning("Missing X-Outspeed-Signature header")
+
+    raw_payload = await request.body()
+    logger.info(f"Payload size: {len(raw_payload)} bytes")
+
+    payload = json.loads(raw_payload)
+    logger.info(f"Session ID: {payload.get('session_id')}")
+    logger.info(f"Event: {payload.get('event')}")
+    logger.info(f"Messages: {len(payload.get('context', []))}")
+
+    return {"received": True}
+```
+
+### Common Logging Points
+
+- **Request received**: Log timestamp and basic request info
+- **Signature verification**: Log success/failure (not the actual secret)
+- **Timestamp validation**: Log webhook age
+- **Payload processing**: Log session ID and key fields
+- **Errors**: Always log the error type and context
+
+## Troubleshooting
+
+### Webhook Not Receiving Requests
+
+1. **Check webhook is enabled** (green dot in agent detail page)
+2. **Verify HTTPS** - HTTP URLs are rejected
+3. **Check firewall/security rules** - Allow incoming requests from Outspeed
+4. **View delivery logs** - Look for error messages in session webhook deliveries
+5. **Check webhook secret** - Ensure `WEBHOOK_SECRET` environment variable is set
+
+### Signature Verification Fails
+
+- Ensure you're using the correct secret (from creation time)
+- **CRITICAL**: Use the raw request body for verification, not the parsed JSON
+- Check for middleware that modifies the request body before verification
+- Verify the secret doesn't have extra whitespace or newlines
+- Confirm the signature header is being read correctly (case-sensitive)
+
+### Missing Signature Header
+
+If you receive "Missing signature header" errors:
+
+- Check header name is exactly `X-Outspeed-Signature` (case-sensitive)
+- Verify your framework isn't normalizing header names
+- Confirm the request is actually from Outspeed (check delivery logs)
+
+### Webhook Timeouts
+
+- Respond within 10 seconds
+- Process data asynchronously (return 200 immediately, then process)
+- Consider using a queue system for heavy processing
+- Add timeout monitoring to your logs
+
+### Payload Too Large
+
+- Each webhook includes full conversation transcript
+- For very long conversations, consider processing data asynchronously after receiving the webhook
+- Increase your server's max request body size if needed
+
+## Request Headers
+
+Webhook requests from Outspeed include these headers:
+
+```http
+POST /your-webhook-endpoint
+Content-Type: application/json
+X-Outspeed-Signature: sha256=abc123...
+User-Agent: Outspeed-Webhooks/1.0
+```
+
+## Best Practices
+
+### Security
+
+✅ Always verify `X-Outspeed-Signature` header  
+✅ Use HTTPS endpoints only  
+✅ Check timestamp to prevent replay attacks  
+✅ Store secrets securely (never in code)
+
+### Reliability
+
+✅ Respond with 2xx status code quickly  
+✅ Process data asynchronously  
+✅ Implement idempotency (same webhook may arrive twice)  
+✅ Log all webhook receipts for debugging  
+✅ Use `session_id` as idempotency key
+
+
+## Example Implementation
+
+<CodeGroup>
+
+```javascript Node.js/Express
+const express = require("express");
+const crypto = require("crypto");
+const bodyParser = require("body-parser");
+
+const app = express();
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+
+// Parse raw body (required for signature verification)
+app.use(bodyParser.raw({ type: "*/*" }));
+
+app.post("/webhook", (req, res) => {
+  const signature = req.headers["x-outspeed-signature"];
+
+  if (!signature) {
+    return res.status(401).json({ error: "Missing signature header" });
+  }
+
+  const rawBody = req.body;
+
+  // Verify signature
+  const expectedSig = "sha256=" + crypto.createHmac("sha256", WEBHOOK_SECRET).update(rawBody).digest("hex");
+
+  if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSig))) {
+    return res.status(401).json({ error: "Invalid signature" });
+  }
+
+  const payload = JSON.parse(rawBody.toString());
+
+  // Check timestamp (prevent replay attacks)
+  const age = Date.now() / 1000 - payload.timestamp;
+  if (age > 600) {
+    return res.status(400).json({ error: "Webhook too old" });
+  }
+
+  // Respond quickly
+  res.json({ received: true });
+
+  // Process asynchronously
+  processWebhook(payload).catch(console.error);
+});
+
+async function processWebhook(payload) {
+  // Store transcript in database
+  await db.sessions.insert({
+    session_id: payload.session_id,
+    agent_id: payload.agent_id,
+    transcript: payload.context,
+    completed_at: new Date(payload.timestamp * 1000),
+  });
+
+  // Trigger follow-up actions
+  await sendFollowUpEmail(payload);
+}
+```
+
+```python Python/FastAPI
+from fastapi import FastAPI, Request, HTTPException
+import hmac
+import hashlib
+import json
+import time
+import os
+
+app = FastAPI()
+WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET")
+
+@app.post("/webhook")
+async def webhook(request: Request):
+    signature = request.headers.get("X-Outspeed-Signature")
+    if not signature:
+        raise HTTPException(status_code=401, detail="Missing signature header")
+
+    raw_payload = await request.body()
+
+    # Verify signature
+    expected_sig = 'sha256=' + hmac.new(
+        WEBHOOK_SECRET.encode(),
+        raw_payload,
+        hashlib.sha256
+    ).hexdigest()
+
+    if not hmac.compare_digest(signature, expected_sig):
+        raise HTTPException(status_code=401, detail="Invalid signature")
+
+    payload = json.loads(raw_payload)
+
+    # Check timestamp (prevent replay attacks)
+    age = time.time() - payload['timestamp']
+    if age > 600:
+        raise HTTPException(status_code=400, detail="Webhook too old")
+
+    # Respond quickly, process asynchronously
+    await process_webhook_async(payload)
+    return {"received": True}
+
+async def process_webhook_async(payload):
+    # Store transcript in database
+    await db.sessions.insert({
+        "session_id": payload["session_id"],
+        "agent_id": payload["agent_id"],
+        "transcript": payload["context"],
+        "completed_at": payload["timestamp"],
+    })
+
+    # Trigger follow-up actions
+    await send_follow_up_email(payload)
+```
+
+</CodeGroup>
+
+## Quick Start Checklist
+
+- [ ] Create webhook endpoint on your server (HTTPS)
+- [ ] Implement signature verification
+- [ ] Add webhook URL to agent in Outspeed dashboard
+- [ ] **Save webhook secret securely**
+- [ ] Test with a sample session
+- [ ] Check delivery logs in dashboard
+- [ ] Set up monitoring/alerts
+- [ ] Deploy to production
